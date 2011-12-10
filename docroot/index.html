@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Nanaca Crash!!</title>
+
+    <style>
+        #log {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: #333;
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="log"></div>
+
+    <!-- Library files -->
+    <script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
+    <script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>
+    <script src="../assets/js/lib/base.js"></script>
+
+    <!-- Engine files -->
+    <script src="../assets/js/AssetLoader.js"></script>
+    <script src="../assets/js/engine/GFX.js"></script>
+    <script src="../assets/js/engine/Entity.js"></script>
+    <script src="../assets/js/engine/Img.js"></script>
+
+    <!-- Game files -->
+    <script src="../assets/js/Floor.js"></script>
+    <script src="../assets/js/Player.js"></script>
+    <script src="../assets/js/Kicker.js"></script>
+
+    <script>
+        GFX.init(768, 435);
+
+        //AssetLoader.queueImage("../alpha/player.png");
+        AssetLoader.load(function () {
+            console.log("Assets loaded");
+            var player = Player.create(80, 80);
+
+            player.draw();
+        });
+    </script>
+</body>
+</html>
