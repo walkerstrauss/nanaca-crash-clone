@@ -21,10 +21,16 @@ var Entity = Base.extend({
         this.height = height;
     },
 
-    draw: function (ctx) {
-        ctx = ctx || GFX.ctx;
+    update: function (delta) {
 
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+    },
+
+    draw: function (ctx, x, y) {
+        ctx = ctx || GFX.ctx;
+        x = x || this.x;
+        y = y || this.y;
+
+        ctx.fillRect(x, y, this.width, this.height);
     }
 }, {
     // Static functions

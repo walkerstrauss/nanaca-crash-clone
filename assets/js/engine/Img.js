@@ -8,10 +8,12 @@ var Img = Entity.extend({
         this.image = AssetLoader.getImage(src);
     },
 
-    draw: function (ctx) {
+    draw: function (ctx, x, y) {
         ctx = ctx || GFX.ctx;
+        x = x || this.x;
+        y = y || this.y;
 
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, x, y, this.width, this.height);
     }
 }, {
     // Static functions

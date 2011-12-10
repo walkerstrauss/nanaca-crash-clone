@@ -7,12 +7,21 @@ var Background = Entity.extend({
         this.base("Background", width, height);
 
         this.img = Img.create("background", width, height);
+        this.x = 0;
+        this.y = 0;
     },
 
-    draw: function (ctx) {
+    draw: function (ctx, x, y) {
         ctx = ctx || GFX.ctx;
+        x = x || Game.world.x;
+        y = y || this.y;
 
-        this.img.draw(ctx);
+        var bgX = x / this.width;
+        bgX = bgX - Math.floor(bgX);
+        bgX = this.width - (bgX * this.width);
+        this.img.draw(ctx, bgX, 0);
+        bgX = bgX - this.width;
+        this.img.draw(ctx, bgX, 0);
     }
 }, {
     // Static functions
