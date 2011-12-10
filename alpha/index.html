@@ -1,402 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Nanaca Crash!!</title>
+    <title>Nanaca Crash!!</title>
 
-	<style>
-		#log {
-			position: absolute;
-			top: 10px;
-			right: 10px;
-			background: #fff;
-			color: #333;
-			padding: 3px;
-		}
-	</style>
+    <style>
+        #log {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: #333;
+            padding: 3px;
+        }
+    </style>
 </head>
 <body>
-	<div id="log"></div>
-	
-	<script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
-	<script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>
-	<script>
-		var running = true,
-			canvas = null,
-			ctx = null,
-			world = new Box2D.Dynamics.b2World(new Box2D.Common.Math.b2Vec2(0, 6), true),
-			drawScale = 20,
-			player = null,
-			floor = null,
-			viewportX = 0,
-			bg = null,
-			log = document.getElementById("log"),
-			kickers = [],
-			listener = null,
-			lastKickerPos = 0,
-			pauseTime = 0;
+<div id="log"></div>
 
-			var oldTime = Date.now();
-			var FPS = 1/30;
+<script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
+<script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>
+<script>
+var running = true,
+    canvas = null,
+    ctx = null,
+    world = new Box2D.Dynamics.b2World(new Box2D.Common.Math.b2Vec2(0, 6), true),
+    drawScale = 20,
+    player = null,
+    floor = null,
+    viewportX = 0,
+    bg = null,
+    log = document.getElementById("log"),
+    kickers = [],
+    listener = null,
+    lastKickerPos = 0,
+    pauseTime = 0;
 
+var oldTime = Date.now();
+var FPS = 1 / 30;
 
-		var b2Vec2 = Box2D.Common.Math.b2Vec2,
-			b2AABB = Box2D.Collision.b2AABB,
-			b2BodyDef = Box2D.Dynamics.b2BodyDef,
-			b2Body = Box2D.Dynamics.b2Body,
-			b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
-			b2Fixture = Box2D.Dynamics.b2Fixture,
-			b2World = Box2D.Dynamics.b2World,
-			b2MassData = Box2D.Collision.Shapes.b2MassData,
-			b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-			b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
-			b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
-			b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef;
+var b2Vec2 = Box2D.Common.Math.b2Vec2,
+    b2AABB = Box2D.Collision.b2AABB,
+    b2BodyDef = Box2D.Dynamics.b2BodyDef,
+    b2Body = Box2D.Dynamics.b2Body,
+    b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+    b2Fixture = Box2D.Dynamics.b2Fixture,
+    b2World = Box2D.Dynamics.b2World,
+    b2MassData = Box2D.Collision.Shapes.b2MassData,
+    b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+    b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
+    b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+    b2MouseJointDef = Box2D.Dynamics.Joints.b2MouseJointDef;
 
+// Cross browser request animation frame.
+window.requestAnimFrame = (function () {
+    return  window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (/* function */ callback, /* DOMElement */ element) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
 
-		// Cross browser request animation frame.
-		window.requestAnimFrame = (function(){
-			return  window.requestAnimationFrame       ||
-					window.webkitRequestAnimationFrame ||
-					window.mozRequestAnimationFrame    ||
-					window.oRequestAnimationFrame      ||
-					window.msRequestAnimationFrame     ||
-					function(/* function */ callback, /* DOMElement */ element){
-						window.setTimeout(callback, 1000 / 60);
-					};
-		})();
+bg = new Image();
+bg.onload = init;
+bg.src = "../assets/img/bg.jpg";
 
-		bg = new Image();
-		bg.onload = init;
-		bg.src = "bg.jpg";
-		
-		var playerImg = new Image();
-		playerImg.src = "player.png";
-		
-		var kickerImg = new Image();
-		kickerImg.src = "kicker.png";
+var playerImg = new Image();
+playerImg.src = "player.png";
 
-		function createKicker(special) {
-			special = special || "boost";
-			lastKickerPos += canvas.width / drawScale * 1.5;
+var kickerImg = new Image();
+kickerImg.src = "kicker.png";
 
-			var kicker = {
-				x: lastKickerPos,
-				y: 18.5,
-				w: 2.5,
-				h: 6.5,
-				physics: null,
-				special: special
-			};
-			
-			kicker.physics = createSensor(b2Body.b2_staticBody, kicker.w * 0.5, kicker.h * 0.5, 1, {kicker:true, special: special});
-			kicker.physics.SetPosition(new Box2D.Common.Math.b2Vec2(kicker.x, kicker.y));
-			
-			kickers.push(kicker);
-		}
-		
-		function init() {
-			initGraphics();
-			
-			// Init player
-			player = {
-				radius: 2,
-				x: 10,
-				y: 18,
-				physics: null
-			};
-			player.img = new Image();
-			player.img.src = "player.png";
-			
-			player.physics = createCircle(b2Body.b2_dynamicBody, player.radius, player.radius);
-			player.physics.SetPosition(new Box2D.Common.Math.b2Vec2(player.x, player.y));
-			
-			// Init ground
-			floor = createBox(b2Body.b2_staticBody, 100, 1.5, 0, {floor: true});
-			floor.SetPosition(new Box2D.Common.Math.b2Vec2(0, 435 / drawScale));
+function createKicker(special) {
+    special = special || "boost";
+    lastKickerPos += canvas.width / drawScale * 1.5;
 
-			// Create the kickers
-			for (var i=0; i<10; i++) {
-				createKicker();
-			}
+    var kicker = {
+        x: lastKickerPos,
+        y: 18.5,
+        w: 2.5,
+        h: 6.5,
+        physics: null,
+        special: special
+    };
 
+    kicker.physics = createSensor(b2Body.b2_staticBody, kicker.w * 0.5, kicker.h * 0.5, 1, {kicker: true, special: special});
+    kicker.physics.SetPosition(new Box2D.Common.Math.b2Vec2(kicker.x, kicker.y));
 
-			listener = new Box2D.Dynamics.b2ContactListener;
-			listener.BeginContact = function(contact) {
-				var userData = contact.GetFixtureA().GetBody().GetUserData();
-				if (userData && userData.kicker) {
-					pauseTime = 1;
+    kickers.push(kicker);
+}
 
-					if (userData.special == "boost") {
-						var forceToApply = new Box2D.Common.Math.b2Vec2(10, -25);
-						forceToApply.Multiply(player.physics.GetMass());
-						player.physics.ApplyImpulse(
-							forceToApply,
-							player.physics.GetPosition()
-						);
-					}
-					
-					userData.kicker = false;
-					contact.GetFixtureA().GetBody().SetUserData(userData);
-				}
-				
-				if (userData && userData.floor) {
-					player.physics.SetLinearDamping(2);
-				}
-			};
+function init() {
+    initGraphics();
 
-			listener.EndContact = function(contact) {
-				var userData = contact.GetFixtureA().GetBody().GetUserData();
-				if (userData && userData.floor) {
-					player.physics.SetLinearDamping(0.07);
-				}
-			};
+    // Init player
+    player = {
+        radius: 2,
+        x: 10,
+        y: 18,
+        physics: null
+    };
+    player.img = new Image();
+    player.img.src = "player.png";
 
-			listener.PostSolve = function(contact, impulse) {
-				
-			};
+    player.physics = createCircle(b2Body.b2_dynamicBody, player.radius, player.radius);
+    player.physics.SetPosition(new Box2D.Common.Math.b2Vec2(player.x, player.y));
 
-			listener.PreSolve = function(contact, oldManifold) {
+    // Init ground
+    floor = createBox(b2Body.b2_staticBody, 100, 1.5, 0, {floor: true});
+    floor.SetPosition(new Box2D.Common.Math.b2Vec2(0, 435 / drawScale));
 
-			};
+    // Create the kickers
+    for (var i = 0; i < 10; i++) {
+        createKicker();
+    }
 
-			world.SetContactListener(listener);
-			
-			
-			Event.observe(canvas, 'click', function(e) {
-				e.preventDefault();
+    listener = new Box2D.Dynamics.b2ContactListener;
+    listener.BeginContact = function (contact) {
+        var userData = contact.GetFixtureA().GetBody().GetUserData();
+        if (userData && userData.kicker) {
+            pauseTime = 1;
 
-				// http://www.iforce2d.net/b2dtut/sticky-projectiles
-				
-				player.physics.SetAwake(true);
-				var forceToApply = new Box2D.Common.Math.b2Vec2(15, -20);
-				forceToApply.Multiply(player.physics.GetMass());
-				player.physics.ApplyImpulse(
+            if (userData.special == "boost") {
+                var forceToApply = new Box2D.Common.Math.b2Vec2(10, -25);
+                forceToApply.Multiply(player.physics.GetMass());
+                player.physics.ApplyImpulse(
                     forceToApply,
-					player.physics.GetPosition()
-				);
+                    player.physics.GetPosition()
+                );
+            }
 
-				return false;
-			});
-			
-			// Run the game loop.
-			(function _gameLoop() {
-				mainLoop();
-				if (running) {
-					requestAnimFrame(_gameLoop);
-				}
-			})();
-		}
+            userData.kicker = false;
+            contact.GetFixtureA().GetBody().SetUserData(userData);
+        }
 
-		function initGraphics() {
-			// Create the drawing surface
-			canvas = document.createElement("canvas");
-			canvas.width = 768;
-			canvas.height = 435;
+        if (userData && userData.floor) {
+            player.physics.SetLinearDamping(2);
+        }
+    };
 
-			document.body.appendChild(canvas);
+    listener.EndContact = function (contact) {
+        var userData = contact.GetFixtureA().GetBody().GetUserData();
+        if (userData && userData.floor) {
+            player.physics.SetLinearDamping(0.07);
+        }
+    };
 
-			ctx = canvas.getContext("2d");
-			
-			var debugDraw = new b2DebugDraw();
-			debugDraw.SetSprite(ctx);
-			debugDraw.SetDrawScale(drawScale);
-			debugDraw.SetFillAlpha(0.5);
-			debugDraw.SetLineThickness(0.5);
-			debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);	// | b2DebugDraw.e_centerOfMassBit
-			world.SetDebugDraw(debugDraw);
-		}
+    listener.PostSolve = function (contact, impulse) {
 
-		function mainLoop() {
-			var newTime = Date.now();
-			var dt = ((newTime - oldTime)/1000);
+    };
 
-			//log.innerHTML = dt;
-			//while (dt > FPS){
-				//physics(FPS);
-				//dt -= FPS;
-			//}
+    listener.PreSolve = function (contact, oldManifold) {
 
-			// TODO: Timer check for rate limiting?
-			if (pauseTime <= 0) {
-				physics(FPS);
-			} else {
-				pauseTime -= dt;
-			}
-			
-			graphics();
-			
-			oldTime = newTime;
+    };
 
-		}
+    world.SetContactListener(listener);
 
-		function physics(delta) {
-			world.Step(delta, 10, 10);
-			world.ClearForces();
-			
-			var playerPos = player.physics.GetWorldPoint(new Box2D.Common.Math.b2Vec2(0, 0));
-			player.x = playerPos.x;
-			player.y = playerPos.y;
-			
-			var v = player.x - 19;
-			var removeCount = 0;
-			for (var i=0,j=kickers.length; i<j; i++) {
-				var kickerPos = kickers[i].physics.GetWorldPoint(new Box2D.Common.Math.b2Vec2(0, 0));
-				kickers[i].x = kickerPos.x;
-				kickers[i].y = kickerPos.y;
-				
-				// Check if a kicker goes off screen
-				if (kickers[i].x - v < -10) {
-					//console.log(kickers[i].x - v);
-					
-					removeCount++;
-					
-				}
-				
-			}
-			
-			while (removeCount) {
-				removeCount--;
-				world.DestroyBody(kickers[removeCount].physics);
-				kickers.shift();
-				createKicker("skip");
-			}
-			
-			floor.SetPosition(new Box2D.Common.Math.b2Vec2(playerPos.x, 435 / drawScale));
+    Event.observe(canvas, 'click', function (e) {
+        e.preventDefault();
 
-			//log.innerHTML = playerPos.x;
-			
-			if (!player.physics.GetDefinition().awake) {
-				//running = false;
-				//alert("Dead!");
-			}
-		}
+        // http://www.iforce2d.net/b2dtut/sticky-projectiles
 
-		function graphics() {
-			//world.DrawDebugData();
+        player.physics.SetAwake(true);
+        var forceToApply = new Box2D.Common.Math.b2Vec2(15, -20);
+        forceToApply.Multiply(player.physics.GetMass());
+        player.physics.ApplyImpulse(
+            forceToApply,
+            player.physics.GetPosition()
+        );
 
-			viewportX = player.x;
+        return false;
+    });
 
-			//ctx.globalAlpha = 0.5;
-			//ctx.fillStyle = "#30cefd";
-			//ctx.fillRect(0, 0, canvas.width, canvas.height);
-			
-			
-			var bgX = viewportX / (canvas.width/drawScale);
-			bgX = bgX - Math.floor(bgX);
-			bgX = canvas.width - (bgX * canvas.width);
-			ctx.drawImage(bg, bgX, 0);
-			bgX = bgX - canvas.width;
-			ctx.drawImage(bg, bgX, 0);
+    // Run the game loop.
+    (function _gameLoop() {
+        mainLoop();
+        if (running) {
+            requestAnimFrame(_gameLoop);
+        }
+    })();
+}
 
-			// Centering player
-			viewportX -= 19;
-			
-			
-			// Kickers
-			for (var i=0,j=kickers.length; i<j; i++) {
-				if (kickers[i].special == "boost") {
-					ctx.fillStyle = "#30cefd";
-				} else {
-					ctx.fillStyle = "#fd3030";
-				}
-				
-				ctx.fillRect((kickers[i].x - viewportX - (kickers[i].w * 0.5)) * drawScale, (kickers[i].y - (kickers[i].h * 0.5)) * drawScale, kickers[i].w * drawScale, kickers[i].h * drawScale);
-				
-				ctx.drawImage(kickerImg, (kickers[i].x - viewportX - (kickers[i].w * 0.5)) * drawScale, (kickers[i].y - (kickers[i].h * 0.5)) * drawScale, kickers[i].w * drawScale, kickers[i].h * drawScale);
-			}
-			
+function initGraphics() {
+    // Create the drawing surface
+    canvas = document.createElement("canvas");
+    canvas.width = 768;
+    canvas.height = 435;
 
-			// Player
-			ctx.drawImage(playerImg, (player.x - viewportX) * drawScale, player.y * drawScale -25, player.radius * 2 * drawScale, player.radius * 2 * drawScale);
-			/*
-			ctx.strokeStyle = "#000";
-			ctx.beginPath();  
-			ctx.arc(
-				(player.x - viewportX) * drawScale,
-				player.y * drawScale,
-				player.radius * drawScale,
-				0, Math.PI * 2,
-				true
-			);  
-			ctx.stroke();
-			*/
-		}
+    document.body.appendChild(canvas);
 
-		function createSensor(type, width, height, density, userData) {
-			userData = userData || {};
+    ctx = canvas.getContext("2d");
 
-			var def = new b2BodyDef();
-			//def.type = type;
-			var box = world.CreateBody(def);
-			box.SetUserData(userData);
+    var debugDraw = new b2DebugDraw();
+    debugDraw.SetSprite(ctx);
+    debugDraw.SetDrawScale(drawScale);
+    debugDraw.SetFillAlpha(0.5);
+    debugDraw.SetLineThickness(0.5);
+    debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);	// | b2DebugDraw.e_centerOfMassBit
+    world.SetDebugDraw(debugDraw);
+}
 
-			var poly = new b2PolygonShape();
-			poly.SetAsBox(width, height);
+function mainLoop() {
+    var newTime = Date.now();
+    var dt = ((newTime - oldTime) / 1000);
 
-			var fixDef = new b2FixtureDef();
-			fixDef.shape = poly;
-			fixDef.isSensor = true;
-			//fixDef.density = density;
+    //log.innerHTML = dt;
+    //while (dt > FPS){
+    //physics(FPS);
+    //dt -= FPS;
+    //}
 
-			var fix = box.CreateFixture(fixDef);
-			//poly.dispose();
+    // TODO: Timer check for rate limiting?
+    if (pauseTime <= 0) {
+        physics(FPS);
+    } else {
+        pauseTime -= dt;
+    }
 
-			box.ResetMassData();
+    graphics();
 
-			return box;
-		}
+    oldTime = newTime;
 
-		function createBox(type, width, height, density, userData) {
-			userData = userData || {};
+}
 
-			var def = new b2BodyDef();
-			def.type = type;
-			var box = world.CreateBody(def);
-			box.SetUserData(userData);
+function physics(delta) {
+    world.Step(delta, 10, 10);
+    world.ClearForces();
 
-			var poly = new b2PolygonShape();
-			poly.SetAsBox(width, height);
+    var playerPos = player.physics.GetWorldPoint(new Box2D.Common.Math.b2Vec2(0, 0));
+    player.x = playerPos.x;
+    player.y = playerPos.y;
 
-			var fixDef = new b2FixtureDef();
-			fixDef.shape = poly;
-			fixDef.density = density;
+    var v = player.x - 19;
+    var removeCount = 0;
+    for (var i = 0, j = kickers.length; i < j; i++) {
+        var kickerPos = kickers[i].physics.GetWorldPoint(new Box2D.Common.Math.b2Vec2(0, 0));
+        kickers[i].x = kickerPos.x;
+        kickers[i].y = kickerPos.y;
 
-			var fix = box.CreateFixture(fixDef);
-			//poly.dispose();
+        // Check if a kicker goes off screen
+        if (kickers[i].x - v < -10) {
+            //console.log(kickers[i].x - v);
 
-			box.ResetMassData();
+            removeCount++;
 
-			return box;
-		}
+        }
 
-		function createCircle(type, radius, density, userData) {
-			userData = userData || {};
+    }
 
-			var def = new b2BodyDef();
-			def.type = type;
-			def.fixedRotation = true;
-			var box = world.CreateBody(def);
-			box.SetLinearDamping(0.07);
+    while (removeCount) {
+        removeCount--;
+        world.DestroyBody(kickers[removeCount].physics);
+        kickers.shift();
+        createKicker("skip");
+    }
 
+    floor.SetPosition(new Box2D.Common.Math.b2Vec2(playerPos.x, 435 / drawScale));
 
-			var poly = new b2CircleShape();
-			poly.SetRadius(radius);
+    //log.innerHTML = playerPos.x;
 
-			var fixDef = new b2FixtureDef();
-			fixDef.shape = poly;
-            fixDef.density = density;
-			fixDef.friction = 0;
-			fixDef.restitution = 0.6;
-			//fixDef.isSensor = true;
+    if (!player.physics.GetDefinition().awake) {
+        //running = false;
+        //alert("Dead!");
+    }
+}
 
-			var fix = box.CreateFixture(fixDef);
-			fix.SetUserData(userData);
-			//poly.dispose();
+function graphics() {
+    //world.DrawDebugData();
 
-			box.ResetMassData();
+    viewportX = player.x;
 
-			return box;
-		}
-	</script>
+    //ctx.globalAlpha = 0.5;
+    //ctx.fillStyle = "#30cefd";
+    //ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    var bgX = viewportX / (canvas.width / drawScale);
+    bgX = bgX - Math.floor(bgX);
+    bgX = canvas.width - (bgX * canvas.width);
+    ctx.drawImage(bg, bgX, 0);
+    bgX = bgX - canvas.width;
+    ctx.drawImage(bg, bgX, 0);
+
+    // Centering player
+    viewportX -= 19;
+
+    // Kickers
+    for (var i = 0, j = kickers.length; i < j; i++) {
+        if (kickers[i].special == "boost") {
+            ctx.fillStyle = "#30cefd";
+        } else {
+            ctx.fillStyle = "#fd3030";
+        }
+
+        ctx.fillRect((kickers[i].x - viewportX - (kickers[i].w * 0.5)) * drawScale, (kickers[i].y - (kickers[i].h * 0.5)) * drawScale, kickers[i].w * drawScale, kickers[i].h * drawScale);
+
+        ctx.drawImage(kickerImg, (kickers[i].x - viewportX - (kickers[i].w * 0.5)) * drawScale, (kickers[i].y - (kickers[i].h * 0.5)) * drawScale, kickers[i].w * drawScale, kickers[i].h * drawScale);
+    }
+
+    // Player
+    ctx.drawImage(playerImg, (player.x - viewportX) * drawScale, player.y * drawScale - 25, player.radius * 2 * drawScale, player.radius * 2 * drawScale);
+    /*
+     ctx.strokeStyle = "#000";
+     ctx.beginPath();
+     ctx.arc(
+     (player.x - viewportX) * drawScale,
+     player.y * drawScale,
+     player.radius * drawScale,
+     0, Math.PI * 2,
+     true
+     );
+     ctx.stroke();
+     */
+}
+
+function createSensor(type, width, height, density, userData) {
+    userData = userData || {};
+
+    var def = new b2BodyDef();
+    //def.type = type;
+    var box = world.CreateBody(def);
+    box.SetUserData(userData);
+
+    var poly = new b2PolygonShape();
+    poly.SetAsBox(width, height);
+
+    var fixDef = new b2FixtureDef();
+    fixDef.shape = poly;
+    fixDef.isSensor = true;
+    //fixDef.density = density;
+
+    var fix = box.CreateFixture(fixDef);
+    //poly.dispose();
+
+    box.ResetMassData();
+
+    return box;
+}
+
+function createBox(type, width, height, density, userData) {
+    userData = userData || {};
+
+    var def = new b2BodyDef();
+    def.type = type;
+    var box = world.CreateBody(def);
+    box.SetUserData(userData);
+
+    var poly = new b2PolygonShape();
+    poly.SetAsBox(width, height);
+
+    var fixDef = new b2FixtureDef();
+    fixDef.shape = poly;
+    fixDef.density = density;
+
+    var fix = box.CreateFixture(fixDef);
+    //poly.dispose();
+
+    box.ResetMassData();
+
+    return box;
+}
+
+function createCircle(type, radius, density, userData) {
+    userData = userData || {};
+
+    var def = new b2BodyDef();
+    def.type = type;
+    def.fixedRotation = true;
+    var box = world.CreateBody(def);
+    box.SetLinearDamping(0.07);
+
+    var poly = new b2CircleShape();
+    poly.SetRadius(radius);
+
+    var fixDef = new b2FixtureDef();
+    fixDef.shape = poly;
+    fixDef.density = density;
+    fixDef.friction = 0;
+    fixDef.restitution = 0.6;
+    //fixDef.isSensor = true;
+
+    var fix = box.CreateFixture(fixDef);
+    fix.SetUserData(userData);
+    //poly.dispose();
+
+    box.ResetMassData();
+
+    return box;
+}
+</script>
 </body>
 </html>

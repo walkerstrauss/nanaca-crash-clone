@@ -18,6 +18,7 @@
     <div id="log"></div>
 
     <!-- Library files -->
+    <script src="../assets/js/lib/requestAnimFrame.js"></script>
     <script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
     <script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>
     <script src="../assets/js/lib/base.js"></script>
@@ -29,20 +30,14 @@
     <script src="../assets/js/engine/Img.js"></script>
 
     <!-- Game files -->
+    <script src="../assets/js/Background.js"></script>
     <script src="../assets/js/Floor.js"></script>
     <script src="../assets/js/Player.js"></script>
     <script src="../assets/js/Kicker.js"></script>
+    <script src="../assets/js/Game.js"></script>
 
     <script>
-        GFX.init(768, 435);
-
-        //AssetLoader.queueImage("../alpha/player.png");
-        AssetLoader.load(function () {
-            console.log("Assets loaded");
-            var player = Player.create(80, 80);
-
-            player.draw();
-        });
+        Game.run();
     </script>
 </body>
 </html>
