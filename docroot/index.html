@@ -4,13 +4,36 @@
     <title>Nanaca Crash!!</title>
 
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 80%;
+            font-family: Arial, sans-serif;
+            line-height: 1.168;
+        }
+
+        p {
+            margin: 0 0 0.5em;
+        }
+
+        #stage {
+            margin: 10px auto;
+            position: relative;
+            width: 768px;
+            height: 435px;
+        }
+
         #log {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 0;
+            right: 0;
             background: #fff;
+            background: rgba(255, 255, 255, 0.7);
             color: #333;
             padding: 3px;
+            min-width: 200px;
+            width: auto !important;
+            width: 200px;
         }
 
         body,
@@ -22,7 +45,9 @@
     </style>
 </head>
 <body>
-    <div id="log"></div>
+    <div id="stage">
+        <div id="log"></div>
+    </div>
 
     <!-- Library files -->
     <script src="../assets/js/lib/requestAnimFrame.js"></script>
