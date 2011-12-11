@@ -1,13 +1,9 @@
-AssetLoader.queueImage("../assets/img/kicker.png", "kicker");
-
 var Kicker = PhysicsEntity.extend({
     img: null,
+    move: false,
 
     constructor: function (width, height) {
         this.base("Kicker", width, height);
-
-        this.img = Img.create("kicker", width, height);
-
         this.setPosition(180, 305);
     },
 
@@ -16,11 +12,15 @@ var Kicker = PhysicsEntity.extend({
 
         this.physics = Game.world.physics.CreateBody(def);
         this.physics.SetUserData({
-            kicker: true
+            kicker: true,
+            entity: this
         });
 
         var poly = new Box2D.Collision.Shapes.b2PolygonShape();
-        poly.SetAsBox(Game.world.toWorld(this.width * 0.5), Game.world.toWorld(this.height * 0.5));
+        poly.SetAsBox(
+            Game.world.toWorld(this.width * 0.25),
+            Game.world.toWorld(this.height * 0.3)
+        );
 
         var fixDef = new Box2D.Dynamics.b2FixtureDef();
         fixDef.shape = poly;
@@ -31,18 +31,15 @@ var Kicker = PhysicsEntity.extend({
 
     update: function (delta) {
         this.base(delta);
-        this.img.setPosition(this.x, this.y);
-    },
 
-    draw: function (ctx, x, y) {
-        ctx = ctx || GFX.ctx;
-        x = x || this.x;
-        y = y || this.y;
+        if (this.img) {
+            this.img.setPosition(this.x, this.y);
+        }
 
-        x = x - Game.world.x;
-
-        this.base(ctx, x, y);
-        this.img.draw(ctx, x, y);
+        if (this.move) {
+            this.move.setPosition(this.x, this.y);
+            this.move.update(delta);
+        }
     }
 }, {
     // Static functions

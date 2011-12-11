@@ -1,7 +1,8 @@
 var World = PhysicsEntity.extend({
     _physicsScale: 20,
     physics: null,
-    gravity: 6,
+    gravity: 30,
+    speed: 1,
 
     constructor: function () {
         this.base("World", 0, 0);
@@ -12,7 +13,7 @@ var World = PhysicsEntity.extend({
     },
 
     update: function (delta) {
-        this.physics.Step(Game.FPS, 10, 10);
+        this.physics.Step(this.speed * delta, 10, 10);
         this.physics.ClearForces();
 
         // Position the viewport where the player is
@@ -28,6 +29,14 @@ var World = PhysicsEntity.extend({
 
     toPixel: function (unit) {
         return unit * this._physicsScale;
+    },
+
+    slowDown: function () {
+        this.speed = 0.05;
+    },
+
+    speedUp: function () {
+        this.speed = 1;
     }
 }, {
     // Static functions

@@ -3,17 +3,18 @@ AssetLoader.queueImage("../assets/img/player-shadow.png", "player-shadow");
 
 var Player = PhysicsEntity.extend({
     img: null,
-    lastX: 0,
-    speed: 0,
+    speed: null,
+    blocked: false,
+    bike: null,
 
     constructor: function (width, height) {
         this.base("Player", width, height);
 
+        this.speed = new Box2D.Common.Math.b2Vec2(0, 0);
+        this.bike = Kicker_Bike.create(width, height);
         this.img = Img.create("player", width, height);
 
         this.setPosition(20, 336);
-
-        this.lastX = 20;
     },
 
     _setUpPhysics: function () {
@@ -22,10 +23,11 @@ var Player = PhysicsEntity.extend({
         def.fixedRotation = true;
 
         this.physics = Game.world.physics.CreateBody(def);
-        this.physics.SetLinearDamping(0);
+        this.physics.SetLinearDamping(0.1);
 
         this.physics.SetUserData({
-            player: true
+            player: true,
+            entity: this
         });
 
         var poly = new Box2D.Collision.Shapes.b2CircleShape();
@@ -42,21 +44,14 @@ var Player = PhysicsEntity.extend({
         this.physics.ResetMassData();
     },
 
-    kick: function () {
-        // http://www.iforce2d.net/b2dtut/sticky-projectiles
-        var forceToApply = new Box2D.Common.Math.b2Vec2(15, -20);
-        forceToApply.Multiply(this.physics.GetMass());
-
-        this.physics.SetAwake(true);
-        this.physics.ApplyImpulse(forceToApply, this.physics.GetPosition());
-    },
-
     update: function (delta) {
         this.base(delta);
         this.img.setPosition(this.x, this.y);
+        this.bike.setPosition(this.x, this.y);
 
-        this.speed = this.x - this.lastX;
-        this.lastX = this.x;
+        this.bike.update(delta);
+
+        this.speed = this.physics.GetLinearVelocity();
     },
 
     draw: function (ctx, x, y) {

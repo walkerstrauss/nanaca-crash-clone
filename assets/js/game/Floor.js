@@ -12,7 +12,8 @@ var Floor = PhysicsEntity.extend({
 
         this.physics = Game.world.physics.CreateBody(def);
         this.physics.SetUserData({
-            floor: true
+            floor: true,
+            entity: this
         });
 
         var poly = new Box2D.Collision.Shapes.b2PolygonShape();

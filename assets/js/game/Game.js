@@ -6,7 +6,6 @@ var Game = {
     world: null,
     background: null,
     floor: null,
-    FPS: 1 / 30,
     contactListener: null,
     kickers: [],
 
@@ -24,15 +23,29 @@ var Game = {
         this.kickers.spacing = GFX.width * 1.5;
         this.kickers.lastPosition = 0;
         this.entities.push(this.kickers);
+        this.kickers.newKicker = function () {
+            Game.kickers.lastPosition += Game.kickers.spacing;
+
+            var rnd = Math.random();
+            if (rnd > 0.9) {
+                var kicker = Game.kickers.createItem(Kicker_Stop, 50, 130);
+            } else if (rnd > 0.5) {
+                var kicker = Game.kickers.createItem(Kicker_Kick, 50, 130);
+            } else if (rnd > 0.3) {
+                var kicker = Game.kickers.createItem(Kicker_Punch, 50, 130);
+            } else if (rnd >= 0) {
+                var kicker = Game.kickers.createItem(Kicker_Block, 50, 130);
+            }
+
+            kicker.setPosition(Game.kickers.lastPosition, kicker.y);
+        };
 
         this.player = Player.create(82, 73);
         this.entities.push(this.player);
 
         // Create the kickers
         for (var i = 0; i < 10; i++) {
-            //this.kickers.lastPosition += this.kickers.spacing;
-            //var kicker = this.kickers.createItem(Kicker, 50, 130);
-            //kicker.setPosition(this.kickers.lastPosition, kicker.y);
+            this.kickers.newKicker();
         }
 
         // Collisions
@@ -43,8 +56,12 @@ var Game = {
             if (userDataA && userDataA.floor) {
                 Game.player.physics.SetLinearDamping(2);
             } else if (userDataA && userDataA.kicker) {
-                Game.player.kick();
-
+                userDataA.entity.move.activate();
+                /*
+                 if (userDataA.type == "block") {
+                 Game.player.blocked = true;
+                 }
+                 */
                 userDataA.kicker = false;
                 contact.GetFixtureA().GetBody().SetUserData(userDataA);
             }
@@ -53,7 +70,7 @@ var Game = {
         this.contactListener.EndContact = function (contact) {
             var userData = contact.GetFixtureA().GetBody().GetUserData();
             if (userData && userData.floor) {
-                Game.player.physics.SetLinearDamping(0);
+                Game.player.physics.SetLinearDamping(0.1);
             }
         };
 
@@ -74,7 +91,7 @@ var Game = {
     click: function (e) {
         e.preventDefault();
 
-        Game.player.kick();
+        Game.player.bike.move.activate();
 
         return false;
     },
@@ -108,10 +125,9 @@ var Game = {
 
         var log = document.getElementById("log");
         var logMsg = "";
-        if (Game.player) {
-            logMsg += "<p>Player: " + Math.floor(Game.player.x) + "," + Math.floor(Game.player.y) + "</p>";
-            logMsg += "<p>Speed: " + Game.player.speed + "</p>";
-        }
+        logMsg += "<p>Player: " + Math.floor(Game.player.x) + "," + Math.floor(Game.player.y) + "</p>";
+        logMsg += "<p>Speed: " + Game.player.speed.Length() + "</p>";
+        logMsg += "<p>Blocked: " + Game.player.blocked + "</p>";
         log.innerHTML = logMsg;
 
         Game.oldTime = newTime;
@@ -142,9 +158,7 @@ var Game = {
             this.world.physics.DestroyBody(this.kickers.get(removeCount).physics);
             this.kickers.shift();
 
-            this.kickers.lastPosition += this.kickers.spacing;
-            var kicker = this.kickers.createItem(Kicker, 50, 130);
-            kicker.setPosition(this.kickers.lastPosition, kicker.y);
+            this.kickers.newKicker();
         }
     },
 
