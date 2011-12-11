@@ -16,7 +16,7 @@ var Kicker_Kick = Kicker.extend({
 
         x = x - Game.world.x;
 
-        ctx.fillStyle = "#099";
+        ctx.fillStyle = "#0000A0";
 
         this.base(ctx, x, y);
         this.move.draw(ctx, x, y);

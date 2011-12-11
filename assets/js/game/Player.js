@@ -59,6 +59,8 @@ var Player = PhysicsEntity.extend({
         x = x || this.x;
         y = y || this.y;
 
+        this.bike.draw(ctx, x, y);
+
         x = x - Game.world.x;
 
         this.img.draw(ctx, x, y);

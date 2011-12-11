@@ -57,11 +57,7 @@ var Game = {
                 Game.player.physics.SetLinearDamping(2);
             } else if (userDataA && userDataA.kicker) {
                 userDataA.entity.move.activate();
-                /*
-                 if (userDataA.type == "block") {
-                 Game.player.blocked = true;
-                 }
-                 */
+
                 userDataA.kicker = false;
                 contact.GetFixtureA().GetBody().SetUserData(userDataA);
             }
@@ -97,7 +93,7 @@ var Game = {
     },
 
     run: function () {
-        GFX.init(768, 435);
+        GFX.initialise(document.getElementById("stage"), 768, 435);
 
         AssetLoader.load(function () {
             Game._init();
@@ -125,8 +121,9 @@ var Game = {
 
         var log = document.getElementById("log");
         var logMsg = "";
-        logMsg += "<p>Player: " + Math.floor(Game.player.x) + "," + Math.floor(Game.player.y) + "</p>";
-        logMsg += "<p>Speed: " + Game.player.speed.Length() + "</p>";
+        logMsg += "<p>Distance: " + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m</p>";
+        logMsg += "<p>Height: " + Math.round(Game.world.toWorld(Game.player.y) * 100) / 100 + "m</p>";
+        logMsg += "<p>Speed: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s</p>";
         logMsg += "<p>Blocked: " + Game.player.blocked + "</p>";
         log.innerHTML = logMsg;
 

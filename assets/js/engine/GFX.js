@@ -7,7 +7,7 @@ var GFX = Base.extend({
     canvas: null,
     ctx: null,
 
-    init: function (width, height) {
+    initialise: function (parent, width, height) {
         this.width = width;
         this.height = height;
 
@@ -16,7 +16,7 @@ var GFX = Base.extend({
         this.canvas.width = this.width;
         this.canvas.height = this.height;
 
-        document.body.appendChild(this.canvas);
+        parent.appendChild(this.canvas);
 
         this.ctx = this.canvas.getContext("2d");
     }
