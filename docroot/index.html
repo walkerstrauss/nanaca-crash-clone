@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Nanaca Crash!!</title>
+    <title>Tojiba Crash!!</title>
 
     <style>
         body {
@@ -42,9 +43,26 @@
             -moz-user-select: none;
             user-select: none;
         }
+
+        #main-menu {
+            text-align: center;
+            margin-top: 20%;
+        }
+
+        #start-game-btn {
+            padding: 10px 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+        }
     </style>
 </head>
+
 <body>
+    <div id="main-menu">
+        <h1>TOJIBA CRASH!!</h1>
+        <button id="start-game-btn">START</button>
+    </div>
     <div id="stage">
         <div id="log"></div>
     </div>
@@ -84,7 +102,17 @@
     <script src="../assets/js/game/Game.js"></script>
 
     <script>
-        Game.run();
+        document.getElementById("start-game-btn").addEventListener("click", function () {
+            // Hide the main meny
+            document.getElementById("main-menu").style.display = "none";
+
+            // Show the game stage
+            document.getElementById("stage").style.display = "block";
+
+            // Begin game
+            Game.run();
+        })
     </script>
 </body>
+
 </html>
