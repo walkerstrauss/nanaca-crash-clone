@@ -55,6 +55,35 @@
             cursor: pointer;
             border: none;
         }
+
+        #launch-angle {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 20px;
+            background: linear-gradient(90deg, red, yellow, green);
+            cursor: pointer;
+        }
+
+        #launch-power {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 20px;
+            background: linear-gradient(90deg, red, yellow, green);
+        }
+
+        #launch-indicator {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: black;
+            bottom: 10px;
+        }
     </style>
 </head>
 
@@ -63,9 +92,14 @@
         <h1>TOJIBA CRASH!!</h1>
         <button id="start-game-btn">START</button>
     </div>
-    <div id="stage">
+    <div id="stage" style="display: none;">
         <div id="log"></div>
+        <div id="launch angle">
+            <div id="launch-indicator"></div>
+        </div>
+        <div id="launch-power"></div>
     </div>
+
 
     <!-- Library files -->
     <script src="../assets/js/lib/requestAnimFrame.js"></script>
