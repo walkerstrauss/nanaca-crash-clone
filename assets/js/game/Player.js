@@ -6,6 +6,8 @@ var Player = PhysicsEntity.extend({
     speed: null,
     blocked: false,
     bike: null,
+    launchAngle: 0,
+    launchPower: 0,
 
     constructor: function (width, height) {
         this.base("Player", width, height);

@@ -8,6 +8,13 @@ var Game = {
     floor: null,
     contactListener: null,
     kickers: [],
+    launchUIActive: false,
+    launchPhase: "angle",
+    angleMeterValue: 0,
+    powerMeterValue: 0,
+    angleMeterDirection: 1,
+    powerMeterDirection: 1,
+
 
     _init: function () {
         this.world = World.create();
@@ -87,9 +94,38 @@ var Game = {
     click: function (e) {
         e.preventDefault();
 
-        Game.player.bike.move.activate();
+        // Old code below
+        // Game.player.bike.move.activate();
+
+        //Handle launch UI click event
+        if (Game.launchUIActive) {
+            Game.handleLaunchUIClick(e);
+        }
 
         return false;
+    },
+
+    animateLaunchUI: function () {
+        if (!Game.launchUIActive) {
+            return;
+        }
+
+    },
+
+    handleLaunchUIClick: function (e) {
+        if (Game.launchPhase === "angle") {
+            // Get angle value 
+            var angle = Game.angleMeterValue * 90;
+            Game.player.angle = angle;
+            Game.launchPhase = "power"
+        } else if (Game.launchPhase === "power") {
+            var power = Game.powerMeterValue * 100;
+            Game.player.power = power;
+        }
+    },
+
+    launchPlayer: function (angle, power) {
+
     },
 
     run: function () {
