@@ -84,6 +84,29 @@
             background: black;
             bottom: 10px;
         }
+
+        #launch-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .meter {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            width: 10px;
+            height: 200px;
+            background: rgba(255, 0, 0, 0.5);
+            transform: translateX(-50%);
+        }
+
+        #angle-meter {
+            background: rgba(0, 0, 255, 0.5);
+        }
     </style>
 </head>
 
@@ -94,10 +117,10 @@
     </div>
     <div id="stage" style="display: none;">
         <div id="log"></div>
-        <div id="launch angle">
-            <div id="launch-indicator"></div>
+        <div id="launch-ui" style="display: none;">
+            <div id="angle-meter" class="meter"></div>
+            <div id="power-meter" class="meter"></div>
         </div>
-        <div id="launch-power"></div>
     </div>
 
 
