@@ -8,12 +8,7 @@ var Game = {
     floor: null,
     contactListener: null,
     kickers: [],
-    launchUIActive: true,
-    launchPhase: "angle",
-    angleMeterValue: 0,
-    powerMeterValue: 0,
-    angleMeterDirection: 1,
-    powerMeterDirection: 1,
+    meter: null,
 
     _init: function () {
         this.world = World.create();
@@ -86,9 +81,7 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
-        if (Game.launchUIActive = true) {
-            this.showLaunchUI;
-        }
+        this.meter = Meter.create();
 
         // User input
         Event.observe(document, "click", Game.click);
@@ -105,7 +98,7 @@ var Game = {
         }
         //Handle launch UI click event
         if (Game.launchUIActive) {
-            Game.handleLaunchUIClick(e);
+            Meter.handleMeterClick(e);
         }
 
         return false;
@@ -115,10 +108,6 @@ var Game = {
         Game.launchUIActive = true;
         Game.launchPhase = "angle";
         document.getElementById("launch-ui").style.display = "block";
-        document.getElementById("angle-meter").style.display = "block";
-        document.getElementById("power-meter").style.display = "block";
-        document.getElementById("angle-indicator").style.display = "block";
-        document.getElementById("power-indicator").style.display = "block";
         requestAnimFrame(Game.showLaunchUI);
     },
 
@@ -138,8 +127,7 @@ var Game = {
             }
         }
 
-        requestAnimFrame(Game.animateLaunchUI)
-
+        requestAnimFrame(Game.animateLaunchUI);
 
     },
 
