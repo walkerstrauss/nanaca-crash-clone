@@ -68,9 +68,9 @@ var Player = PhysicsEntity.extend({
         this.img.draw(ctx, x, y);
     },
 
-    launch: function (angle, power) {
-        var forceX = Math.cos(angle * Math.PI / 180) * power;
-        var forceY = Math.sin(angle * Math.PI / 180) * power;
+    launch: function () {
+        var forceX = Math.cos(this.angle * Math.PI / 180) * this.power;
+        var forceY = Math.sin(this.angle * Math.PI / 180) * this.power;
 
         var forceToApply = new Box2D.Common.Math.b2Vec2(forceX, -forceY);
         forceToApply.Multiply(this.physics.GetMass());

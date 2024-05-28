@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Nanaca Crash!!</title>
+    <title>Tojiba Crash!!</title>
 
     <style>
         #log {
@@ -13,11 +13,45 @@
             color: #333;
             padding: 3px;
         }
+
+        #launch-ui {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border: 2px solid #333;
+            display: none;
+        }
+
+        .meter {
+            width: 200px;
+            height: 20px;
+            background: #ccc;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .meter .fill {
+            height: 100%;
+            background: #0f0;
+            width: 0;
+        }
     </style>
 </head>
 
 <body>
     <div id="log"></div>
+    <div id="launch-ui">
+        <div class="meter" id="angle-meter">
+            <div class="fill"></div>
+        </div>
+        <div class="meter" id="power-meter">
+            <div class="fill"></div>
+        </div>
+        <button id="launch-button">Launch</button>
+    </div>
 
     <script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
     <script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>

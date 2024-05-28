@@ -8,13 +8,12 @@ var Game = {
     floor: null,
     contactListener: null,
     kickers: [],
-    launchUIActive: false,
+    launchUIActive: true,
     launchPhase: "angle",
     angleMeterValue: 0,
     powerMeterValue: 0,
     angleMeterDirection: 1,
     powerMeterDirection: 1,
-
 
     _init: function () {
         this.world = World.create();
@@ -87,6 +86,10 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
+        if (Game.launchUIActive = true) {
+            this.showLaunchUI;
+        }
+
         // User input
         Event.observe(document, "click", Game.click);
     },
@@ -97,6 +100,9 @@ var Game = {
         // Old code below
         // Game.player.bike.move.activate();
 
+        if (Game.launched) {
+            return false;
+        }
         //Handle launch UI click event
         if (Game.launchUIActive) {
             Game.handleLaunchUIClick(e);
@@ -105,10 +111,35 @@ var Game = {
         return false;
     },
 
+    showLaunchUI: function () {
+        Game.launchUIActive = true;
+        Game.launchPhase = "angle";
+        document.getElementById("launch-ui").style.display = "block";
+        document.getElementById("angle-meter").style.display = "block";
+        document.getElementById("power-meter").style.display = "block";
+        document.getElementById("angle-indicator").style.display = "block";
+        document.getElementById("power-indicator").style.display = "block";
+        requestAnimFram(Game.showLaunchUI);
+    },
+
     animateLaunchUI: function () {
         if (!Game.launchUIActive) {
             return;
         }
+        if (Game.launchPhase === "angle") {
+            Game.angleMeterValue += 0.05 * Game.angleMeterDirection;
+            if (Game.angleMeterValue >= 1 || Game.angleMeterValue <= 0) {
+                Game.angleMeterDirection *= -1;
+            }
+        } else if (Game.launchPhase === "power") {
+            Game.powerMeterValue += 0.05 * Game.powerMeterDirection;
+            if (Game.powerMeterValue >= 1 || Game.powerMeterValue <= 0) {
+                Game.powerMeterDirection *= -1;
+            }
+        }
+
+        requestAnimationFrame(Game.animateLaunchUI)
+
 
     },
 
@@ -121,11 +152,11 @@ var Game = {
         } else if (Game.launchPhase === "power") {
             var power = Game.powerMeterValue * 100;
             Game.player.power = power;
+            Game.player.launch();
+
+            Game.launchUIActive = false;
+            document.getElementById("launch-ui").style.display = "none";
         }
-    },
-
-    launchPlayer: function (angle, power) {
-
     },
 
     run: function () {
@@ -164,6 +195,10 @@ var Game = {
         log.innerHTML = logMsg;
 
         Game.oldTime = newTime;
+
+        if (this.launchUIActive) {
+            this.animateLaunchUI();
+        }
 
         if (Game.running) {
             requestAnimFrame(Game.loop);

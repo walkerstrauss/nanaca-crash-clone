@@ -37,6 +37,40 @@
             width: 200px;
         }
 
+        #launch-ui {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 150px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #000;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #angle-meter,
+        #power-meter {
+            width: 80%;
+            height: 10px;
+            background-color: #ddd;
+            position: relative;
+            margin: 10px auto;
+        }
+
+        #angle-indicator,
+        #power-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
         body,
         canvas {
             -webkit-user-select: none;
@@ -55,58 +89,6 @@
             cursor: pointer;
             border: none;
         }
-
-        #launch-angle {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 20px;
-            background: linear-gradient(90deg, red, yellow, green);
-            cursor: pointer;
-        }
-
-        #launch-power {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 20px;
-            background: linear-gradient(90deg, red, yellow, green);
-        }
-
-        #launch-indicator {
-            position: absolute;
-            width: 2px;
-            height: 20px;
-            background: black;
-            bottom: 10px;
-        }
-
-        #launch-ui {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .meter {
-            position: absolute;
-            bottom: 10%;
-            left: 50%;
-            width: 10px;
-            height: 200px;
-            background: rgba(255, 0, 0, 0.5);
-            transform: translateX(-50%);
-        }
-
-        #angle-meter {
-            background: rgba(0, 0, 255, 0.5);
-        }
     </style>
 </head>
 
@@ -117,59 +99,61 @@
     </div>
     <div id="stage" style="display: none;">
         <div id="log"></div>
-        <div id="launch-ui" style="display: none;">
-            <div id="angle-meter" class="meter"></div>
-            <div id="power-meter" class="meter"></div>
+        <div id="launch-ui">
+            <div id="angle-meter">
+                <div id="angle-indicator"></div>
+            </div>
+            <div id="power-meter">
+                <div id="power-indicator"></div>
+            </div>
         </div>
-    </div>
 
 
-    <!-- Library files -->
-    <script src="../assets/js/lib/requestAnimFrame.js"></script>
-    <script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
-    <script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>
-    <script src="../assets/js/lib/base.js"></script>
+        <!-- Library files -->
+        <script src="../assets/js/lib/requestAnimFrame.js"></script>
+        <script src="../assets/js/lib/prototype-1.6.0.2.js"></script>
+        <script src="../assets/js/lib/Box2dWeb-2.1.a.3.js"></script>
+        <script src="../assets/js/lib/base.js"></script>
 
-    <!-- Engine files -->
-    <script src="../assets/js/engine/Collection.js"></script>
-    <script src="../assets/js/engine/AssetLoader.js"></script>
-    <script src="../assets/js/engine/GFX.js"></script>
-    <script src="../assets/js/engine/Entity.js"></script>
-    <script src="../assets/js/engine/Img.js"></script>
-    <script src="../assets/js/engine/PhysicsEntity.js"></script>
+        <!-- Engine files -->
+        <script src="../assets/js/engine/Collection.js"></script>
+        <script src="../assets/js/engine/AssetLoader.js"></script>
+        <script src="../assets/js/engine/GFX.js"></script>
+        <script src="../assets/js/engine/Entity.js"></script>
+        <script src="../assets/js/engine/Img.js"></script>
+        <script src="../assets/js/engine/PhysicsEntity.js"></script>
 
-    <!-- Game files -->
-    <script src="../assets/js/game/World.js"></script>
-    <script src="../assets/js/game/Background.js"></script>
-    <script src="../assets/js/game/Floor.js"></script>
-    <script src="../assets/js/game/Player.js"></script>
+        <!-- Game files -->
+        <script src="../assets/js/game/World.js"></script>
+        <script src="../assets/js/game/Background.js"></script>
+        <script src="../assets/js/game/Floor.js"></script>
+        <script src="../assets/js/game/Player.js"></script>
 
-    <script src="../assets/js/game/Move.js"></script>
-    <script src="../assets/js/game/Move/Move_Bike.js"></script>
-    <script src="../assets/js/game/Move/Move_Block.js"></script>
-    <script src="../assets/js/game/Move/Move_Kick.js"></script>
-    <script src="../assets/js/game/Move/Move_Punch.js"></script>
-    <script src="../assets/js/game/Move/Move_Stop.js"></script>
-    <script src="../assets/js/game/Kicker.js"></script>
-    <script src="../assets/js/game/Kicker/Kicker_Bike.js"></script>
-    <script src="../assets/js/game/Kicker/Kicker_Block.js"></script>
-    <script src="../assets/js/game/Kicker/Kicker_Kick.js"></script>
-    <script src="../assets/js/game/Kicker/Kicker_Punch.js"></script>
-    <script src="../assets/js/game/Kicker/Kicker_Stop.js"></script>
-    <script src="../assets/js/game/Game.js"></script>
+        <script src="../assets/js/game/Move.js"></script>
+        <script src="../assets/js/game/Move/Move_Bike.js"></script>
+        <script src="../assets/js/game/Move/Move_Block.js"></script>
+        <script src="../assets/js/game/Move/Move_Kick.js"></script>
+        <script src="../assets/js/game/Move/Move_Punch.js"></script>
+        <script src="../assets/js/game/Move/Move_Stop.js"></script>
+        <script src="../assets/js/game/Kicker.js"></script>
+        <script src="../assets/js/game/Kicker/Kicker_Bike.js"></script>
+        <script src="../assets/js/game/Kicker/Kicker_Block.js"></script>
+        <script src="../assets/js/game/Kicker/Kicker_Kick.js"></script>
+        <script src="../assets/js/game/Kicker/Kicker_Punch.js"></script>
+        <script src="../assets/js/game/Kicker/Kicker_Stop.js"></script>
+        <script src="../assets/js/game/Game.js"></script>
 
-    <script>
-        document.getElementById("start-game-btn").addEventListener("click", function () {
-            // Hide the main meny
-            document.getElementById("main-menu").style.display = "none";
+        <script>
+            document.getElementById("start-game-btn").addEventListener("click", function () {
+                // Hide the main menu
+                document.getElementById("main-menu").style.display = "none";
+                // Show the game stage
+                document.getElementById("stage").style.display = "block";
 
-            // Show the game stage
-            document.getElementById("stage").style.display = "block";
-
-            // Begin game
-            Game.run();
-        })
-    </script>
+                // Begin game
+                Game.run();
+            })
+        </script>
 </body>
 
 </html>
