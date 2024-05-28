@@ -119,7 +119,7 @@ var Game = {
         document.getElementById("power-meter").style.display = "block";
         document.getElementById("angle-indicator").style.display = "block";
         document.getElementById("power-indicator").style.display = "block";
-        requestAnimFram(Game.showLaunchUI);
+        requestAnimFrame(Game.showLaunchUI);
     },
 
     animateLaunchUI: function () {
@@ -138,7 +138,7 @@ var Game = {
             }
         }
 
-        requestAnimationFrame(Game.animateLaunchUI)
+        requestAnimFrame(Game.animateLaunchUI)
 
 
     },
@@ -196,12 +196,12 @@ var Game = {
 
         Game.oldTime = newTime;
 
-        if (this.launchUIActive) {
-            this.animateLaunchUI();
-        }
-
         if (Game.running) {
             requestAnimFrame(Game.loop);
+        }
+
+        if (this.launchUIActive) {
+            this.animateLaunchUI();
         }
     },
 
