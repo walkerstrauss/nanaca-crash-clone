@@ -1,4 +1,5 @@
 AssetLoader.queueImage("../assets/img/bg.jpg", "background");
+AssetLoader.queueImage("../assets/img/sprites/bg/bg.png");
 
 var Background = Entity.extend({
     img: null,

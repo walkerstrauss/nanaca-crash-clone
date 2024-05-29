@@ -1,6 +1,7 @@
 AssetLoader.queueImage("../assets/img/player.png", "player");
 AssetLoader.queueImage("../assets/img/player-shadow.png", "player-shadow");
 AssetLoader.queueImage("../assets/img/sprites/toji1.png", "toji_1");
+AssetLoader.queueImage("../assets/img/sprites/toji2.png", "toji_2");
 
 var Player = PhysicsEntity.extend({
     img: null,
@@ -9,13 +10,16 @@ var Player = PhysicsEntity.extend({
     bike: null,
     angle: 0,
     power: 0,
+    upwardTime: 0,
+    crashAvailable: "none",
+    upwardCrashes: 3,
 
     constructor: function (width, height) {
         this.base("Player", width, height);
 
         this.speed = new Box2D.Common.Math.b2Vec2(0, 0);
         this.bike = Kicker_Bike.create(width, height);
-        this.img = Img.create("player", width, height);
+        this.img = Img.create("toji_1", width, height);
 
         this.setPosition(20, 336);
     },

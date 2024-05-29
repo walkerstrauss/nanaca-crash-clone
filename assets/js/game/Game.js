@@ -9,8 +9,10 @@ var Game = {
     contactListener: null,
     kickers: [],
     meter: null,
+    gameOver: false,
 
     _init: function () {
+        this.gameOver = false;
         this.world = World.create();
         this.entities.push(this.world);
 
@@ -101,6 +103,47 @@ var Game = {
         Game.meter.handleMeterClick(e);
 
         return false;
+    },
+
+    checkGameOver: function () {
+        var playerLinearVelocity = Game.player.physics.GetLinearVelocity();
+        if ((Math.round(Game.player.speed.Length() * 100) / 100) < 0.01 && Game.meter.launched && ((Game.world.toWorld(Game.player.x) * 100) / 100) > 100) {
+            this.gameOver = true;
+            Game.endGame();
+        } else {
+            this.gameOver = false;
+        }
+    },
+
+    endGame: function () {
+        gameOverDiv = document.getElementById("game-over-menu");
+        document.getElementById("stage").style.display = "none";
+        gameOverDiv.style.display = "block";
+
+        // Add event listener to restart button
+        document.getElementById("restart-game-btn").addEventListener("click", function () {
+            gameOverDiv.style.display = "none";
+            document.getElementById("stage").style.display = "block";
+            document.getElementById("launch-ui").style.display = "flex";
+
+            // Restart game
+            Game.run();
+        })
+
+        // Add event listener to main-menu button
+        document.getElementById("main-menu-btn").addEventListener("click", function () {
+            gameOverDiv.style.display = "none";
+            document.getElementById("main-menu").style.display = "block";
+            document.getElementById("start-game-btn").addEventListener("click", function () {
+                //Hide main menu and show stage and launch UI
+                document.getElementById("main-menu").style.display = "none";
+                document.getElementById("stage").style.display = "block";
+                document.getElementById("launch-ui").style.display = "flex";
+
+                // Start game
+                Game.run();
+            })
+        })
     },
 
     run: function () {

@@ -1,3 +1,5 @@
+AssetLoader.queueImage("../assets/img/sprites/forklift.png", "forklift")
+
 var Kicker_Bike = Kicker.extend({
 
     constructor: function (width, height) {

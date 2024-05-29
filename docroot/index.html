@@ -55,12 +55,15 @@
             user-select: none;
         }
 
-        #main-menu {
+        #main-menu,
+        #game-over-menu {
             text-align: center;
             margin-top: 20%;
         }
 
-        #start-game-btn {
+        #start-game-btn,
+        #restart-game-btn,
+        #main-menu-btn {
             padding: 10px 20px;
             font-size: 1.5em;
             cursor: pointer;
@@ -101,6 +104,11 @@
             <div id="meter"></div>
             <div id="line"></div>
         </div>
+    </div>
+    <div id="game-over-menu" style="display: none;">
+        <h1>GAME OVER!!</h1>
+        <button id="restart-game-btn">RESTART</button>
+        <button id="main-menu-btn">MAIN MENU</button>
     </div>
 
 
