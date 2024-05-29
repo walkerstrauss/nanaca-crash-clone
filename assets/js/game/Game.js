@@ -105,6 +105,10 @@ var Game = {
         return false;
     },
 
+    handleAerialClick: function () {
+
+    },
+
     checkGameOver: function () {
         var playerLinearVelocity = Game.player.physics.GetLinearVelocity();
         if ((Math.round(Game.player.speed.Length() * 100) / 100) < 0.01 && Game.meter.launched && ((Game.world.toWorld(Game.player.x) * 100) / 100) > 100) {

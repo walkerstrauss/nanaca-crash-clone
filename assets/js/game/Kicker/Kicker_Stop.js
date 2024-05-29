@@ -1,4 +1,6 @@
 AssetLoader.queueImage("../assets/img/kicker.png", "kicker");
+AssetLoader.queueImage("../assets/img/sprites/micheal_1.png");
+AssetLoader.queueImage("../assets/img/sprites/micheal_2.png")
 
 var Kicker_Stop = Kicker.extend({
 
