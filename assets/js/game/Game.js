@@ -81,7 +81,8 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
-        this.meter = Meter.create();
+        this.meter = Meter.create(Game.player);
+        this.meter.showMeter();
 
         // User input
         Event.observe(document, "click", Game.click);
@@ -93,58 +94,13 @@ var Game = {
         // Old code below
         // Game.player.bike.move.activate();
 
-        if (Game.launched) {
+        if (Game.meter.launched) {
             return false;
         }
         //Handle launch UI click event
-        if (Game.launchUIActive) {
-            Meter.handleMeterClick(e);
-        }
+        Game.meter.handleMeterClick(e);
 
         return false;
-    },
-
-    showLaunchUI: function () {
-        Game.launchUIActive = true;
-        Game.launchPhase = "angle";
-        document.getElementById("launch-ui").style.display = "block";
-        requestAnimFrame(Game.showLaunchUI);
-    },
-
-    animateLaunchUI: function () {
-        if (!Game.launchUIActive) {
-            return;
-        }
-        if (Game.launchPhase === "angle") {
-            Game.angleMeterValue += 0.05 * Game.angleMeterDirection;
-            if (Game.angleMeterValue >= 1 || Game.angleMeterValue <= 0) {
-                Game.angleMeterDirection *= -1;
-            }
-        } else if (Game.launchPhase === "power") {
-            Game.powerMeterValue += 0.05 * Game.powerMeterDirection;
-            if (Game.powerMeterValue >= 1 || Game.powerMeterValue <= 0) {
-                Game.powerMeterDirection *= -1;
-            }
-        }
-
-        requestAnimFrame(Game.animateLaunchUI);
-
-    },
-
-    handleLaunchUIClick: function (e) {
-        if (Game.launchPhase === "angle") {
-            // Get angle value 
-            var angle = Game.angleMeterValue * 90;
-            Game.player.angle = angle;
-            Game.launchPhase = "power"
-        } else if (Game.launchPhase === "power") {
-            var power = Game.powerMeterValue * 100;
-            Game.player.power = power;
-            Game.player.launch();
-
-            Game.launchUIActive = false;
-            document.getElementById("launch-ui").style.display = "none";
-        }
     },
 
     run: function () {
@@ -184,12 +140,12 @@ var Game = {
 
         Game.oldTime = newTime;
 
-        if (Game.running) {
-            requestAnimFrame(Game.loop);
+        if (!Game.meter.launched) {
+            Game.meter.animateMeter();
         }
 
-        if (this.launchUIActive) {
-            this.animateLaunchUI();
+        if (Game.running) {
+            requestAnimFrame(Game.loop);
         }
     },
 

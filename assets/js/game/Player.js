@@ -1,13 +1,14 @@
 AssetLoader.queueImage("../assets/img/player.png", "player");
 AssetLoader.queueImage("../assets/img/player-shadow.png", "player-shadow");
+AssetLoader.queueImage("../assets/img/sprites/toji1.png", "toji_1");
 
 var Player = PhysicsEntity.extend({
     img: null,
     speed: null,
     blocked: false,
     bike: null,
-    launchAngle: 0,
-    launchPower: 0,
+    angle: 0,
+    power: 0,
 
     constructor: function (width, height) {
         this.base("Player", width, height);

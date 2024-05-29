@@ -11,6 +11,7 @@
             font-size: 80%;
             font-family: Arial, sans-serif;
             line-height: 1.168;
+
         }
 
         p {
@@ -37,6 +38,16 @@
             width: 200px;
         }
 
+        #launch_ui {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 200px;
+            height: 50px;
+            display: none;
+        }
+
         body,
         canvas {
             -webkit-user-select: none;
@@ -55,6 +66,27 @@
             cursor: pointer;
             border: none;
         }
+
+        #meter {
+            bottom: 8px;
+            left: 12px;
+            width: 75px;
+            height: 75px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+        }
+
+        #line {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            transform-origin: bottom left;
+            transform: translate(50%, 50%) rotate(-90deg);
+            width: 60px;
+            height: 2px;
+            background: blue;
+        }
     </style>
 </head>
 
@@ -65,6 +97,10 @@
     </div>
     <div id="stage" style="display: none;">
         <div id="log"></div>
+        <div id="launch-ui">
+            <div id="meter"></div>
+            <div id="line"></div>
+        </div>
     </div>
 
 
@@ -101,6 +137,7 @@
     <script src="../assets/js/game/Kicker/Kicker_Punch.js"></script>
     <script src="../assets/js/game/Kicker/Kicker_Stop.js"></script>
     <script src="../assets/js/game/Game.js"></script>
+    <script src="../assets/js/game/Meter.js"></script>
 
     <script>
         document.getElementById("start-game-btn").addEventListener("click", function () {
@@ -108,6 +145,7 @@
             document.getElementById("main-menu").style.display = "none";
             // Show the game stage
             document.getElementById("stage").style.display = "block";
+            document.getElementById("launch-ui").style.display = "flex";
 
             // Begin game
             Game.run();

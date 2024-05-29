@@ -30,37 +30,50 @@ var Meter = Img.extend({
   },
 
   showMeter: function () {
-    if (launched === false) {
-      launchPhase = "angle";
+    if (!this.launched) {
+      this.launchPhase = "angle";
       this.image = AssetLoader.getImage("meter_1");
-      lineImg = Img.create(line, 20, 20);
-      this.draw(GFX.ctx, x, y);
-      this.lineImg.draw(GFX.ctx, x, y);
+      document.getElementById("launch-ui").style.display = "flex";
+      document.getElementById("meter").style.backgroundImage = 'url(' + this.image.src + ')';
     }
   },
 
   animateMeter: function () {
-    if (launchPhase === "angle") {
-      if (angleMeterDirection === 1) {
-
-      } else if (angleMeterDirection === 0) {
-
+    if (this.launchPhase === "angle") {
+      var changeAng = 0.025 * this.angleMeterDirection;
+      this.angleMeterValue += changeAng;
+      document.getElementById("line").style.transform = 'rotate(' + (20 + (this.angleMeterValue * -90)) + 'deg)';
+      if (this.angleMeterValue >= 1 || this.angleMeterValue <= 0) {
+        this.angleMeterDirection *= -1;
       }
-    } else if (launchPhase === "power") {
-      if (powerMeterDirection === 1) {
-
-      } else if (powerMeterDirection === 0) {
-
+    } else if (this.launchPhase === "power") {
+      this.powerMeterValue += 0.025 * this.powerMeterDirection;
+      if (this.powerMeterValue >= 1 || this.powerMeterValue <= 0) {
+        this.powerMeterDirection *= -1;
+        if (this.powerMeterValue < 0) {
+          this.powerMeterValue = 0;
+        }
       }
+      this.changeMeterImg();
     }
+
+  },
+
+  changeMeterImg: function () {
+    var meterImgIndex = Math.min(Math.floor(this.powerMeterValue * 11), 10) + 1;
+    this.image = AssetLoader.getImage("meter_" + meterImgIndex);
+    document.getElementById("meter").style.backgroundImage = 'url(' + this.image.src + ')';
   },
 
   handleMeterClick: function (e) {
-    if (launchPhase === "angle") {
-      launchPhase = "power";
-    } else if (launchPhase === "power") {
-      this.player.launch(angleMeterValue, powerMeterValue);
-      launched = true;
+    if (this.launchPhase === "angle") {
+      this.launchPhase = "power";
+    } else if (this.launchPhase === "power") {
+      this.player.angle = 20 + (this.angleMeterValue * -90);
+      this.player.power = this.powerMeterValue * 100;
+      this.player.launch();
+      this.launched = true;
+      document.getElementById("launch-ui").style.display = "none";
     }
   }
 })
