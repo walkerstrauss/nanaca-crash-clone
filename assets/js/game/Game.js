@@ -84,12 +84,23 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
+        document.getElementById("start-game-btn").addEventListener("click", function () {
+            // Hide the main menu
+            document.getElementById("main-menu").style.display = "none";
+            // Show the game stage
+            document.getElementById("stage").style.display = "block";
+            document.getElementById("launch-ui").style.display = "flex";
+
+            // Begin game
+            Game.run();
+        });
+
         this.meter = Meter.create(this.player);
         this.meter.showMeter();
 
         this.aerialCrash = Aerial_Crash.create(this.player);
         this.aerialCrash.showCrashUI();
-        document.getElementById("aerial-btn").addEventListener("click", this.handleAerialClick);
+        document.getElementById("aerial-btn").addEventListener("click", this.handleAerialClick.bind(this));
 
         // User input
         Event.observe(document, "click", Game.click);
@@ -157,6 +168,7 @@ var Game = {
     },
 
     endGame: function () {
+        this.running = false;
         this.setupGameOverMenu();
         var gameOverDiv = document.getElementById("game-over-menu");
         document.getElementById("stage").style.display = "none";
@@ -175,6 +187,9 @@ var Game = {
         this.contactListener = null;
         this.kickers = [];
         this.meter = null;
+        this.aerialCrash = null;
+
+        this._init();
     },
 
     run: function () {
@@ -193,6 +208,9 @@ var Game = {
         Game._physics(delta);
         Game._graphics();
 
+        if (Game.meter.launched) {
+            Game.aerialCrash.checkAvailable(Game.world);
+        }
         Game.checkGameOver();
 
         // Clean up any entities marked for being destroyed

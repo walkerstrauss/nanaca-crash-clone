@@ -15,11 +15,15 @@ var Aerial_Crash = Img.extend({
   },
 
   checkAvailable: function (world) {
-    if (this.upwardCrashesAvailable > 0 && player.physics.GetLinearVelocity.y < 0 && (Math.round(world.toWorld(player.y) * 100) / 100) < 200) {
+    if (this.upwardCrashesAvailable > 0 && this.player.physics.GetLinearVelocity().y > 0 && (Math.round(world.toWorld(this.player.y) * 100) / 100) > 0) {
       this.available = "upward";
       document.getElementById("aerial-btn").style.color = "red";
     } else if (this.downwardCrashesAvailable > 0) {
       this.available = "downward";
+      document.getElementById("aerial-btn").style.color = "blue";
+    } else {
+      this.available = "none";
+      document.getElementById("aerial-btn").style.color = "grey"
     }
   },
 
@@ -27,8 +31,10 @@ var Aerial_Crash = Img.extend({
     if (this.available === "none") {
       return;
     } else if (this.available === "upward" && this.upwardCrashesAvailable > 0) {
-      player.bike.move.activate();
+      this.player.bike.move.activate();
       this.upwardCrashesAvailable--;
+      this.image = AssetLoader.getImage("up" + this.upwardCrashesAvailable);
+      document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')'
     } else if (this.available === "downward") {
       return;
     }
