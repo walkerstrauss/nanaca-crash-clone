@@ -6,7 +6,7 @@ var Kicker_Bike = Kicker.extend({
         //this.base(width, height);
 
         this.move = Move_Bike.create(width, height);
-        //this.img = Img.create("kicker", width, height);
+        // this.img = Img.create("forklift", width, height);
     },
 
     draw: function (ctx, x, y) {

@@ -10,6 +10,7 @@ var Game = {
     kickers: [],
     meter: null,
     gameOver: false,
+    aerialCrash: null,
 
     _init: function () {
         this.gameOver = false;
@@ -86,6 +87,10 @@ var Game = {
         this.meter = Meter.create(this.player);
         this.meter.showMeter();
 
+        this.aerialCrash = Aerial_Crash.create(this.player);
+        this.aerialCrash.showCrashUI();
+        document.getElementById("aerial-btn").addEventListener("click", this.handleAerialClick);
+
         // User input
         Event.observe(document, "click", Game.click);
     },
@@ -106,7 +111,9 @@ var Game = {
     },
 
     handleAerialClick: function () {
-
+        if (this.running && this.meter.launched) {
+            this.aerialCrash.crash();
+        }
     },
 
     setupGameOverMenu: function () {

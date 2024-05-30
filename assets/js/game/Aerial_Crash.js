@@ -5,9 +5,37 @@ AssetLoader.queueImage("../assets/img/sprites/uparrow/uparrow_3.png", "up3");
 
 var Aerial_Crash = Img.extend({
   player: null,
+  upwardCrashesAvailable: 3,
+  downwardCrashesAvailable: 0,
+  available: "",
 
   constructor: function (player) {
     this.base("up3", 20, 20);
     this.player = player;
+  },
+
+  checkAvailable: function (world) {
+    if (this.upwardCrashesAvailable > 0 && player.physics.GetLinearVelocity.y < 0 && (Math.round(world.toWorld(player.y) * 100) / 100) < 200) {
+      this.available = "upward";
+      document.getElementById("aerial-btn").style.color = "red";
+    } else if (this.downwardCrashesAvailable > 0) {
+      this.available = "downward";
+    }
+  },
+
+  crash: function () {
+    if (this.available === "none") {
+      return;
+    } else if (this.available === "upward" && this.upwardCrashesAvailable > 0) {
+      player.bike.move.activate();
+      this.upwardCrashesAvailable--;
+    } else if (this.available === "downward") {
+      return;
+    }
+  },
+
+  showCrashUI: function () {
+    document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')';
+    document.getElementById("upward-crash-ui").style.display = "flex";
   }
 })
