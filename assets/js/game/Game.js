@@ -11,6 +11,9 @@ var Game = {
     meter: null,
     gameOver: false,
     aerialCrash: null,
+    gameOverTimer: null,
+    gameOverDelay: 100000,
+    playerStopped: false,
 
     _init: function () {
         this.gameOver = false;
@@ -135,7 +138,8 @@ var Game = {
 
             // Reset and restart game
             Game.resetGame();
-            Game.run();
+            Game._init();
+            Game.loop();
         });
 
         // Add event listener to main-menu button
@@ -152,7 +156,8 @@ var Game = {
 
             // Reset and start game
             Game.resetGame();
-            Game.run();
+            Game._init();
+            Game.loop();
         });
     },
 
@@ -160,9 +165,17 @@ var Game = {
         var playerSpeed = Math.round(Game.player.speed.Length() * 100) / 100;
         if (playerSpeed < 0.0001 && Game.meter.launched) {
             var playerDistance = Math.round(Game.world.toWorld(Game.player.x) * 100) / 100;
-            if (playerDistance > 1) {
-                this.gameOver = true;
-                Game.endGame();
+            if (!this.playerStopped) {
+                this.playerStopped = true;
+                this.gameOverTimer = setTimeout(function () {
+                    this.gameOver = true;
+                    Game.endGame();
+                })
+            }
+        } else {
+            if (this.playerStopped) {
+                this.playerStopped = false;
+                clearTimeout(this.gameOverTimer);
             }
         }
     },
@@ -188,8 +201,9 @@ var Game = {
         this.kickers = [];
         this.meter = null;
         this.aerialCrash = null;
-
-        this._init();
+        this.gameOverTimer = null;
+        this.gameOverDelay = 100000;
+        this.playerStopped = false;
     },
 
     run: function () {

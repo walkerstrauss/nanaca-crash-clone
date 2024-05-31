@@ -13,6 +13,7 @@ var Player = PhysicsEntity.extend({
     upwardTime: 0,
     crashAvailable: "none",
     upwardCrashes: 3,
+    stopped: false,
 
     constructor: function (width, height) {
         this.base("Player", width, height);
@@ -22,6 +23,7 @@ var Player = PhysicsEntity.extend({
         this.img = Img.create("toji_1", width, height);
 
         this.setPosition(20, 336);
+        this.stopped = false;
     },
 
     _setUpPhysics: function () {
@@ -69,8 +71,9 @@ var Player = PhysicsEntity.extend({
         this.bike.draw(ctx, x, y);
 
         x = x - Game.world.x;
-
-        this.img.draw(ctx, x, y);
+        if (!this.stopped) {
+            this.img.draw(ctx, x, y);
+        }
     },
 
     launch: function () {

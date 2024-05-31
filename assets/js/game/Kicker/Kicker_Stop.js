@@ -1,6 +1,6 @@
 AssetLoader.queueImage("../assets/img/kicker.png", "kicker");
-AssetLoader.queueImage("../assets/img/sprites/micheal_1.png");
-AssetLoader.queueImage("../assets/img/sprites/micheal_2.png")
+AssetLoader.queueImage("../assets/img/sprites/micheal_1.png", "micheal1");
+AssetLoader.queueImage("../assets/img/sprites/micheal_2.png", "micheal2")
 
 var Kicker_Stop = Kicker.extend({
 
@@ -8,7 +8,7 @@ var Kicker_Stop = Kicker.extend({
         this.base(width, height);
 
         this.move = Move_Stop.create(width, height);
-        this.img = Img.create("kicker", width, height);
+        this.img = Img.create("micheal1", width, height);
     },
 
     draw: function (ctx, x, y) {
@@ -20,6 +20,9 @@ var Kicker_Stop = Kicker.extend({
 
         ctx.fillStyle = "#00A000";
 
+        if (Game.player.stopped) {
+            this.img = Img.create("micheal2", this.width, this.height)
+        }
         this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
         this.img.draw(ctx, x, y);

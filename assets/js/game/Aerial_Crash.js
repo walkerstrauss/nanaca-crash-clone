@@ -35,6 +35,7 @@ var Aerial_Crash = Img.extend({
       this.upwardCrashesAvailable--;
       this.image = AssetLoader.getImage("up" + this.upwardCrashesAvailable);
       document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')'
+      bike.active = false;
     } else if (this.available === "downward") {
       return;
     }
