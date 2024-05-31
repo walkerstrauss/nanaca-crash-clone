@@ -15,15 +15,18 @@ var Aerial_Crash = Img.extend({
   },
 
   checkAvailable: function (world) {
-    if (this.upwardCrashesAvailable > 0 && this.player.physics.GetLinearVelocity().y > 0 && (Math.round(world.toWorld(this.player.y) * 100) / 100) > 0) {
-      this.available = "upward";
-      document.getElementById("aerial-btn").style.color = "red";
+    if (this.upwardCrashesAvailable > 0 && this.player.physics.GetLinearVelocity().y > 0) {
+      var playerY = Math.round(world.toWorld(this.player.y) * 100) / 100
+      if (playerY > 0 && playerY < 16.85) {
+        this.available = "upward";
+        document.getElementById("aerial-btn").style.color = "red";
+      }
     } else if (this.downwardCrashesAvailable > 0) {
       this.available = "downward";
       document.getElementById("aerial-btn").style.color = "blue";
     } else {
       this.available = "none";
-      document.getElementById("aerial-btn").style.color = "grey"
+      document.getElementById("aerial-btn").style.color = "grey";
     }
   },
 

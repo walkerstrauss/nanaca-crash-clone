@@ -12,7 +12,7 @@ var Game = {
     gameOver: false,
     aerialCrash: null,
     gameOverTimer: null,
-    gameOverDelay: 100000,
+    gameOverDelay: 2000,
     playerStopped: false,
 
     _init: function () {
@@ -87,17 +87,6 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
-        document.getElementById("start-game-btn").addEventListener("click", function () {
-            // Hide the main menu
-            document.getElementById("main-menu").style.display = "none";
-            // Show the game stage
-            document.getElementById("stage").style.display = "block";
-            document.getElementById("launch-ui").style.display = "flex";
-
-            // Begin game
-            Game.run();
-        });
-
         this.meter = Meter.create(this.player);
         this.meter.showMeter();
 
@@ -164,20 +153,21 @@ var Game = {
     checkGameOver: function () {
         var playerSpeed = Math.round(Game.player.speed.Length() * 100) / 100;
         if (playerSpeed < 0.0001 && Game.meter.launched) {
-            var playerDistance = Math.round(Game.world.toWorld(Game.player.x) * 100) / 100;
-            if (!this.playerStopped) {
-                this.playerStopped = true;
-                this.gameOverTimer = setTimeout(function () {
-                    this.gameOver = true;
+            if (!Game.playerStopped) {
+                Game.playerStopped = true;
+                Game.gameOverTimer = setTimeout(function () {
+                    Game.gameOver = true;
                     Game.endGame();
-                })
+                }, Game.gameOverDelay)
             }
         } else {
-            if (this.playerStopped) {
-                this.playerStopped = false;
-                clearTimeout(this.gameOverTimer);
+            if (Game.playerStopped) {
+                Game.playerStopped = false;
+                clearTimeout(Game.gameOverTimer);
             }
+
         }
+
     },
 
     endGame: function () {
@@ -202,8 +192,10 @@ var Game = {
         this.meter = null;
         this.aerialCrash = null;
         this.gameOverTimer = null;
-        this.gameOverDelay = 100000;
+        this.gameOverDelay = 2000;
         this.playerStopped = false;
+
+        this.initialiseCanvas();
     },
 
     run: function () {
@@ -286,5 +278,21 @@ var Game = {
         for (var i = 0, j = Game.entities.length; i < j; i++) {
             Game.entities[i].draw();
         }
+    },
+
+    removeCanvas: function () {
+        const canvas = document.getElementById("canvas");
+        if (canvas) {
+            canvas.parentElement.removeChild(canvas);
+        }
+    },
+
+    initialiseCanvas: function () {
+        this.removeCanvas();
+        const canvas = document.createElement("canvas");
+        canvas.id = "canvas";
+        canvas.width = 768;
+        canvas.height = 435;
+        document.getElementById("stage").appendChild(canvas);
     }
 };

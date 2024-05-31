@@ -9,11 +9,11 @@ var Move_Stop = Move.extend({
 
         this.base();
 
+        Game.player.stopped = true;
+        Game.playerStopped = true;
         var forceToApply = new Box2D.Common.Math.b2Vec2(0, 0);
         forceToApply.Multiply(Game.player.physics.GetMass());
         Game.player.physics.SetLinearVelocity(forceToApply);
-        Game.player.stopped = true;
-        Game.playerStopped = true;
     }
 }, {
     // Static functions

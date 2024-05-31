@@ -84,10 +84,6 @@ var Player = PhysicsEntity.extend({
         forceToApply.Multiply(this.physics.GetMass());
         this.physics.SetAwake(true);
         this.physics.SetLinearVelocity(forceToApply);
-    },
-
-    crash: function () {
-
     }
 }, {
     // Static functions

@@ -42,7 +42,7 @@ var Meter = Img.extend({
     if (this.launchPhase === "angle") {
       var changeAng = 0.025 * this.angleMeterDirection;
       this.angleMeterValue += changeAng;
-      document.getElementById("line").style.transform = 'rotate(' + (20 + (this.angleMeterValue * -90)) + 'deg)';
+      document.getElementById("line").style.transform = 'rotate(' + (18 + (this.angleMeterValue * -90)) + 'deg)';
       if (this.angleMeterValue >= 1 || this.angleMeterValue <= 0) {
         this.angleMeterDirection *= -1;
       }
