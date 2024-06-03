@@ -27,9 +27,8 @@ var Meter = Img.extend({
   constructor: function (player) {
     this.base("meter_1", 20, 20);
     this.player = player;
-    this.launchPhase = "angle";
     this.launched = false;
-    document.getElementById("line").style.transform = 'rotate(-90deg)';
+    document.getElementById("line").style.transform = 'rotate(-45deg)';
   },
 
   showMeter: function () {
