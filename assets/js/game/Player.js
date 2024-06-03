@@ -29,7 +29,7 @@ var Player = PhysicsEntity.extend({
     _setUpPhysics: function () {
         var def = new Box2D.Dynamics.b2BodyDef();
         def.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
-        def.fixedRotation = true;
+        def.fixedRotation = false;
 
         this.physics = Game.world.physics.CreateBody(def);
         this.physics.SetLinearDamping(0.1);
@@ -61,6 +61,12 @@ var Player = PhysicsEntity.extend({
         this.bike.update(delta);
 
         this.speed = this.physics.GetLinearVelocity();
+        if (Game.meter.launched && !Game.gameOver &&
+            (Math.round(Game.world.toWorld(this.y) * 100) / 100) <= 16 &&
+            Game.world.speed > 0.05) {
+            this.angle--;
+        }
+
     },
 
     draw: function (ctx, x, y) {
@@ -70,10 +76,15 @@ var Player = PhysicsEntity.extend({
 
         this.bike.draw(ctx, x, y);
 
-        x = x - Game.world.x;
         if (!this.stopped) {
-            this.img.draw(ctx, x, y);
+            var drawAngle = (this.angle * Math.PI) / 180;
+            ctx.save();
+            ctx.translate(this.x - Game.world.x, this.y);
+            ctx.rotate(drawAngle);
+            ctx.drawImage(this.img.image, -this.width / 2, -this.height / 2, this.width, this.height)
+            ctx.restore();
         }
+
     },
 
     launch: function () {

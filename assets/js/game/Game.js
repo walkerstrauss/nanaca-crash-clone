@@ -12,7 +12,7 @@ var Game = {
     gameOver: false,
     aerialCrash: null,
     gameOverTimer: null,
-    gameOverDelay: 2000,
+    gameOverDelay: 1000,
     playerStopped: false,
 
     _init: function () {
@@ -39,11 +39,11 @@ var Game = {
                 // } else if (rnd > 0.7) {
                 //     var kicker = Game.kickers.createItem(Kicker_Angle_Up, 75, 130);
             } else if (rnd > 0.5) {
-                var kicker = Game.kickers.createItem(Kicker_Kick, 100, 90);
+                var kicker = Game.kickers.createItem(Kicker_Kick, 110, 100);
             } else if (rnd > 0.3) {
-                var kicker = Game.kickers.createItem(Kicker_Punch, 100, 90);
+                var kicker = Game.kickers.createItem(Kicker_Punch, 110, 100);
             } else if (rnd >= 0) {
-                var kicker = Game.kickers.createItem(Kicker_Block, 100, 90);
+                var kicker = Game.kickers.createItem(Kicker_Block, 110, 100);
             }
 
             kicker.setPosition(Game.kickers.lastPosition, kicker.y);
