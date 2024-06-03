@@ -1,4 +1,7 @@
 AssetLoader.queueImage("../assets/img/kicker.png", "kicker");
+AssetLoader.queueImage("../assets/img/sprites/two_1.png", "two1");
+AssetLoader.queueImage("../assets/img/sprites/two_2.png", "two2");
+AssetLoader.queueImage("../assets/img/sprites/two_3.png", "two3");
 
 var Kicker_Kick = Kicker.extend({
 
@@ -6,7 +9,7 @@ var Kicker_Kick = Kicker.extend({
         this.base(width, height);
 
         this.move = Move_Kick.create(width, height);
-        this.img = Img.create("kicker", width, height);
+        this.img = Img.create("two2", width, height);
     },
 
     draw: function (ctx, x, y) {
@@ -16,9 +19,9 @@ var Kicker_Kick = Kicker.extend({
 
         x = x - Game.world.x;
 
-        ctx.fillStyle = "#0000A0";
+        // ctx.fillStyle = "#0000A0";
 
-        this.base(ctx, x, y);
+        // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
         this.img.draw(ctx, x, y);
     }

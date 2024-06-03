@@ -36,12 +36,14 @@ var Game = {
             var rnd = Math.random();
             if (rnd > 0.9) {
                 var kicker = Game.kickers.createItem(Kicker_Stop, 50, 130);
+                // } else if (rnd > 0.7) {
+                //     var kicker = Game.kickers.createItem(Kicker_Angle_Up, 75, 130);
             } else if (rnd > 0.5) {
-                var kicker = Game.kickers.createItem(Kicker_Kick, 50, 130);
+                var kicker = Game.kickers.createItem(Kicker_Kick, 100, 90);
             } else if (rnd > 0.3) {
-                var kicker = Game.kickers.createItem(Kicker_Punch, 50, 130);
+                var kicker = Game.kickers.createItem(Kicker_Punch, 100, 90);
             } else if (rnd >= 0) {
-                var kicker = Game.kickers.createItem(Kicker_Block, 50, 130);
+                var kicker = Game.kickers.createItem(Kicker_Block, 100, 90);
             }
 
             kicker.setPosition(Game.kickers.lastPosition, kicker.y);
@@ -240,7 +242,7 @@ var Game = {
 
         Game.oldTime = newTime;
 
-        if (!Game.meter.launched) {
+        if (!Game.meter.launched && Game.running) {
             Game.meter.animateMeter();
         }
 

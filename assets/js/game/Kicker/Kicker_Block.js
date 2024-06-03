@@ -1,4 +1,8 @@
 AssetLoader.queueImage("../assets/img/kicker.png", "kicker");
+AssetLoader.queueImage("../assets/img/sprites/baseball_1.png", "baseball1");
+AssetLoader.queueImage("../assets/img/sprites/baseball_2.png", "baseball2");
+AssetLoader.queueImage("../assets/img/sprites/baseball_3.png", "baseball3");
+
 
 var Kicker_Block = Kicker.extend({
 
@@ -6,7 +10,7 @@ var Kicker_Block = Kicker.extend({
         this.base(width, height);
 
         this.move = Move_Block.create(width, height);
-        this.img = Img.create("kicker", width, height);
+        this.img = Img.create("baseball1", width, height);
     },
 
     draw: function (ctx, x, y) {
@@ -16,9 +20,9 @@ var Kicker_Block = Kicker.extend({
 
         x = x - Game.world.x;
 
-        ctx.fillStyle = "#A000A0";
+        // ctx.fillStyle = "#A000A0";
 
-        this.base(ctx, x, y);
+        // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
         this.img.draw(ctx, x, y);
     }

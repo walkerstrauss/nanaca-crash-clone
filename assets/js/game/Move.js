@@ -37,9 +37,9 @@ var Move = Entity.extend({
 
         // x = x - Game.world.x;
 
-        ctx.fillStyle = "#f00";
+        // ctx.fillStyle = "#f00";
 
-        this.base(ctx, x, y);
+        // this.base(ctx, x, y);
     }
 }, {
     // Static functions
