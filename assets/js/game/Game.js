@@ -34,10 +34,12 @@ var Game = {
             Game.kickers.lastPosition += Game.kickers.spacing;
 
             var rnd = Math.random();
-            if (rnd > 0.9) {
-                var kicker = Game.kickers.createItem(Kicker_Stop, 50, 130);
-            } else if (rnd > 0.7) {
+            if (rnd > 0.92) {
+                var kicker = Game.kickers.createItem(Kicker_Stop, 70, 130);
+            } else if (rnd > 0.8) {
                 var kicker = Game.kickers.createItem(Kicker_Angle_Up, 90, 120);
+            } else if (rnd > 0.68) {
+                var kicker = Game.kickers.createItem(Kicker_Angle_Down, 90, 120);
             } else if (rnd > 0.5) {
                 var kicker = Game.kickers.createItem(Kicker_Kick, 110, 100);
             } else if (rnd > 0.3) {
@@ -98,7 +100,6 @@ var Game = {
 
         // User input
         Event.observe(document, "click", Game.click);
-        this.running = true;
     },
 
     click: function (e) {
@@ -184,7 +185,7 @@ var Game = {
     },
 
     resetGame: function () {
-        this.running = false;
+        this.running = true;
         this.gameOver = false;
         this.oldTime = Date.now();
         this.entities = [];

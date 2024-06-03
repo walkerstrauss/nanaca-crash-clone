@@ -2,16 +2,21 @@ AssetLoader.queueImage("../assets/img/sprites/uparrow/uparrow_0.png", "up0");
 AssetLoader.queueImage("../assets/img/sprites/uparrow/uparrow_1.png", "up1");
 AssetLoader.queueImage("../assets/img/sprites/uparrow/uparrow_2.png", "up2");
 AssetLoader.queueImage("../assets/img/sprites/uparrow/uparrow_3.png", "up3");
+AssetLoader.queueImage("../assets/img/sprites/downarrow.png", "down");
 
 var Aerial_Crash = Img.extend({
   player: null,
   upwardCrashesAvailable: 3,
   downwardCrashesAvailable: 0,
   available: "",
+  downImg: null,
+  percentCharged: 100,
 
   constructor: function (player) {
     this.base("up3", 20, 20);
     this.player = player;
+    this.downImg = AssetLoader.getImage("down");
+    document.getElementById("downward-crash-ui").style.backgroundImage = 'url(' + this.downImg.src + ')'
   },
 
   checkAvailable: function (world) {
@@ -47,5 +52,6 @@ var Aerial_Crash = Img.extend({
   showCrashUI: function () {
     document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')';
     document.getElementById("upward-crash-ui").style.display = "flex";
+    document.getElementById("downward-crash-ui").style.display = "flex";
   }
 })

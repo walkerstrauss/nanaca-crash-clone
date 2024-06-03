@@ -42,6 +42,8 @@ var Background = Entity.extend({
         this.img.draw(ctx, bgX, 0);
         bgX = bgX - this.width;
         this.img.draw(ctx, bgX, 0);
+
+        // this.img.draw(ctx, this.x, this.y);
     }
 }, {
     // Static functions

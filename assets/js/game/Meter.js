@@ -16,7 +16,7 @@ var Meter = Img.extend({
   y: 336,
   launched: false,
   launchPhase: "angle",
-  angleMeterValue: 0,
+  angleMeterValue: 0.5,
   powerMeterValue: 0,
   angleMeterDirection: 1,
   powerMeterDirection: 1,
@@ -28,7 +28,6 @@ var Meter = Img.extend({
     this.base("meter_1", 20, 20);
     this.player = player;
     this.launched = false;
-    document.getElementById("line").style.transform = 'rotate(-45deg)';
   },
 
   showMeter: function () {
@@ -68,6 +67,7 @@ var Meter = Img.extend({
   },
 
   handleMeterClick: function (e) {
+    // Think it is switching to power too soon when restarting
     if (this.launchPhase === "angle") {
       this.launchPhase = "power";
     } else if (this.launchPhase === "power") {

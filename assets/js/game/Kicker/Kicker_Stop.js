@@ -18,12 +18,12 @@ var Kicker_Stop = Kicker.extend({
 
         x = x - Game.world.x;
 
-        ctx.fillStyle = "#00A000";
+        // ctx.fillStyle = "#00A000";
 
         if (Game.player.stopped) {
             this.img = Img.create("micheal2", this.width, this.height);
         }
-        this.base(ctx, x, y);
+        // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
         this.img.draw(ctx, x, y);
     }

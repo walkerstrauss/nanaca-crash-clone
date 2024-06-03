@@ -9,7 +9,8 @@ var Move_Kick = Move.extend({
 
         this.base();
 
-        var forceToApply = new Box2D.Common.Math.b2Vec2(5, -4.5);
+        // Doubled force on 6/3
+        var forceToApply = new Box2D.Common.Math.b2Vec2(10, -9);
         forceToApply.Multiply(Game.player.physics.GetMass());
         Game.player.physics.SetLinearVelocity(forceToApply);
     }
