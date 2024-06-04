@@ -14,9 +14,11 @@ var Game = {
     gameOverTimer: null,
     gameOverDelay: 1000,
     playerStopped: false,
+    // camera: null,
 
     _init: function () {
         this.gameOver = false;
+        // this.camera = new Camera();
         this.world = World.create();
         this.entities.push(this.world);
 
@@ -200,6 +202,7 @@ var Game = {
         this.gameOverTimer = null;
         this.gameOverDelay = 2000;
         this.playerStopped = false;
+        // this.camera = new Camera();
 
         this.initialiseCanvas();
     },
@@ -218,12 +221,15 @@ var Game = {
         var delta = ((newTime - Game.oldTime) / 1000);
 
         Game._physics(delta);
-        Game._graphics();
 
         if (Game.meter.launched) {
             Game.aerialCrash.checkAvailable(Game.world);
         }
         Game.checkGameOver();
+
+        // Code for scaling
+        // Game.camera.update(Game.player);
+        Game._graphics();
 
         // Clean up any entities marked for being destroyed
         for (var i = 0, j = Game.entities.length; i < j; i++) {
@@ -245,14 +251,15 @@ var Game = {
         log.innerHTML = logMsg;
 
         Game.oldTime = newTime;
-
-        if (!Game.meter.launched && Game.running) {
-            Game.meter.animateMeter();
+        if (Game.running) {
+            if (!Game.meter.launched) {
+                Game.meter.animateMeter();
+            }
+            if (!Game.gameOver) {
+                requestAnimFrame(Game.loop);
+            }
         }
 
-        if (Game.running && !Game.gameOver) {
-            requestAnimFrame(Game.loop);
-        }
     },
 
     _physics: function (delta) {
@@ -281,9 +288,16 @@ var Game = {
     },
 
     _graphics: function () {
+        // var ctx = GFX.ctx;
+        // ctx.clearRect(0, 0, GFX.width, GFX.height);
+
+        // Game.camera.applyTransform(ctx);
+
         for (var i = 0, j = Game.entities.length; i < j; i++) {
             Game.entities[i].draw();
         }
+
+        // Game.camera.resetTransform(ctx);
     },
 
     removeCanvas: function () {

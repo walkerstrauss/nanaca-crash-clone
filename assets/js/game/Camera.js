@@ -1,33 +1,25 @@
 var Camera = Base.extend({
-  constructor: function (width, height) {
-    this.base();
+  x: 0,
+  y: 0,
+  scale: 1.25,
+  minScale: 1.0,
+  maxScale: 1.25,
 
-    this.width = width;
-    this.height = height;
-    this.scale = 1.0;
-    this.x = 0;
-    this.y = 0;
+  update: function (player) {
+    this.x = player.x - (GFX.width / 4);
+    this.y = Math.max(2, player.y)
 
-    this.canvas = document.getElementById("canvas");
-    this.ctx = this.canvas.getContext("2d");
+    this.scale = Math.min(this.maxScale, Math.max(this.minScale, 1 + (player.y / GFX.height)));
   },
 
-  move: function (x, y) {
-    this.x = x;
-    this.y = y;
-  },
-
-  setScale: function (scale) {
-    this.scale = scale;
-  },
-
-  setPosition: function (x, y) {
-    this.x = x;
-    this.y = y;
-  },
-
-  applyTransformation: function (ctx) {
-    ctx.translate(-this.x, -this.y);
+  applyTransform: function (ctx) {
+    ctx.save();
+    ctx.translate(-this.x, -this.y)
     ctx.scale(this.scale, this.scale);
+
+  },
+
+  resetTransform: function (ctx) {
+    ctx.restore();
   }
 });
