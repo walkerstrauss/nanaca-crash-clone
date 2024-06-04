@@ -7,7 +7,7 @@ AssetLoader.queueImage("../assets/img/sprites/downarrow.png", "down");
 var Aerial_Crash = Img.extend({
   player: null,
   upwardCrashesAvailable: 3,
-  downwardCrashesAvailable: 0,
+  downwardCrashesAvailable: 1,
   available: "",
   downImg: null,
   percentCharged: 100,
@@ -17,6 +17,7 @@ var Aerial_Crash = Img.extend({
     this.player = player;
     this.downImg = AssetLoader.getImage("down");
     document.getElementById("downward-crash-ui").style.backgroundImage = 'url(' + this.downImg.src + ')'
+    this.animateDownwardCharge();
   },
 
   checkAvailable: function (world) {
@@ -26,13 +27,27 @@ var Aerial_Crash = Img.extend({
         this.available = "upward";
         document.getElementById("aerial-btn").style.color = "red";
       }
-    } else if (this.downwardCrashesAvailable > 0) {
-      this.available = "downward";
-      document.getElementById("aerial-btn").style.color = "blue";
+    } else if (this.percentCharged >= 100 && this.player.physics.GetLinearVelocity().y < 0) {
+      var playerY = Math.round(world.toWorld(this.player.y) * 100) / 100
+      if (playerY > 0 && playerY < 16 && !Game.playerStopped) {
+        this.available = "downward";
+        document.getElementById("aerial-btn").style.color = "blue";
+      } else {
+        this.available = "none";
+        document.getElementById("aerial-btn").style.color = "grey";
+      }
     } else {
       this.available = "none";
       document.getElementById("aerial-btn").style.color = "grey";
     }
+
+    // Charge if at certain height
+    var playerY = Math.round(world.toWorld(this.player.y) * 100) / 100;
+    if (playerY < 10 && playerY > -10 && this.percentCharged < 100) {
+      this.percentCharged = this.percentCharged + 0.25;
+      this.animateDownwardCharge();
+    }
+
   },
 
   crash: function () {
@@ -45,7 +60,16 @@ var Aerial_Crash = Img.extend({
       document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')'
       bike.active = false;
     } else if (this.available === "downward") {
-      return;
+
+      // Downward crash
+      var forceToApply = new Box2D.Common.Math.b2Vec2(5.5, 4);
+      forceToApply.Multiply(this.player.physics.GetMass());
+      this.player.physics.SetAwake(true);
+      this.player.physics.SetLinearVelocity(forceToApply);
+
+      // Reset charge
+      this.percentCharged = 0;
+      this.animateDownwardCharge();
     }
   },
 
@@ -53,5 +77,10 @@ var Aerial_Crash = Img.extend({
     document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')';
     document.getElementById("upward-crash-ui").style.display = "flex";
     document.getElementById("downward-crash-ui").style.display = "flex";
+  },
+
+  animateDownwardCharge: function () {
+    var percent = Math.floor(this.percentCharged);
+    document.getElementById("downward-charge").innerHTML = percent + '%';
   }
 })
