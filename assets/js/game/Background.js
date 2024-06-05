@@ -12,6 +12,9 @@ AssetLoader.queueImage("../assets/img/sprites/bg/road.png", "road");
 var Background = Entity.extend({
     img: null,
     guardrailImg: null,
+    guardrailWidth: 279,
+    guardrailHeight: 144,
+    guardrailY: 291,
     cloudImg1: null,
     cloudImg2: null,
     cloudImg3: null,
@@ -19,14 +22,12 @@ var Background = Entity.extend({
     factoryImg: null,
     firstMountainsImg: null,
     scrollSpeed: 5,
-    guardrailWidth: 279,
-    guardrailHeight: 144,
-    guardrailY: 291,
+
 
     constructor: function (width, height) {
         this.base("Background", width, height);
 
-        this.img = Img.create("background", width, height);
+        this.img = Img.create("bg", width, height);
         this.x = 0;
         this.y = 0;
     },
@@ -36,14 +37,23 @@ var Background = Entity.extend({
         x = x || Game.world.x;
         y = y || this.y;
 
-        var bgX = x / this.width;
-        bgX = bgX - Math.floor(bgX);
-        bgX = this.width - (bgX * this.width);
-        this.img.draw(ctx, bgX, 0);
-        bgX = bgX - this.width;
-        this.img.draw(ctx, bgX, 0);
+        // var bgX = x / this.width;
+        // bgX = bgX - Math.floor(bgX);
+        // bgX = this.width - (bgX * this.width);
+        // this.img.draw(ctx, bgX, 0);
+        // bgX = bgX - this.width;
+        // this.img.draw(ctx, bgX, 0);
 
-        // this.img.draw(ctx, this.x, this.y);
+        // ctx.save();
+        // ctx.scale(Game.camera.scale, Game.camera.scale);
+        // ctx.translate(x / Game.camera.scale, y / Game.camera.scale);
+        // ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
+        // ctx.restore();
+        ctx.save();
+        ctx.scale(Game.camera.scale, Game.camera.scale);
+        ctx.translate(this.x / Game.camera.scale, this.y / Game.camera.scale);
+        ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
+        ctx.restore();
     }
 }, {
     // Static functions

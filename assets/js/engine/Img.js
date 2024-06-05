@@ -13,7 +13,11 @@ var Img = Entity.extend({
         x = x || this.x;
         y = y || this.y;
 
-        ctx.drawImage(this.image, x, y, this.width, this.height);
+        ctx.save();
+        ctx.scale(Game.camera.scale, Game.camera.scale);
+        ctx.translate((this.x - Game.world.x) / Game.camera.scale, (this.y - Game.world.y) / Game.camera.scale);
+        ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
+        ctx.restore();
     }
 }, {
     // Static functions

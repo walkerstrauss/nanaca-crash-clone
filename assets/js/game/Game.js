@@ -18,7 +18,7 @@ var Game = {
 
     _init: function () {
         this.gameOver = false;
-        // this.camera = new Camera();
+        this.camera = new Camera();
         this.world = World.create();
         this.entities.push(this.world);
 
@@ -37,7 +37,7 @@ var Game = {
 
             var rnd = Math.random();
             if (rnd > 0.92) {
-                var kicker = Game.kickers.createItem(Kicker_Stop, 70, 130);
+                var kicker = Game.kickers.createItem(Kicker_Stop, 70, 120);
             } else if (rnd > 0.8) {
                 var kicker = Game.kickers.createItem(Kicker_Angle_Up, 90, 120);
             } else if (rnd > 0.68) {
@@ -202,7 +202,7 @@ var Game = {
         this.gameOverTimer = null;
         this.gameOverDelay = 2000;
         this.playerStopped = false;
-        // this.camera = new Camera();
+        this.camera = new Camera();
 
         this.initialiseCanvas();
     },
@@ -228,7 +228,7 @@ var Game = {
         Game.checkGameOver();
 
         // Code for scaling
-        // Game.camera.update(Game.player);
+        Game.camera.update(Game.player);
         Game._graphics();
 
         // Clean up any entities marked for being destroyed
@@ -255,9 +255,7 @@ var Game = {
             if (!Game.meter.launched) {
                 Game.meter.animateMeter();
             }
-            if (!Game.gameOver) {
-                requestAnimFrame(Game.loop);
-            }
+            requestAnimFrame(Game.loop);
         }
 
     },
@@ -288,8 +286,8 @@ var Game = {
     },
 
     _graphics: function () {
-        // var ctx = GFX.ctx;
-        // ctx.clearRect(0, 0, GFX.width, GFX.height);
+        var ctx = GFX.ctx;
+        ctx.clearRect(0, 0, GFX.width, GFX.height);
 
         // Game.camera.applyTransform(ctx);
 

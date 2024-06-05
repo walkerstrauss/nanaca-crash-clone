@@ -3,7 +3,7 @@ var Floor = PhysicsEntity.extend({
     constructor: function (width, height) {
         this.base("Floor", width, height);
 
-        this.setPosition(0, 430);
+        this.setPosition(0, 410);
     },
 
     _setUpPhysics: function () {

@@ -21,7 +21,7 @@ var Kicker_Stop = Kicker.extend({
         // ctx.fillStyle = "#00A000";
 
         if (Game.player.stopped) {
-            this.img = Img.create("micheal2", this.width, this.height);
+            this.img.image = AssetLoader.getImage("micheal2");
         }
         // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
