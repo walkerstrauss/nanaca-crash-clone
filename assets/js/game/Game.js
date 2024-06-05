@@ -242,13 +242,13 @@ var Game = {
             }
         }
 
-        var log = document.getElementById("log");
-        var logMsg = "";
-        logMsg += "<p>Distance: " + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m</p>";
-        logMsg += "<p>Height: " + Math.round(Game.world.toWorld(Game.player.y) * 100) / 100 + "m</p>";
-        logMsg += "<p>Speed: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s</p>";
-        logMsg += "<p>Blocked: " + Game.player.blocked + "</p>";
-        log.innerHTML = logMsg;
+        // var log = document.getElementById("log");
+        // var logMsg = "";
+        // logMsg += "<p>Distance: " + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m</p>";
+        // logMsg += "<p>Height: " + Math.round(Game.world.toWorld(Game.player.y) * 100) / 100 + "m</p>";
+        // logMsg += "<p>Speed: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s</p>";
+        // logMsg += "<p>Blocked: " + Game.player.blocked + "</p>";
+        // log.innerHTML = logMsg;
 
         Game.oldTime = newTime;
         if (Game.running) {
@@ -289,13 +289,9 @@ var Game = {
         var ctx = GFX.ctx;
         ctx.clearRect(0, 0, GFX.width, GFX.height);
 
-        // Game.camera.applyTransform(ctx);
-
         for (var i = 0, j = Game.entities.length; i < j; i++) {
             Game.entities[i].draw();
         }
-
-        // Game.camera.resetTransform(ctx);
     },
 
     removeCanvas: function () {

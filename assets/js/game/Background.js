@@ -1,23 +1,9 @@
 AssetLoader.queueImage("../assets/img/bg.jpg", "background");
 AssetLoader.queueImage("../assets/img/sprites/bg/bg.png", "bg");
-AssetLoader.queueImage("../assets/img/sprites/bg/guardrail.png", "guardrail");
-AssetLoader.queueImage("../assets/img/sprites/bg/cloud_1.png", "cloud1");
-AssetLoader.queueImage("../assets/img/sprites/bg/cloud_2.png", "cloud2");
-AssetLoader.queueImage("../assets/img/sprites/bg/cloud_3.png", "cloud3");
-AssetLoader.queueImage("../assets/img/sprites/bg/factory.png", "factory");
-AssetLoader.queueImage("../assets/img/sprites/bg/first_mountains.png", "mountains");
-AssetLoader.queueImage("../assets/img/sprites/bg/road.png", "road");
 
 
 var Background = Entity.extend({
     img: null,
-    guardrailImg: null,
-    guardrailWidth: 279,
-    guardrailHeight: 144,
-    guardrailY: 291,
-    cloudImg1: null,
-    cloudImg2: null,
-    cloudImg3: null,
     roadImg: null,
     factoryImg: null,
     firstMountainsImg: null,
@@ -49,9 +35,10 @@ var Background = Entity.extend({
         // ctx.translate(x / Game.camera.scale, y / Game.camera.scale);
         // ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
         // ctx.restore();
+
         ctx.save();
-        ctx.scale(Game.camera.scale, Game.camera.scale);
-        ctx.translate(this.x / Game.camera.scale, this.y / Game.camera.scale);
+        ctx.scale(Game.camera.scale + 0.25, Game.camera.scale + 0.25);
+        ctx.translate(this.x / (Game.camera.scale + 0.25), this.y / (Game.camera.scale + 0.25));
         ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
         ctx.restore();
     }

@@ -25,7 +25,7 @@
             height: 435px;
         }
 
-        #log {
+        /* #log {
             position: absolute;
             top: 0;
             right: 0;
@@ -36,7 +36,7 @@
             min-width: 200px;
             width: auto !important;
             width: 200px;
-        }
+        } */
 
         #aerial-btn {
             position: absolute;
@@ -137,7 +137,7 @@
         <button id="start-game-btn">START</button>
     </div>
     <div id="stage" style="display: none;">
-        <div id="log"></div>
+        <!-- <div id="log"></div> -->
         <div id="launch-ui">
             <div id="meter"></div>
             <div id="line"></div>
@@ -196,6 +196,7 @@
     <script src="../assets/js/game/Meter.js"></script>
     <script src="../assets/js/game/Aerial_Crash.js"></script>
     <script src="../assets/js/game/Camera.js"></script>
+    <script src="../assets/js/game/Foreground.js"></script>
 
     <script>
         document.getElementById("start-game-btn").addEventListener("click", function () {
