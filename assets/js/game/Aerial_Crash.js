@@ -16,7 +16,7 @@ var Aerial_Crash = Img.extend({
     this.base("up3", 20, 20);
     this.player = player;
     this.downImg = AssetLoader.getImage("down");
-    document.getElementById("downward-crash-ui").style.backgroundImage = 'url(' + this.downImg.src + ')'
+    document.getElementById("downward-crash-ui").style.backgroundImage = 'url(' + this.downImg.src + ')';
     this.animateDownwardCharge();
   },
 

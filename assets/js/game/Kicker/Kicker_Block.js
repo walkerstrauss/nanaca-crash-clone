@@ -25,9 +25,7 @@ var Kicker_Block = Kicker.extend({
 
         // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
-        if (this.move.active) {
-            this.img.image = AssetLoader.getImage("baseball3");
-        } else if (!this.physics.GetUserData().kicker) {
+        if (!this.physics.GetUserData().kicker && !this.move.active) {
             this.img.image = AssetLoader.getImage("baseball2");
         }
         this.img.draw(ctx, x, y);
