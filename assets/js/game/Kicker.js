@@ -4,7 +4,7 @@ var Kicker = PhysicsEntity.extend({
 
     constructor: function (width, height) {
         this.base("Kicker", width, height);
-        this.setPosition(180, 310);
+        this.setPosition(180, 365);
     },
 
     _setUpPhysics: function () {

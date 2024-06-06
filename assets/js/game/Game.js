@@ -27,7 +27,7 @@ var Game = {
 
         this.foreground = new Foreground();
         this.foreground.initialise();
-        // this.entities.push(this.foreground);
+        this.entities.push(this.foreground);
 
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);

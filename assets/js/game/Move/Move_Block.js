@@ -1,5 +1,5 @@
 var Move_Block = Move.extend({
-    duration: 0,
+    duration: 100,
 
     activate: function () {
         if (Game.player.blocked) {

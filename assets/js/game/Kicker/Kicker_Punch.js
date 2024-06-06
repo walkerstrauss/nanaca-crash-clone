@@ -23,6 +23,11 @@ var Kicker_Punch = Kicker.extend({
 
         // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
+        if (this.move.active) {
+            this.img.image = AssetLoader.getImage("peroni3");
+        } else if (!this.physics.GetUserData().kicker) {
+            this.img.image = AssetLoader.getImage("peroni1");
+        }
         this.img.draw(ctx, x, y);
     }
 }, {
