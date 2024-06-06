@@ -40,7 +40,7 @@ var Background = Entity.extend({
 
         ctx.save();
         ctx.scale(bgScale, bgScale);
-        ctx.translate(this.x / bgScale, -this.y * bgScale * 100);
+        ctx.translate(this.x / bgScale, -this.y / bgScale);
         ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
         ctx.restore();
     }
