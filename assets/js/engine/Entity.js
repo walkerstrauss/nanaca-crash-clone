@@ -31,6 +31,16 @@ var Entity = Base.extend({
         y = y || this.y;
 
         ctx.fillRect(x, y, this.width, this.height);
+    },
+
+    isEntityOnScreen: function (entity) {
+        const buffer = 50; // Extra buffer to account for partial visibility
+        const canvasWidth = GFX.width;
+        const canvasHeight = GFX.height;
+        const x = entity.x - Game.world.x;
+        const y = entity.y - Game.world.y;
+
+        return x + buffer > 0 && x - buffer < canvasWidth && y + buffer > 0 && y - buffer < canvasHeight;
     }
 }, {
     // Static functions

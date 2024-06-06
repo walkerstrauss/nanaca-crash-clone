@@ -5,6 +5,7 @@ var Kicker_Angle_Up = Kicker.extend({
   constructor: function (width, height) {
     this.base(width, height);
 
+    this.type = "angle_up";
     this.move = Move_Angle_Up.create(width, height);
     this.img = Img.create("goodkyle", width, height);
   },

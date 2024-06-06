@@ -7,6 +7,7 @@ var Kicker_Stop = Kicker.extend({
     constructor: function (width, height) {
         this.base(width, height);
 
+        this.type = "stop";
         this.move = Move_Stop.create(width, height);
         this.img = Img.create("micheal1", width, height);
     },

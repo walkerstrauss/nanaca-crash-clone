@@ -128,6 +128,42 @@
             background-size: contain;
             background-size: no-repeat;
         }
+
+        #miniicon-1 {
+            position: absolute;
+            right: 200px;
+            top: 100px;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-size: no-repeat;
+            border-color: white;
+            border-width: 2px;
+        }
+
+        #miniicon-2 {
+            position: absolute;
+            right: 260px;
+            top: 100px;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-size: no-repeat;
+            border-color: white;
+            border-width: 2px;
+        }
+
+        #miniicon-3 {
+            position: absolute;
+            right: 320px;
+            top: 100px;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-size: no-repeat;
+            border-color: white;
+            border-width: 2px;
+        }
     </style>
 </head>
 
@@ -147,6 +183,11 @@
             <div id="downward-crash-ui"></div>
             <button id="aerial-btn">AERIAL</button>
             <button id="downward-charge">100%</button>
+        </div>
+        <div id="miniicons">
+            <div id="miniicon-1"></div>
+            <div id="miniicon-2"></div>
+            <div id="miniicon-3"></div>
         </div>
     </div>
     <div id="game-over-menu" style="display: none;">
@@ -197,6 +238,7 @@
     <script src="../assets/js/game/Aerial_Crash.js"></script>
     <script src="../assets/js/game/Camera.js"></script>
     <script src="../assets/js/game/Foreground.js"></script>
+    <script src="../assets/js/game/UI_Miniicons.js"></script>
 
     <script>
         document.getElementById("start-game-btn").addEventListener("click", function () {

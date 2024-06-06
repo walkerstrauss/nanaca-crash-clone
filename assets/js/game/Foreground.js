@@ -41,8 +41,8 @@ var Foreground = Entity.extend({
     // this.drawImage(ctx, this.cloudImg3, x + 100, 50);
     // this.drawImage(ctx, this.guardrailImg, 0, this.guardrailY, this.guardrailWidth, this.guardrailHeight);
     // this.drawImage(ctx, this.factoryImg, 0, 150, 300, 200);
-    this.drawImage(ctx, this.roadImg, 0, 400, GFX.width, 50);
-    this.drawImage(ctx, this.roadImg, 367 * Game.camera.scale, 400, GFX.width, 50)
+    this.drawImage(ctx, this.roadImg, 0, 395, GFX.width, 50);
+    this.drawImage(ctx, this.roadImg, 367 * Game.camera.scale, 395, GFX.width, 50)
     // this.drawImage(ctx, this.firstMountainsImg, 0, 100, GFX.width, 200);
   },
 

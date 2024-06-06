@@ -12,6 +12,7 @@ var Kicker_Bike = Kicker.extend({
     constructor: function (width, height) {
         //this.base(width, height);
 
+        this.type = "bike";
         this.move = Move_Bike.create(width, height);
         this.img = Img.create("forklift", width, height);
     },

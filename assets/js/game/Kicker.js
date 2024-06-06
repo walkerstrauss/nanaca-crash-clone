@@ -1,6 +1,7 @@
 var Kicker = PhysicsEntity.extend({
     img: null,
     move: false,
+    type: "none",
 
     constructor: function (width, height) {
         this.base("Kicker", width, height);

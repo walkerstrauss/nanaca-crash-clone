@@ -8,6 +8,7 @@ var Kicker_Kick = Kicker.extend({
     constructor: function (width, height) {
         this.base(width, height);
 
+        this.type = "kick";
         this.move = Move_Kick.create(width, height);
         this.img = Img.create("two2", width, height);
     },
@@ -24,9 +25,9 @@ var Kicker_Kick = Kicker.extend({
         // this.base(ctx, x, y);
         this.move.draw(ctx, x, y);
         if (this.move.active) {
-            this.img.image = AssetLoader.getImage("two3");
-        } else if (!this.physics.GetUserData().kicker) {
             this.img.image = AssetLoader.getImage("two1");
+        } else if (!this.physics.GetUserData().kicker) {
+            this.img.image = AssetLoader.getImage("two3");
         }
         this.img.draw(ctx, x, y);
     }

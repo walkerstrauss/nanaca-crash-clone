@@ -9,6 +9,7 @@ var Kicker_Block = Kicker.extend({
     constructor: function (width, height) {
         this.base(width, height);
 
+        this.type = "block";
         this.move = Move_Block.create(width, height);
         this.img = Img.create("baseball1", width, height);
     },
