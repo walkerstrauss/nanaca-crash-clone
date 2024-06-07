@@ -19,7 +19,7 @@ var Game = {
 
     _init: function () {
         this.gameOver = false;
-        this.miniIcons = new UI_Miniicons();
+        this.miniIcons = UI_Miniicons.create();
         this.camera = new Camera();
         this.world = World.create();
         this.entities.push(this.world);
@@ -236,7 +236,7 @@ var Game = {
         // Code for scaling
         Game.camera.update(Game.player);
         Game._graphics();
-        Game.miniIcons.update(GFX.ctx, Game.kickers);
+        Game.miniIcons.update(Game.kickers);
 
         // Clean up any entities marked for being destroyed
         for (var i = 0, j = Game.entities.length; i < j; i++) {
@@ -293,9 +293,6 @@ var Game = {
     },
 
     _graphics: function () {
-        var ctx = GFX.ctx;
-        ctx.clearRect(0, 0, GFX.width, GFX.height);
-
         for (var i = 0, j = Game.entities.length; i < j; i++) {
             Game.entities[i].draw();
         }
