@@ -9,6 +9,7 @@ var Game = {
     contactListener: null,
     kickers: [],
     meter: null,
+    miniIcons: null,
     gameOver: false,
     aerialCrash: null,
     gameOverTimer: null,
@@ -18,6 +19,7 @@ var Game = {
 
     _init: function () {
         this.gameOver = false;
+        this.miniIcons = new UI_Miniicons();
         this.camera = new Camera();
         this.world = World.create();
         this.entities.push(this.world);
@@ -234,6 +236,7 @@ var Game = {
         // Code for scaling
         Game.camera.update(Game.player);
         Game._graphics();
+        Game.miniIcons.update(GFX.ctx, Game.kickers);
 
         // Clean up any entities marked for being destroyed
         for (var i = 0, j = Game.entities.length; i < j; i++) {

@@ -6,10 +6,7 @@ AssetLoader.queueImage("../assets/img/sprites/miniicon/two_miniicon.png", "two")
 
 
 var UI_Miniicons = Base.extend({
-  miniiconElem1: null,
-  miniiconElem2: null,
-  miniiconElem3: null,
-  currentIcon: 0,
+  currentIcon: 1,
   iconScale: 0,
   angleDownColor: "#663417",
   angleUpColor: "#4ce6de",
@@ -20,26 +17,35 @@ var UI_Miniicons = Base.extend({
 
 
   constructor: function () {
-    // document.getElementById("miniicon-1").style.display = "flex";
-    // document.getElementById("miniicon-2").style.display = "flex";
-    // document.getElementById("miniicon-3").style.display = "flex";
-    iconScale = 50;
+    this.setIconDisplay("miniicon-1");
+    this.setIconDisplay("miniicon-2");
+    this.setIconDisplay("miniicon-3");
+    this.iconScale = 50;
   },
 
-  update: function () {
+  setIconDisplay: function (id) {
+    const elem = document.getElementById(id);
+    elem.style.display = "flex";
+    elem.style.backgroundSize = "contain";
+    elem.style.backgroundRepeat = "no-repeat";
+    elem.style.borderWidth = "2px";
+    elem.style.borderStyle = "solid";
+  },
+
+  update: function (ctx, kickers) {
     // Make sure we are starting at first
     this.currentIcon = 1;
 
-    for (let i = 0; i < Game.kickers.getLength; i++) {
-      const kicker = Game.kickers.get(i);
-      const kickerVisible = isOnScreen(kicker);
+    for (let i = 0; i < kickers.getLength; i++) {
+      const kicker = kickers.get(i);
+      const kickerVisible = this.isOnScreen(kicker);
 
       if (kickerVisible) {
         if (this.currentIcon < 3 && this.currentIcon >= 1) {
           var elem = document.getElementById("miniicon-" + this.currentIcon);
           var hex = this.getColor(kicker);
           this.animateIcon(kicker, elem, hex);
-          this.animateTriangles(kicker, elem, hex);
+          this.animateTriangles(ctx, kicker, elem, hex);
           this.currentIcon++;
         } else if (this.currentIcon === 3) {
           this.currentIcon = 0;
@@ -49,19 +55,19 @@ var UI_Miniicons = Base.extend({
   },
 
   animateIcon: function (kicker, elem, hex) {
-    var src = AssetLoader.getImage(this.getKickerName(kicker)).src;
+    var src = this.getKickerImg(kicker).src;
     elem.style.backgroundImage = 'url(' + src + ')';
     elem.style.borderColor = hex;
   },
 
-  animateTriangle: function (kicker, elem, hex) {
+  animateTriangle: function (ctx, kicker, elem, hex) {
     const iconX = parseFloat(elem.style.left) + this.iconScale / 2;
     const iconY = parseFloat(elem.style.top) + this.iconScale;
 
     // Calculate angle for drawing triangle
     const angle = Math.atan2(kicker.y - iconY, kicker.x - iconX);
-    const triangleHeight = 50;
-    const triangleWidth = 54;
+    const triangleHeight = this.iconScale;
+    const triangleWidth = parseFloat(elem.style.width) + 2 * parseFloat(elem.style.borderWidth);
 
     const offsetX = triangleHeight * Math.cos(angle);
     const offsetY = triangleHeight * Math.sin(angle);
@@ -86,23 +92,31 @@ var UI_Miniicons = Base.extend({
       case "kick": return this.kickColor;
       case "punch": return this.punchColor;
       case "stop": return this.stopColor;
+      default: return "#FFFFFF"
     }
   },
 
-  getKickerName: function (kicker) {
+  getKickerImg: function (kicker) {
     switch (kicker.type) {
       case "angle_down":
       case "angle_up":
-        return "goodkyle";
+        return AssetLoader.getImage("goodkyle");
       case "block":
-        return "baseball";
+        return AssetLoader.getImage("baseball")
       case "kick":
-        return "two";
+        return AssetLoader.getImage("two");
       case "punch":
-        return "peroni";
+        return AssetLoader.getImage("peroni");
       case "stop":
-        return "micheal";
+        return AssetLoader.getImage("micheal");
+      default:
+        return AssetLoader.getImage("goodkyle");
     }
-  }
+  },
 
+  isOnScreen: function (entity) {
+    const x = entity.x - Game.world.x;
+    const y = entity.y - Game.world.y;
+    return x >= 0 && x <= GFX.width && y >= 0 && y <= GFX.height;
+  }
 })

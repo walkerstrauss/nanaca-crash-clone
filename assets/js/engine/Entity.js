@@ -31,12 +31,6 @@ var Entity = Base.extend({
         y = y || this.y;
 
         ctx.fillRect(x, y, this.width, this.height);
-    },
-
-    isOnScreen: function (entity) {
-        const x = entity.x - Game.world.x;
-        const y = entity.y - Game.world.y;
-        return x >= 0 && x <= GFX.width && y >= 0 && y <= GFX.height;
     }
 }, {
     // Static functions
