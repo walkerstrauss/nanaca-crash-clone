@@ -15,6 +15,7 @@ var Game = {
     gameOverTimer: null,
     gameOverDelay: 1000,
     playerStopped: false,
+    clouds: [],
     // camera: null,
 
     _init: function () {
@@ -33,6 +34,24 @@ var Game = {
 
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);
+
+        this.clouds = Collection.create();
+        var cloudTypes = [1, 2, 3];
+        for (var i = 0; i <= 10; i++) {
+            try {
+                var type = cloudTypes[Math.floor(Math.random() * cloudTypes.length)];
+                var cloud = Cloud.create(type, i);
+                this.clouds.push(cloud);
+                console.log('success', i, cloud, type);
+            } catch (error) {
+                console.error('error cloud', i, error);
+            }
+
+        }
+
+        for (var i = 0; i < this.clouds.length; i++) {
+            this.entities.push(this.clouds[i]);
+        }
 
         this.kickers = Collection.create();
         this.kickers.spacing = GFX.width * 1.5;
@@ -209,6 +228,7 @@ var Game = {
         this.gameOverDelay = 2000;
         this.playerStopped = false;
         this.camera = new Camera();
+        this.clouds = [];
 
         this.initialiseCanvas();
     },
@@ -234,7 +254,7 @@ var Game = {
         Game.checkGameOver();
 
         // Code for scaling
-        Game.camera.update(Game.player);
+        Game.camera.update(Game.player)
         Game._graphics();
         Game.miniIcons.update(Game.kickers);
 
@@ -293,6 +313,8 @@ var Game = {
     },
 
     _graphics: function () {
+        GFX.ctx.clearRect(0, 0, GFX.width, GFX.height);
+
         for (var i = 0, j = Game.entities.length; i < j; i++) {
             Game.entities[i].draw();
         }
