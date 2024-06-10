@@ -59,7 +59,7 @@ var Cloud = PhysicsEntity.extend({
     ctx.save();
     ctx.translate(this.x - Game.world.x, this.y);
     ctx.scale(Game.camera.scale, Game.camera.scale);
-    ctx.drawImage(this.img, (x - Game.world.x), y, this.width, this.height);
+    ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
     ctx.restore();
   }
 });

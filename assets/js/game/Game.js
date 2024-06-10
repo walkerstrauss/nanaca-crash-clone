@@ -16,6 +16,7 @@ var Game = {
     gameOverDelay: 1000,
     playerStopped: false,
     clouds: [],
+    guardrails: [],
     // camera: null,
 
     _init: function () {
@@ -35,7 +36,16 @@ var Game = {
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);
 
-        this.clouds = new Collection();
+        this.guardrails = Collection.create();
+        this.guardrails.spacing = 271;
+        this.guardrails.lastPosition = 0;
+        this.entities.push(this.guardrails);
+        this.guardrails.newGuardrail = function () {
+            Game.guardrails.lastPosition += Game.guardrails.spacing;
+            Game.guardrails.createItem(Guardrail, Game.guardrails.lastPosition);
+        };
+
+        this.clouds = Collection.create();
         this.clouds.spacing = 500;
         this.clouds.lastPosition = 0;
         this.entities.push(this.clouds);
@@ -74,9 +84,6 @@ var Game = {
         this.player = Player.create(82, 73);
         this.entities.push(this.player);
 
-        for (var i = 0; i < 10; i++) {
-            this.clouds.newCloud();
-        }
         // Create the kickers
         for (var i = 0; i < 10; i++) {
             this.kickers.newKicker();
@@ -226,7 +233,7 @@ var Game = {
         this.camera = new Camera();
         this.clouds = [];
 
-        this.initialiseCanvas();
+        // this.initialiseCanvas();
     },
 
     run: function () {

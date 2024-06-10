@@ -19,9 +19,10 @@ var Foreground = Entity.extend({
   roadImg: null,
   firstMountainsImg: null,
   scrollSpeed: 5,
+  guardrails: [],
 
 
-  initialise: function (ctx) {
+  initialise: function () {
     this.guardrailImg = AssetLoader.getImage("guardrail");
     this.cloudImg1 = AssetLoader.getImage("cloud1");
     this.cloudImg2 = AssetLoader.getImage("cloud2");
@@ -31,13 +32,20 @@ var Foreground = Entity.extend({
     this.firstMountainsImg = AssetLoader.getImage("firstMountains");
   },
 
+  update: function (delta) {
+
+  },
+
   draw: function (ctx, x, y) {
     ctx = ctx || GFX.ctx;
     x = x || Game.world.x;
     y = y || this.y;
 
+    // Draw guardrails
+
+    // Draw road
     this.drawImage(ctx, this.roadImg, 0, 395, GFX.width, 50);
-    this.drawImage(ctx, this.roadImg, 367 * Game.camera.scale, 395, GFX.width, 50)
+    this.drawImage(ctx, this.roadImg, this.roadImg.width, 395, GFX.width, 50)
   },
 
   drawImage: function (ctx, img, x, y, width, height) {
@@ -45,7 +53,7 @@ var Foreground = Entity.extend({
     height = height || img.height;
     ctx.save();
     ctx.scale(Game.camera.scale, Game.camera.scale);
-    ctx.drawImage(img, x / Game.camera.scale, y / Game.camera.scale, width, height);
+    ctx.drawImage(img, x / Game.camera.scale, y / Game.camera.scale, width / Game.camera.scale, height / Game.camera.scale);
     ctx.restore();
   },
 })
