@@ -35,23 +35,16 @@ var Game = {
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);
 
-        this.clouds = Collection.create();
-        var cloudTypes = [1, 2, 3];
-        for (var i = 0; i <= 10; i++) {
-            try {
-                var type = cloudTypes[Math.floor(Math.random() * cloudTypes.length)];
-                var cloud = Cloud.create(type, i);
-                this.clouds.push(cloud);
-                console.log('success', i, cloud, type);
-            } catch (error) {
-                console.error('error cloud', i, error);
-            }
+        this.clouds = new Collection();
+        this.clouds.spacing = 500;
+        this.clouds.lastPosition = 0;
+        this.entities.push(this.clouds);
+        this.clouds.newCloud = function () {
+            Game.clouds.lastPosition += Game.clouds.spacing;
 
-        }
-
-        for (var i = 0; i < this.clouds.length; i++) {
-            this.entities.push(this.clouds[i]);
-        }
+            var type = Math.floor(Math.random() * 3) + 1;
+            var cloud = Game.clouds.createItem(Cloud, type, Game.clouds.lastPosition);
+        };
 
         this.kickers = Collection.create();
         this.kickers.spacing = GFX.width * 1.5;
@@ -81,6 +74,9 @@ var Game = {
         this.player = Player.create(82, 73);
         this.entities.push(this.player);
 
+        for (var i = 0; i < 10; i++) {
+            this.clouds.newCloud();
+        }
         // Create the kickers
         for (var i = 0; i < 10; i++) {
             this.kickers.newKicker();
@@ -269,6 +265,7 @@ var Game = {
             }
         }
 
+
         // var log = document.getElementById("log");
         // var logMsg = "";
         // logMsg += "<p>Distance: " + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m</p>";
@@ -292,6 +289,7 @@ var Game = {
             Game.entities[i].update(delta);
         }
 
+        // Update kicker physics
         var v = this.player.x;
         var removeCount = 0;
         for (var n = 0, m = this.kickers.getLength(); n < m; n++) {
