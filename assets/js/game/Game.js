@@ -17,6 +17,7 @@ var Game = {
     playerStopped: false,
     clouds: [],
     guardrails: [],
+    recordX: 0,
     // camera: null,
 
     _init: function () {
@@ -272,7 +273,13 @@ var Game = {
             }
         }
 
-
+        var record = document.getElementById("record");
+        var recordMsg = "";
+        if (Game.player.x > Game.recordX) {
+            Game.recordX = Game.player.x
+        }
+        recordMsg += "Record:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        record.innerHTML = recordMsg;
         // var log = document.getElementById("log");
         // var logMsg = "";
         // logMsg += "<p>Distance: " + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m</p>";
