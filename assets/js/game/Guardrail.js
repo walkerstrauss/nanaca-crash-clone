@@ -1,20 +1,17 @@
 AssetLoader.queueImage("../assets/img/sprites/bg/guardrail.png", "guardrail");
 
-var Guardrail = Img.extend({
-  img: null,
+var Guardrail = Entity.extend({
+  image: null,
   x: 0,
-  y: 0,
+  y: 291,
   guardrailWidth: 279,
   guardrailHeight: 144,
-  guardrailY: 291,
 
-  constructor: function (x, y) {
-    this.base("guardrail", 279, 144);
+  constructor: function (img) {
+    this.image = img;
 
-    this.setPosition(x, y);
-    this.width = this.img.width;
-    this.height = this.img.height;
-    this.setUpPhysics();
+    this.width = this.image.width;
+    this.height = this.image.height;
   },
 
   update: function (delta) {

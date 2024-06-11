@@ -10,16 +10,19 @@ var Foreground = Entity.extend({
   guardrailImg: null,
   guardrailWidth: 279,
   guardrailHeight: 144,
-  guardrailY: 291,
+  guardrailY: 390,
+  guardrailLastPos: 0,
   cloudImg1: null,
   cloudImg2: null,
   cloudImg3: null,
-  cloudSpacing: 10,
+  cloudWidth: 384,
+  cloudLastPos: 0,
   factoryImg: null,
   roadImg: null,
   firstMountainsImg: null,
-  scrollSpeed: 5,
   guardrails: [],
+  clouds: [],
+  roads: [],
 
 
   initialise: function () {
@@ -31,6 +34,31 @@ var Foreground = Entity.extend({
     this.roadImg = AssetLoader.getImage("road");
     this.firstMountainsImg = AssetLoader.getImage("firstMountains");
   },
+
+  createInitialElements: function () {
+    for (var i = 0; i < 10; i++) {
+      this.createGuardrail(i * this.guardrailImg.width);
+      this.createCloud(i * this.cloudWidth);
+      if (i < 3) {
+        this.createRoad(i * this.roadImg.width);
+      }
+    }
+  },
+
+  createGuardrail: function (x) {
+    var guardrail = new Guardrail(this.guardrailImg);
+    guardrail.setPosition(x, guardrail.y);
+    this.guardrails.push(guardrail);
+  },
+
+  createCloud: function (x) {
+
+  },
+
+  createRoad: function () {
+
+  },
+
 
   update: function (delta) {
 
@@ -44,8 +72,12 @@ var Foreground = Entity.extend({
     // Draw guardrails
 
     // Draw road
+    this.drawRoad()
+  },
+
+  drawRoad: function (ctx, x, y) {
     this.drawImage(ctx, this.roadImg, 0, 395, GFX.width, 50);
-    this.drawImage(ctx, this.roadImg, this.roadImg.width, 395, GFX.width, 50)
+    this.drawImage(ctx, this.roadImg, this.roadImg.width, 395, GFX.width, 50);
   },
 
   drawImage: function (ctx, img, x, y, width, height) {

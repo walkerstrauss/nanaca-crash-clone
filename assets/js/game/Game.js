@@ -18,6 +18,7 @@ var Game = {
     clouds: [],
     guardrails: [],
     recordX: 0,
+    gameState: null,
     // camera: null,
 
     _init: function () {

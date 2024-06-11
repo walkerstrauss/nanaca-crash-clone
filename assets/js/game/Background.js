@@ -36,11 +36,8 @@ var Background = Entity.extend({
         // ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
         // ctx.restore();
 
-        var bgScale = Math.max(Game.camera.minScale, Game.camera.scale * 1.5);
-
         ctx.save();
-        ctx.scale(bgScale, bgScale);
-        ctx.translate(this.x / bgScale, -this.y / bgScale);
+        ctx.translate(this.x, -this.y);
         ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
         ctx.restore();
     }
