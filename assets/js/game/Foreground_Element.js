@@ -1,14 +1,15 @@
-var ForegroundElement = Entity.extend({
+var Foreground_Element = Entity.extend({
   img: null,
   width: 0,
   height: 0,
   y: 0,
+  // parallaxSpeed: 0,
 
-  constructor: function (img, width, height, y) {
+  constructor: function (img, width, height) {
     this.img = img;
     this.width = width;
     this.height = height;
-    this.y = y;
+    // this.parallaxSpeed = parallaxSpeed;
   },
 
   setPosition: function (x, y) {

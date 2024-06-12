@@ -1,5 +1,6 @@
 AssetLoader.queueImage("../assets/img/bg.jpg", "background");
 AssetLoader.queueImage("../assets/img/sprites/bg/bg.png", "bg");
+AssetLoader.queueImage("../assets/img/sprites/background1.png", "bg1");
 
 
 var Background = Entity.extend({
@@ -13,7 +14,7 @@ var Background = Entity.extend({
     constructor: function (width, height) {
         this.base("Background", width, height);
 
-        this.img = Img.create("bg", width, height);
+        this.img = Img.create("bg1", width, height);
         this.x = 0;
         this.y = 0;
     },

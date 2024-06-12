@@ -31,32 +31,32 @@ var Game = {
         this.background = Background.create(768, 435);
         this.entities.push(this.background);
 
-        this.foreground = new Foreground();
-        this.foreground.initialise();
-        this.entities.push(this.foreground);
+        // this.foreground = new Foreground();
+        // this.foreground.initialise();
+        // this.entities.push(this.foreground);
 
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);
 
-        this.guardrails = Collection.create();
-        this.guardrails.spacing = 271;
-        this.guardrails.lastPosition = 0;
-        this.entities.push(this.guardrails);
-        this.guardrails.newGuardrail = function () {
-            Game.guardrails.lastPosition += Game.guardrails.spacing;
-            Game.guardrails.createItem(Guardrail, Game.guardrails.lastPosition);
-        };
+        // this.guardrails = Collection.create();
+        // this.guardrails.spacing = 271;
+        // this.guardrails.lastPosition = 0;
+        // this.entities.push(this.guardrails);
+        // this.guardrails.newGuardrail = function () {
+        //     Game.guardrails.lastPosition += Game.guardrails.spacing;
+        //     Game.guardrails.createItem(Guardrail, Game.guardrails.lastPosition);
+        // };
 
-        this.clouds = Collection.create();
-        this.clouds.spacing = 500;
-        this.clouds.lastPosition = 0;
-        this.entities.push(this.clouds);
-        this.clouds.newCloud = function () {
-            Game.clouds.lastPosition += Game.clouds.spacing;
+        // this.clouds = Collection.create();
+        // this.clouds.spacing = 500;
+        // this.clouds.lastPosition = 0;
+        // this.entities.push(this.clouds);
+        // this.clouds.newCloud = function () {
+        //     Game.clouds.lastPosition += Game.clouds.spacing;
 
-            var type = Math.floor(Math.random() * 3) + 1;
-            var cloud = Game.clouds.createItem(Cloud, type, Game.clouds.lastPosition);
-        };
+        //     var type = Math.floor(Math.random() * 3) + 1;
+        //     var cloud = Game.clouds.createItem(Cloud, type, Game.clouds.lastPosition);
+        // };
 
         this.kickers = Collection.create();
         this.kickers.spacing = GFX.width * 1.5;

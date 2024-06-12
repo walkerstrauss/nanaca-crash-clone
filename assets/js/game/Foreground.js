@@ -12,17 +12,21 @@ var Foreground = Entity.extend({
   guardrailHeight: 144,
   guardrailY: 390,
   guardrailLastPos: 0,
+  // guardrailWorldX: 0,
   cloudImg1: null,
   cloudImg2: null,
   cloudImg3: null,
   cloudWidth: 384,
   cloudLastPos: 0,
+  // cloudWorldX: 0,
   factoryImg: null,
   roadImg: null,
+  roadLastPos: null,
   firstMountainsImg: null,
   guardrails: [],
   clouds: [],
   roads: [],
+  elements: [],
 
 
   initialise: function () {
@@ -33,21 +37,28 @@ var Foreground = Entity.extend({
     this.factoryImg = AssetLoader.getImage("factory");
     this.roadImg = AssetLoader.getImage("road");
     this.firstMountainsImg = AssetLoader.getImage("firstMountains");
+
+    // Initialize collections
   },
 
   createInitialElements: function () {
+    this.elements.push(guardrails);
+    this.elements.push(clouds);
     for (var i = 0; i < 10; i++) {
-      this.createGuardrail(i * this.guardrailImg.width);
-      this.createCloud(i * this.cloudWidth);
+      this.createGuardrail();
+      this.guardrailLastPos += this.guardrailImg.width;
+      this.createCloud();
+      this.cloudLastPos += this.cloudImg1.width;
       if (i < 3) {
-        this.createRoad(i * this.roadImg.width);
+        this.createRoad();
+        this.roadLastPos += this.roadImg.width;
       }
     }
   },
 
-  createGuardrail: function (x) {
-    var guardrail = new Guardrail(this.guardrailImg);
-    guardrail.setPosition(x, guardrail.y);
+  createGuardrail: function () {
+    var guardrail = new Foreground_Element(guardrailImg, guardrailImg.width, guardrailImg.height);
+    guardrail.setPosition(this.guardrailLastPos + this.guardrailImg.width);
     this.guardrails.push(guardrail);
   },
 
