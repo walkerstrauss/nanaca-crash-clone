@@ -20,6 +20,7 @@ var Game = {
 
     _init: function () {
         this.gameOver = false;
+        this.meter = null;
         this.miniIcons = UI_Miniicons.create();
         this.camera = new Camera();
         this.world = World.create();
@@ -28,7 +29,10 @@ var Game = {
         this.background = Background.create(768, 435);
         this.entities.push(this.background);
 
-        this.mountains = new Foreground_Collection("mountains", 370, 756, 134, 0.25, 0, 10, 1);
+        this.clouds = new Foreground_Collection("cloud", 10, 200, 80, 0.25, 0, 20, 1);
+        this.entities.push(this.clouds);
+
+        this.mountains = new Foreground_Collection("mountains", 380, 756, 134, 0.25, 0, 10, 1);
         this.entities.push(this.mountains);
 
         this.guardrails = new Foreground_Collection("guardrail", 354, 279, 144, 0.75, 0, 15, 1);
@@ -39,26 +43,6 @@ var Game = {
 
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);
-
-        // this.guardrails = Collection.create();
-        // this.guardrails.spacing = 271;
-        // this.guardrails.lastPosition = 0;
-        // this.entities.push(this.guardrails);
-        // this.guardrails.newGuardrail = function () {
-        //     Game.guardrails.lastPosition += Game.guardrails.spacing;
-        //     Game.guardrails.createItem(Guardrail, Game.guardrails.lastPosition);
-        // };
-
-        // this.clouds = Collection.create();
-        // this.clouds.spacing = 500;
-        // this.clouds.lastPosition = 0;
-        // this.entities.push(this.clouds);
-        // this.clouds.newCloud = function () {
-        //     Game.clouds.lastPosition += Game.clouds.spacing;
-
-        //     var type = Math.floor(Math.random() * 3) + 1;
-        //     var cloud = Game.clouds.createItem(Cloud, type, Game.clouds.lastPosition);
-        // };
 
         this.kickers = Collection.create();
         this.kickers.spacing = GFX.width * 1.5;
@@ -281,7 +265,7 @@ var Game = {
         if (Game.player.x > Game.recordX) {
             Game.recordX = Game.player.x
         }
-        recordMsg += "Record:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
         record.innerHTML = recordMsg;
         // var log = document.getElementById("log");
         // var logMsg = "";

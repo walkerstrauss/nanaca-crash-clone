@@ -32,7 +32,7 @@ var Foreground_Element = Entity.extend({
     ctx.save();
     ctx.translate(x * scale, y);
     ctx.scale(scale, scale);
-    ctx.drawImage(img, -width / 2, -height / 2, width, height);
+    ctx.drawImage(img, -width / 2, -(height / 2) * scale, width, height);
     ctx.restore();
   }
 })

@@ -2,7 +2,7 @@ var Camera = Base.extend({
   x: 0,
   y: 0,
   scale: 1.0,
-  minScale: 0.8,
+  minScale: 0.7,
   maxScale: 1.0,
 
   update: function (player) {

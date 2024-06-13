@@ -14,8 +14,8 @@ var Img = Entity.extend({
         y = y || this.y;
 
         ctx.save();
+        ctx.translate((this.x - Game.world.x), (this.y) + (8 / Game.camera.scale));
         ctx.scale(Game.camera.scale, Game.camera.scale);
-        ctx.translate((this.x - Game.world.x) / Game.camera.scale, (this.y) / Game.camera.scale);
         ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
         ctx.restore();
     }

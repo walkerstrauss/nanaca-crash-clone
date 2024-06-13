@@ -78,18 +78,19 @@ var Foreground_Collection = Collection.extend({
   },
 
   createItem: function () {
-    var item = new Foreground_Element(this.getImg(this.type), this.elemWidth, this.elemHeight);
+    var item = new Foreground_Element(this.getImg(), this.elemWidth, this.elemHeight);
     item.setPosition(this.nextPosition, this.elementY);
     this.push(item);
     this.nextPosition += this.spacing + this.elemWidth;
   },
 
-  getImg: function (type) {
-    if (type === "cloud") {
-      var src = type + Math.floor((Math.random * 3) + 1);
+  getImg: function () {
+    if (this.type === "cloud") {
+      var src = "cloud" + Math.floor((Math.random() * 3) + 1);
+      console.log(src);
       return AssetLoader.getImage(src);
     } else {
-      return AssetLoader.getImage(type);
+      return AssetLoader.getImage(this.type);
     }
   },
 
@@ -97,6 +98,8 @@ var Foreground_Collection = Collection.extend({
     switch (type) {
       case "mountains":
         return 0.3;
+      case "cloud":
+        return 0.4;
       default:
         return Game.camera.scale * this.elemScale;
     }
