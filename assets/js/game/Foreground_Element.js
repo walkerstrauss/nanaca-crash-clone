@@ -19,19 +19,20 @@ var Foreground_Element = Entity.extend({
 
   },
 
-  draw: function (ctx, x, y) {
+  draw: function (ctx, x, y, scale) {
     ctx = ctx || GFX.ctx;
     x = x || this.x;
     y = y || this.y;
+    scale = scale || 1;
 
-    this.drawImage(ctx, this.img, x, y, this.width, this.height);
+    this.drawImage(ctx, this.img, x, y, scale, this.width, this.height);
   },
 
-  drawImage: function (ctx, img, x, y, width, height) {
+  drawImage: function (ctx, img, x, y, scale, width, height) {
     ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(Game.camera.scale, Game.camera.scale);
-    ctx.drawImage(img, -this.width / 2, -this.height / 2, width, height);
+    ctx.translate(x * scale, y);
+    ctx.scale(scale, scale);
+    ctx.drawImage(img, -width / 2, -height / 2, width, height);
     ctx.restore();
   }
 })

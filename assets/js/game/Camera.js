@@ -1,9 +1,9 @@
 var Camera = Base.extend({
   x: 0,
   y: 0,
-  scale: 1.25,
-  minScale: 0.75,
-  maxScale: 1.25,
+  scale: 1.0,
+  minScale: 0.8,
+  maxScale: 1.0,
 
   update: function (player) {
     this.x = player.x - (GFX.width / 2) / this.scale;

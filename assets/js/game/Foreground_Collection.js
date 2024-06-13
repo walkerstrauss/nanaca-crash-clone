@@ -16,13 +16,21 @@ var Foreground_Collection = Collection.extend({
   nextPosition: 0,
   spacing: 0,
   numElem: 0,
+  scale: 1,
+  elemScale: 1,
 
-  constructor: function (type, elementY, parralaxSpeedScale, spacing, numElem) {
+  constructor: function (type, elementY, elemWidth, elemHeight, parralaxSpeedScale, spacing, numElem, elemScale) {
+    this.items = [];
     this.type = type;
     this.elementY = elementY;
+    this.elemWidth = elemWidth;
+    this.elemHeight = elemHeight;
     this.parallaxSpeedScale = parralaxSpeedScale || 1;
     this.spacing = spacing || 0;
     this.numElem = numElem || 10;
+    this.nextPosition = 0;
+    this.scale = 1;
+    this.elemScale = elemScale || 1;
     this.createInitialItems(this.numElem);
   },
 
@@ -32,11 +40,13 @@ var Foreground_Collection = Collection.extend({
     }
   },
 
+  // Updates collection based on world's position and parallax speed 
   update: function (delta) {
     this.parralaxWorldX = Game.world.x * this.parallaxSpeedScale;
+    this.scale = this.getScale(this.type);
 
     for (var i = 0, j = this.items.length; i < j; i++) {
-      if (this.items[i].x - this.parralaxWorldX < -this.spacing) {
+      if (this.items[i].x - this.parralaxWorldX < -1 * (this.elemWidth + this.spacing)) {
         this.shift();
         this.createItem();
       }
@@ -46,10 +56,11 @@ var Foreground_Collection = Collection.extend({
   draw: function (ctx, x, y) {
     ctx = ctx || GFX.ctx;
     for (var i = 0; i < this.items.length; i++) {
-      this.items[i].draw(ctx, this.items[i].x - this.parralaxWorldX, this.items[i].y);
+      this.items[i].draw(ctx, this.items[i].x - this.parralaxWorldX, this.items[i].y, this.scale);
     }
   },
 
+  // Methods for managing items in collection
   get: function (i) {
     return this.items[i];
   },
@@ -67,10 +78,10 @@ var Foreground_Collection = Collection.extend({
   },
 
   createItem: function () {
-    var item = new Foreground_Element(this.getImg(this.type));
+    var item = new Foreground_Element(this.getImg(this.type), this.elemWidth, this.elemHeight);
     item.setPosition(this.nextPosition, this.elementY);
     this.push(item);
-    this.nextPosition += this.spacing;
+    this.nextPosition += this.spacing + this.elemWidth;
   },
 
   getImg: function (type) {
@@ -79,6 +90,15 @@ var Foreground_Collection = Collection.extend({
       return AssetLoader.getImage(src);
     } else {
       return AssetLoader.getImage(type);
+    }
+  },
+
+  getScale: function (type) {
+    switch (type) {
+      case "mountains":
+        return 0.3;
+      default:
+        return Game.camera.scale * this.elemScale;
     }
   }
 

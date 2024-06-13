@@ -28,8 +28,14 @@ var Game = {
         this.background = Background.create(768, 435);
         this.entities.push(this.background);
 
-        this.guardrails = new Foreground_Collection("guardrail", 291, 0.25, 279, 15);
+        this.mountains = new Foreground_Collection("mountains", 370, 756, 134, 0.25, 0, 10, 1);
+        this.entities.push(this.mountains);
+
+        this.guardrails = new Foreground_Collection("guardrail", 354, 279, 144, 0.75, 0, 15, 1);
         this.entities.push(this.guardrails);
+
+        this.roads = new Foreground_Collection("road", 420, 868, 40, 1, 0, 15, 1);
+        this.entities.push(this.roads);
 
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);
