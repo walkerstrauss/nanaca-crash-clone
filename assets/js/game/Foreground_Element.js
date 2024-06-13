@@ -3,13 +3,11 @@ var Foreground_Element = Entity.extend({
   width: 0,
   height: 0,
   y: 0,
-  // parallaxSpeed: 0,
 
   constructor: function (img, width, height) {
     this.img = img;
-    this.width = width;
-    this.height = height;
-    // this.parallaxSpeed = parallaxSpeed;
+    this.width = width || img.width;
+    this.height = height || img.height;
   },
 
   setPosition: function (x, y) {
@@ -26,14 +24,14 @@ var Foreground_Element = Entity.extend({
     x = x || this.x;
     y = y || this.y;
 
-    this.drawImage(ctx, this.img, this.x, this.y, this.width, this.height);
+    this.drawImage(ctx, this.img, x, y, this.width, this.height);
   },
 
   drawImage: function (ctx, img, x, y, width, height) {
     ctx.save();
-    ctx.translate(x - Game.world.x, y);
+    ctx.translate(x, y);
     ctx.scale(Game.camera.scale, Game.camera.scale);
-    ctx.drawImage(img, -width / 2, -height / 2, width, height);
+    ctx.drawImage(img, -this.width / 2, -this.height / 2, width, height);
     ctx.restore();
   }
 })

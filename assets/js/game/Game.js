@@ -15,11 +15,8 @@ var Game = {
     gameOverTimer: null,
     gameOverDelay: 1000,
     playerStopped: false,
-    clouds: [],
-    guardrails: [],
     recordX: 0,
     gameState: null,
-    // camera: null,
 
     _init: function () {
         this.gameOver = false;
@@ -31,9 +28,8 @@ var Game = {
         this.background = Background.create(768, 435);
         this.entities.push(this.background);
 
-        // this.foreground = new Foreground();
-        // this.foreground.initialise();
-        // this.entities.push(this.foreground);
+        this.guardrails = new Foreground_Collection("guardrail", 291, 0.25, 279, 15);
+        this.entities.push(this.guardrails);
 
         this.floor = Floor.create(768, 20);
         this.entities.push(this.floor);

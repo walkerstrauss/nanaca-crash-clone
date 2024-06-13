@@ -82,7 +82,7 @@ var Player = PhysicsEntity.extend({
             ctx.translate(this.x - Game.world.x, this.y);
             ctx.scale(Game.camera.scale, Game.camera.scale);
             ctx.rotate(drawAngle);
-            ctx.drawImage(this.img.image, -this.width / 2, (-this.height / 2), this.width, this.height)
+            ctx.drawImage(this.img.image, -this.width / 2, -this.height / 2, this.width, this.height)
             ctx.restore();
         }
 
