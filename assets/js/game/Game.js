@@ -19,8 +19,6 @@ var Game = {
     gameState: null,
 
     _init: function () {
-        this.gameOver = false;
-        this.meter = null;
         this.miniIcons = UI_Miniicons.create();
         this.camera = new Camera();
         this.world = World.create();
@@ -130,6 +128,9 @@ var Game = {
     initForeground: function () {
         this.clouds = new Foreground_Collection("cloud", 10, 200, 80, 0.25, 0, 20, 1);
         this.entities.push(this.clouds);
+
+        this.trees = new Foreground_Collection("tree", 375, 64, 126, 0.25, 0, 30, 1);
+        this.entities.push(this.trees);
 
         this.mountains = new Foreground_Collection("mountains", 380, 756, 134, 0.25, 0, 10, 1);
         this.entities.push(this.mountains);

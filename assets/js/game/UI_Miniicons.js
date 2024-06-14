@@ -58,6 +58,9 @@ var UI_Miniicons = Entity.extend({
 
   animateTriangle: function (ctx, kicker, id, hex) {
     document.getElementById("triangle-" + this.currentIcon).style.borderTopColor = this.getColor(kicker);
+    var icon = document.getElementById("miniicon-" + this.currentIcon);
+    var iconX = icon.style.right;
+    var iconY = icon.style.top;
   },
 
   getColor: function (kicker) {

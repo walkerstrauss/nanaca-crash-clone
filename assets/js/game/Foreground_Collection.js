@@ -5,6 +5,7 @@ AssetLoader.queueImage("../assets/img/sprites/bg/cloud_3.png", "cloud3");
 AssetLoader.queueImage("../assets/img/sprites/bg/factory.png", "factory");
 AssetLoader.queueImage("../assets/img/sprites/bg/first_mountains.png", "mountains");
 AssetLoader.queueImage("../assets/img/sprites/bg/road.png", "road");
+AssetLoader.queueImage("../assets/img/sprites/bg/tree.png", "tree");
 
 
 var Foreground_Collection = Collection.extend({
@@ -81,6 +82,13 @@ var Foreground_Collection = Collection.extend({
     var item = new Foreground_Element(this.getImg(), this.elemWidth, this.elemHeight);
     item.setPosition(this.nextPosition, this.elementY);
     this.push(item);
+    if (this.type === "tree") {
+      this.nextPosition += this.spacing + this.elemWidth + (Math.floor(Math.random() * 100) + 1);
+      return;
+    } else if (this.type === "cloud") {
+      this.nextPosition += this.spacing + this.elemWidth + (Math.floor(Math.random() * 10) + 1);
+      return;
+    }
     this.nextPosition += this.spacing + this.elemWidth;
   },
 
@@ -99,9 +107,10 @@ var Foreground_Collection = Collection.extend({
         return 0.3;
       case "cloud":
         return 0.4;
+      case "tree":
+        return 0.3;
       default:
         return Game.camera.scale * this.elemScale;
     }
   }
-
 })
