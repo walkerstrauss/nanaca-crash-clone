@@ -169,8 +169,9 @@ var Game = {
     },
 
     run: function () {
-        GFX.initialise(document.getElementById("stage"), 768, 435);
-
+        if (!GFX.canvas) {
+            GFX.initialise(document.getElementById("stage"), 768, 435);
+        }
         AssetLoader.load(function () {
             Game._init();
             Game.loop();
@@ -263,6 +264,25 @@ var Game = {
         }
     },
 
+    resetGame: function () {
+        this.entities = [];
+        this.player = null;
+        this.world = null;
+        this.background = null;
+        this.floor = null;
+        this.contactListener = null;
+        this.kickers = [];
+        this.meter = null;
+        this.miniIcons = null;
+        this.gameOver = false;
+        this.aerialCrash = null;
+        this.gameOverTimer = null;
+        this.playerStopped = false;
+        this.recordX = 0;
+
+        this.initialiseCanvas();
+    },
+
     removeCanvas: function () {
         const canvas = document.getElementById("canvas");
         if (canvas) {
@@ -276,6 +296,6 @@ var Game = {
         canvas.id = "canvas";
         canvas.width = 768;
         canvas.height = 435;
-        document.getElementById("stage").appendChild(canvas);
+        document.getElementById("stage").parentElement.appendChild(canvas);
     }
 };

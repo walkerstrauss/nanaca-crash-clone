@@ -1,5 +1,4 @@
 var Game_Manager = {
-  game: null,
   bestRecord: 0,
   currentState: 'MAIN_MENU',
 
@@ -23,14 +22,14 @@ var Game_Manager = {
   },
 
   startGame: function () {
-    Game_Manager.game = Object.create(Game);
-    Game_Manager.game.run();
+    Game.resetGame();
+    Game.run();
     Game_Manager.currentState = Game_Manager.gameStates.METER;
     Game_Manager.updateDisplay();
   },
 
   startRun: function () {
-    if (Game_Manager.game.meter.launched) {
+    if (Game.meter.launched) {
       Game_Manager.currentState = Game_Manager.gameStates.RUNNING;
       Game_Manager.updateDisplay();
     }
