@@ -87,7 +87,6 @@ var Foreground_Collection = Collection.extend({
   getImg: function () {
     if (this.type === "cloud") {
       var src = "cloud" + Math.floor((Math.random() * 3) + 1);
-      console.log(src);
       return AssetLoader.getImage(src);
     } else {
       return AssetLoader.getImage(this.type);

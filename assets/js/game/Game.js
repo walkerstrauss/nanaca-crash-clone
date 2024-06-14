@@ -147,37 +147,6 @@ var Game = {
         }
     },
 
-    setupGameOverMenu: function () {
-        document.getElementById("restart-game-btn").addEventListener("click", function () {
-            document.getElementById("game-over-menu").style.display = "none";
-            document.getElementById("stage").style.display = "block";
-            document.getElementById("launch-ui").style.display = "flex";
-
-            // Reset and restart game
-            Game.resetGame();
-            Game._init();
-            Game.loop();
-        });
-
-        // Add event listener to main-menu button
-        document.getElementById("main-menu-btn").addEventListener("click", function () {
-            document.getElementById("game-over-menu").style.display = "none";
-            document.getElementById("main-menu").style.display = "block";
-        });
-
-        document.getElementById("start-game-btn").addEventListener("click", function () {
-            // Hide main menu and show stage and launch UI
-            document.getElementById("main-menu").style.display = "none";
-            document.getElementById("stage").style.display = "block";
-            document.getElementById("launch-ui").style.display = "flex";
-
-            // Reset and start game
-            Game.resetGame();
-            Game._init();
-            Game.loop();
-        });
-    },
-
     checkGameOver: function () {
         var playerSpeed = Math.round(Game.player.speed.Length() * 100) / 100;
         if (playerSpeed < 0.0001 && Game.meter.launched) {
@@ -185,7 +154,7 @@ var Game = {
                 Game.playerStopped = true;
                 Game.gameOverTimer = setTimeout(function () {
                     Game.gameOver = true;
-                    Game.endGame();
+                    Game_Manager.gameOver();
                 }, Game.gameOverDelay)
             }
         } else {
@@ -196,36 +165,6 @@ var Game = {
 
         }
 
-    },
-
-    endGame: function () {
-        this.running = false;
-        this.setupGameOverMenu();
-        var gameOverDiv = document.getElementById("game-over-menu");
-        document.getElementById("stage").style.display = "none";
-        gameOverDiv.style.display = "block";
-    },
-
-    resetGame: function () {
-        this.running = true;
-        this.gameOver = false;
-        this.oldTime = Date.now();
-        this.entities = [];
-        this.player = null;
-        this.world = null;
-        this.background = null;
-        this.floor = null;
-        this.contactListener = null;
-        this.kickers = [];
-        this.meter = null;
-        this.aerialCrash = null;
-        this.gameOverTimer = null;
-        this.gameOverDelay = 2000;
-        this.playerStopped = false;
-        this.camera = new Camera();
-        this.clouds = [];
-
-        // this.initialiseCanvas();
     },
 
     run: function () {

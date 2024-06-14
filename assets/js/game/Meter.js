@@ -76,6 +76,7 @@ var Meter = Img.extend({
       this.player.launch();
       this.launched = true;
       document.getElementById("launch-ui").style.display = "none";
+      Game_Manager.startRun();
     }
   }
 })
