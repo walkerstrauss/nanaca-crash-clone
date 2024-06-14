@@ -22,8 +22,8 @@ var Game_Manager = {
   },
 
   startGame: function () {
-    Game.resetGame();
-    Game.run();
+    Game_Manager.game = Object.create(Game);
+    Game_Manager.game.run();
     Game_Manager.currentState = Game_Manager.gameStates.METER;
     Game_Manager.updateDisplay();
   },
