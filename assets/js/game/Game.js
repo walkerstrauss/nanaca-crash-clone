@@ -1,3 +1,6 @@
+AssetLoader.queueImage("../assets/img/sprites/miniicon/baseball_miniicon.png", "block");
+AssetLoader.queueImage("../assets/img/sprites/bg/logo.png", "logo");
+
 var Game = {
     running: true,
     oldTime: Date.now(),
@@ -102,6 +105,9 @@ var Game = {
         this.aerialCrash.showCrashUI();
         document.getElementById("aerial-btn").addEventListener("click", this.handleAerialClick.bind(this));
 
+        var src = AssetLoader.getImage("block").src;
+        document.getElementById("block").style.backgroundImage = 'url(' + src + ')';
+
         // User input
         Event.observe(document, "click", Game.click);
     },
@@ -203,24 +209,7 @@ var Game = {
             }
         }
 
-        var record = document.getElementById("record");
-        var recordMsg = "";
-        recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
-        record.innerHTML = recordMsg;
-
-        var best_record = document.getElementById("best-record");
-        var bestRecordMsg = "";
-        bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
-        best_record.innerHTML = bestRecordMsg;
-
-        var speed = document.getElementById("speed");
-        var speedMsg = "";
-        if (this.playerStopped) {
-            speedMsg += "SPEED: 0.0m/s";
-        } else {
-            speedMsg += "SPEED: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s";
-        }
-        speed.innerHTML = speedMsg;
+        Game.updateLog();
 
         // var log = document.getElementById("log");
         // var logMsg = "";
@@ -236,6 +225,39 @@ var Game = {
                 Game.meter.animateMeter();
             }
             requestAnimFrame(Game.loop);
+        }
+
+    },
+
+    updateLog: function () {
+        var record = document.getElementById("record");
+        var recordMsg = "";
+        recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        record.innerHTML = recordMsg;
+
+        var best_record = document.getElementById("best-record");
+        var bestRecordMsg = "";
+        bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        best_record.innerHTML = bestRecordMsg;
+
+        var speed = document.getElementById("speed");
+        var speedMsg = "";
+        if (Game.playerStopped || Game.player.stopped) {
+            speedMsg += "SPEED: 0.0m/s";
+        } else {
+            speedMsg += "SPEED: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s";
+        }
+        speed.innerHTML = speedMsg;
+
+        var specialBtn = document.getElementById("special-text-btn");
+        if (Game.player.blocked) {
+            specialBtn.innerHTML = "&nbsp BLOCK";
+            specialBtn.style.color = "purple";
+            document.getElementById("block").style.display = "block";
+        } else {
+            specialBtn.innerHTML = "SPECIAL";
+            specialBtn.style.color = "red";
+            document.getElementById("block").style.display = "none";
         }
 
     },
@@ -275,6 +297,8 @@ var Game = {
     },
 
     resetGame: function () {
+        this.running = true;
+        this.oldTime = Date.now();
         this.entities = [];
         this.player = null;
         this.world = null;
@@ -287,7 +311,9 @@ var Game = {
         this.gameOver = false;
         this.aerialCrash = null;
         this.gameOverTimer = null;
+        this.gameOverDelay = 1000;
         this.playerStopped = false;
+        this.camera = null;
 
         this.initialiseCanvas();
     },

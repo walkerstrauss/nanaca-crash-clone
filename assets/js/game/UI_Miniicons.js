@@ -8,6 +8,7 @@ AssetLoader.queueImage("../assets/img/sprites/miniicon/two_miniicon.png", "two")
 var UI_Miniicons = Entity.extend({
   currentIcon: 1,
   iconScale: 50,
+  iconY: 100,
   angleDownColor: "#663417",
   angleUpColor: "#4ce6de",
   blockColor: "#A000A0",
@@ -59,8 +60,9 @@ var UI_Miniicons = Entity.extend({
   animateTriangle: function (ctx, kicker, id, hex) {
     document.getElementById("triangle-" + this.currentIcon).style.borderTopColor = this.getColor(kicker);
     var icon = document.getElementById("miniicon-" + this.currentIcon);
-    var iconX = icon.style.right;
-    var iconY = icon.style.top;
+    var iconX = this.getIconX();
+    var baseWidth = 50;
+
   },
 
   getColor: function (kicker) {
@@ -97,5 +99,16 @@ var UI_Miniicons = Entity.extend({
     const x = entity.x - Game.world.x;
     const y = entity.y - Game.world.y;
     return x >= -10 && x <= GFX.width + 10 && y >= -10 && y <= GFX.height + 10;
+  },
+
+  getIconX: function () {
+    switch (this.currentIcon) {
+      case 1:
+        return 600;
+      case 2:
+        return 650;
+      case 3:
+        return 700;
+    }
   }
 })
