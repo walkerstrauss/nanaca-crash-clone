@@ -207,6 +207,21 @@ var Game = {
         var recordMsg = "";
         recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
         record.innerHTML = recordMsg;
+
+        var best_record = document.getElementById("best-record");
+        var bestRecordMsg = "";
+        bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        best_record.innerHTML = bestRecordMsg;
+
+        var speed = document.getElementById("speed");
+        var speedMsg = "";
+        if (this.playerStopped) {
+            speedMsg += "SPEED: 0.0m/s";
+        } else {
+            speedMsg += "SPEED: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s";
+        }
+        speed.innerHTML = speedMsg;
+
         // var log = document.getElementById("log");
         // var logMsg = "";
         // logMsg += "<p>Distance: " + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m</p>";

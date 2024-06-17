@@ -24,8 +24,8 @@
             height: 70%;
             min-width: 480px;
             min-height: 270px;
-            max-width: 1536px;
-            max-height: 870px;
+            max-width: 768px;
+            max-height: 435px;
             background-color: grey;
         }
 
@@ -146,11 +146,11 @@
             background-color: grey;
             background-size: contain;
             background-repeat: no-repeat;
-            border: 2% solid white;
+            border: 1px solid white;
         }
 
         #special-1 {
-            right: 18%;
+            right: 19%;
         }
 
         #special-2 {
@@ -158,19 +158,19 @@
         }
 
         #special-3 {
-            right: 10%;
+            right: 9%;
         }
 
         #special-4 {
-            right: 6%;
+            right: 4%;
         }
 
         #special-text-btn {
             position: absolute;
-            top: 18%;
-            right: 6%;
-            width: 15%;
-            height: 6%;
+            top: 15%;
+            right: 4%;
+            width: 20.3%;
+            height: 7%;
             font-size: 1.2em;
             color: red;
             background: white;
@@ -179,108 +179,97 @@
             letter-spacing: 0.1em;
         }
 
-        #record {
+        #record,
+        #best-record {
             position: absolute;
-            top: 0px;
-            right: 0px;
-            width: 260px;
-            height: 25px;
-            border: 1px solid black;
+            width: auto;
+            width: 30%;
+            min-width: 300px;
+            height: 5%;
+            border: none;
             background-size: contain;
             background-size: no-repeat;
             background: none;
             font-weight: bold;
-            font-size: 22px;
+            font-size: 1.5em;
+            color: yellow;
+        }
+
+        #record {
+            top: 1%;
+            right: 0%
         }
 
         #best-record {
+            top: 6%;
+            right: 7%
+        }
+
+        #speed {
             position: absolute;
-            top: 25px;
-            right: 0px;
-            width: 290px;
-            height: 25px;
+            top: 11%;
+            right: 3%;
+            width: auto;
+            width: 25%;
+            height: 4%;
             border: none;
+            background: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: yellow;
+        }
+
+        #miniicon-1,
+        #miniicon-2,
+        #miniicon-3 {
+            position: absolute;
+            top: 35%;
+            width: 4%;
+            height: 7%;
+            background-size: contain;
+            background-size: no-repeat;
+            border: 1vw solid white;
+            padding: 0px;
+            margin: 0px;
+            border-radius: 2px;
         }
 
         #miniicon-1 {
-            position: absolute;
-            right: 132px;
-            top: 140px;
-            width: 29px;
-            height: 30px;
-            background-size: contain;
-            background-size: no-repeat;
-            border: 4px solid white;
-            padding: 0px;
-            margin: 0px;
-            border-radius: 2px;
+            right: 17%;
         }
 
         #miniicon-2 {
-            position: absolute;
-            right: 96px;
-            top: 140px;
-            width: 29px;
-            height: 30px;
-            background-size: contain;
-            background-size: no-repeat;
-            border: 4px solid white;
-            padding: 0px;
-            margin: 0px;
-            border-radius: 2px;
+            right: 12%;
         }
 
         #miniicon-3 {
+            right: 7%;
+        }
+
+        #triangle-1,
+        #triangle-2,
+        #triangle-3 {
             position: absolute;
-            right: 60px;
-            top: 140px;
-            width: 29px;
-            height: 30px;
+            top: 43%;
+            height: 0%;
+            width: 0%;
             background-size: contain;
             background-size: no-repeat;
-            border: 4px solid white;
-            padding: 0px;
-            margin: 0px;
-            border-radius: 2px
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 1vw solid white;
         }
 
         #triangle-1 {
-            position: absolute;
-            right: 134px;
-            top: 173px;
-            height: 0px;
-            width: 0px;
-            background-size: contain;
-            background-size: no-repeat;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 29px solid white;
+            right: 17%;
         }
 
         #triangle-2 {
-            position: absolute;
-            right: 98px;
-            top: 173px;
-            height: 0px;
-            width: 0px;
-            background-size: contain;
-            background-size: no-repeat;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 29px solid white;
+            right: 12%;
         }
 
         #triangle-3 {
-            position: absolute;
-            right: 62px;
-            top: 173px;
-            height: 0px;
-            width: 0px;
-            background-size: contain;
-            background-size: no-repeat;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 29px solid white;
+            right: 7%;
         }
     </style>
 </head>
@@ -317,6 +306,8 @@
         </div>
         <div id="records">
             <div id="record"></div>
+            <div id="best-record"></div>
+            <div id="speed"></div>
         </div>
     </div>
     <div id="game-over-menu" style="display: none;">
@@ -370,6 +361,7 @@
     <script src="../assets/js/game/Foreground_Collection.js"></script>
     <script src="../assets/js/game/Foreground_Element.js"></script>
     <script src="../assets/js/game/Game_Manager.js"></script>
+    <script src="../assets/js/game/Specials.js"></script>
 
 
     <script>
