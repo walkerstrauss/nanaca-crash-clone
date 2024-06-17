@@ -15,8 +15,6 @@ var Game = {
     gameOverTimer: null,
     gameOverDelay: 1000,
     playerStopped: false,
-    recordX: 0,
-    gameState: null,
 
     _init: function () {
         this.miniIcons = UI_Miniicons.create();
@@ -207,9 +205,6 @@ var Game = {
 
         var record = document.getElementById("record");
         var recordMsg = "";
-        if (Game.player.x > Game.recordX) {
-            Game.recordX = Game.player.x
-        }
         recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
         record.innerHTML = recordMsg;
         // var log = document.getElementById("log");
@@ -278,7 +273,6 @@ var Game = {
         this.aerialCrash = null;
         this.gameOverTimer = null;
         this.playerStopped = false;
-        this.recordX = 0;
 
         this.initialiseCanvas();
     },

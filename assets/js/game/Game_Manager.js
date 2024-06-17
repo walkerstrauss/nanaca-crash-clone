@@ -10,63 +10,63 @@ var Game_Manager = {
   },
 
   init: function () {
-    Game_Manager.currentState = Game_Manager.gameStates.MAIN_MENU;
-    Game_Manager.setupEventListeners();
-    Game_Manager.updateDisplay();
+    this.currentState = this.gameStates.MAIN_MENU;
+    this.setupEventListeners();
+    this.updateDisplay();
   },
 
   setupEventListeners: function () {
-    document.getElementById("start-game-btn").addEventListener("click", Game_Manager.startGame.bind(Game_Manager));
-    document.getElementById("restart-game-btn").addEventListener("click", Game_Manager.startGame.bind(Game_Manager));
-    document.getElementById("main-menu-btn").addEventListener("click", Game_Manager.showMainMenu.bind(Game_Manager));
+    document.getElementById("start-game-btn").addEventListener("click", this.startGame.bind(this));
+    document.getElementById("restart-game-btn").addEventListener("click", this.startGame.bind(this));
+    document.getElementById("main-menu-btn").addEventListener("click", this.showMainMenu.bind(this));
   },
 
   startGame: function () {
-    Game_Manager.game = Object.create(Game);
-    Game_Manager.game.run();
-    Game_Manager.currentState = Game_Manager.gameStates.METER;
-    Game_Manager.updateDisplay();
+    this.game = Object.create(Game);
+    this.game.run();
+    this.currentState = this.gameStates.METER;
+    this.updateDisplay();
   },
 
   startRun: function () {
-    if (Game.meter.launched) {
-      Game_Manager.currentState = Game_Manager.gameStates.RUNNING;
-      Game_Manager.updateDisplay();
+    if (this.game.meter.launched) {
+      this.currentState = this.gameStates.RUNNING;
+      this.updateDisplay();
     }
   },
 
   showMainMenu: function () {
-    Game_Manager.currentState = Game_Manager.gameStates.MAIN_MENU;
-    Game_Manager.updateDisplay();
+    this.currentState = this.gameStates.MAIN_MENU;
+    this.updateDisplay();
   },
 
   gameOver: function () {
-    Game_Manager.currentState = Game_Manager.gameStates.OVER;
-    Game_Manager.updateDisplay();
+    this.currentState = this.gameStates.OVER;
+    this.updateDisplay();
   },
 
   updateDisplay: function () {
-    switch (Game_Manager.currentState) {
-      case Game_Manager.gameStates.MAIN_MENU:
+    switch (this.currentState) {
+      case this.gameStates.MAIN_MENU:
         document.getElementById("main-menu").style.display = "block";
         document.getElementById("stage").style.display = "none";
         document.getElementById("game-over-menu").style.display = "none";
         break;
-      case Game_Manager.gameStates.METER:
+      case this.gameStates.METER:
         document.getElementById("main-menu").style.display = "none";
         document.getElementById("stage").style.display = "block";
         document.getElementById("launch-ui").style.display = "flex";
         document.getElementById("game-over-menu").style.display = "none";
         document.getElementById("miniicons").style.display = "none";
         break;
-      case Game_Manager.gameStates.RUNNING:
+      case this.gameStates.RUNNING:
         document.getElementById("main-menu").style.display = "none";
         document.getElementById("stage").style.display = "block";
         document.getElementById("launch-ui").style.display = "none";
         document.getElementById("game-over-menu").style.display = "none";
         document.getElementById("miniicons").style.display = "flex";
         break;
-      case Game_Manager.gameStates.OVER:
+      case this.gameStates.OVER:
         document.getElementById("main-menu").style.display = "none";
         document.getElementById("stage").style.display = "none";
         document.getElementById("game-over-menu").style.display = "block";
