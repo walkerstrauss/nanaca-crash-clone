@@ -7,8 +7,6 @@ AssetLoader.queueImage("../assets/img/sprites/miniicon/two_miniicon.png", "two")
 
 var UI_Miniicons = Entity.extend({
   currentIcon: 1,
-  iconScale: 50,
-  iconY: 100,
   angleDownColor: "#663417",
   angleUpColor: "#4ce6de",
   blockColor: "#A000A0",
@@ -77,14 +75,14 @@ var UI_Miniicons = Entity.extend({
 
   drawTriangle: function (ctx, x, y, base, height, angle, color) {
     // Calculate the position of the tip of the triangle
-    const tipX = height * Math.sin(angle);
+    const tipX = x + height * Math.sin(angle);
     const tipY = y - height;
 
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(x - base / 2, y); // Left point of the base
     ctx.lineTo(x + base / 2, y);  // Right point of the base
-    ctx.lineTo(x + tipX, tipY); // Tip of the triangle
+    ctx.lineTo(tipX, tipY); // Tip of the triangle
     ctx.closePath();
 
     ctx.fillStyle = color;
