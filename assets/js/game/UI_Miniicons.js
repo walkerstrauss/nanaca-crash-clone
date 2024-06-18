@@ -1,8 +1,8 @@
-AssetLoader.queueImage("../assets/img/sprites/miniicon/baseball_miniicon.png", "baseball");
-AssetLoader.queueImage("../assets/img/sprites/miniicon/goodkyle_miniicon.png", "goodkyle");
-AssetLoader.queueImage("../assets/img/sprites/miniicon/micheal_miniicon.png", "micheal");
-AssetLoader.queueImage("../assets/img/sprites/miniicon/peroni_miniicon.png", "peroni");
-AssetLoader.queueImage("../assets/img/sprites/miniicon/two_miniicon.png", "two");
+AssetLoader.queueImage("../assets/img/sprites/miniicon/baseball_miniicon.png", "baseball_icon");
+AssetLoader.queueImage("../assets/img/sprites/miniicon/goodkyle_miniicon.png", "goodkyle_icon");
+AssetLoader.queueImage("../assets/img/sprites/miniicon/micheal_miniicon.png", "micheal_icon");
+AssetLoader.queueImage("../assets/img/sprites/miniicon/peroni_miniicon.png", "peroni_icon");
+AssetLoader.queueImage("../assets/img/sprites/miniicon/two_miniicon.png", "two_icon");
 
 
 var UI_Miniicons = Entity.extend({
@@ -14,11 +14,10 @@ var UI_Miniicons = Entity.extend({
   punchColor: "#A0A000",
   stopColor: "#00A000",
 
-
   constructor: function () {
-    this.setIconDisplay("miniicon-1");
-    this.setIconDisplay("miniicon-2");
-    this.setIconDisplay("miniicon-3");
+    // this.setIconDisplay("miniicon-1");
+    // this.setIconDisplay("miniicon-2");
+    // this.setIconDisplay("miniicon-3");
   },
 
   setIconDisplay: function (id) {
@@ -40,7 +39,8 @@ var UI_Miniicons = Entity.extend({
       if (this.currentIcon <= 3) {
         var id = "miniicon-" + this.currentIcon;
         var hex = this.getColor(kicker);
-        this.animateIcon(kicker, id, hex);
+        // this.animateIcon(kicker, id, hex);
+        this.drawIcon(GFX.ctx, kicker, hex);
         this.animateTriangle(GFX.ctx, kicker, id, hex);
         this.currentIcon++;
       } else {
@@ -53,19 +53,29 @@ var UI_Miniicons = Entity.extend({
     const src = this.getKickerImg(kicker).src;
     document.getElementById(id).style.backgroundImage = 'url(' + src + ')';
     document.getElementById(id).style.borderColor = hex;
+
+
   },
 
   animateTriangle: function (ctx, kicker, id, hex) {
-    const icon = document.getElementById(id);
-    const iconRect = icon.getBoundingClientRect();
-    const canvasRect = ctx.canvas.getBoundingClientRect();
+    // const icon = document.getElementById(id);
+    // const iconRect = icon.getBoundingClientRect();
+    // const canvasRect = ctx.canvas.getBoundingClientRect();
 
-    const iconCenterX = iconRect.left + iconRect.width / 2 - canvasRect.left;
-    const iconBottomY = iconRect.bottom - canvasRect.top;
+    // const iconCenterX = iconRect.left + iconRect.width / 2 - canvasRect.left;
+    // const iconBottomY = iconRect.bottom - canvasRect.top;
 
-    const triangleBase = iconRect.width;
-    const triangleHeight = -iconRect.height;
+    // const triangleBase = iconRect.width;
+    // const triangleHeight = -iconRect.height;
     const kickerPos = this.getKickerPosition(kicker);
+
+    const img = this.getKickerImg(kicker)
+    const iconPos = this.getIconPosition();
+    const iconCenterX = iconPos.x + img.width / 2;
+    const iconBottomY = iconPos.y + img.height;
+
+    const triangleBase = img.width + 3;
+    const triangleHeight = -img.height - 3
 
     // Calculate the angle of the line pointing from the center of the base to the tip of the triangle
     const angle = Math.atan2(kickerPos.y - triangleHeight, kickerPos.x - (triangleBase / 2));
@@ -91,6 +101,25 @@ var UI_Miniicons = Entity.extend({
     ctx.restore();
   },
 
+  drawIcon: function (ctx, kicker, hex) {
+    const iconPos = this.getIconPosition();
+    const img = this.getKickerImg(kicker);
+    ctx.save();
+    ctx.beginPath();
+    ctx.translate(iconPos.x - 3, iconPos.y - 3);
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, img.height + 3);
+    ctx.lineTo(img.width + 3, img.height + 3);
+    ctx.lineTo(img.width + 3, 0);
+    ctx.closePath();
+
+    ctx.fillStyle = hex;
+    ctx.fill();
+
+    ctx.drawImage(img, 1.5, 1.5, img.width, img.height);
+    ctx.restore();
+  },
+
   getColor: function (kicker) {
     switch (kicker.type) {
       case "angle_down": return this.angleDownColor;
@@ -107,17 +136,17 @@ var UI_Miniicons = Entity.extend({
     switch (kicker.type) {
       case "angle_down":
       case "angle_up":
-        return AssetLoader.getImage("goodkyle");
+        return AssetLoader.getImage("goodkyle_icon");
       case "block":
-        return AssetLoader.getImage("baseball")
+        return AssetLoader.getImage("baseball_icon")
       case "kick":
-        return AssetLoader.getImage("two");
+        return AssetLoader.getImage("two_icon");
       case "punch":
-        return AssetLoader.getImage("peroni");
+        return AssetLoader.getImage("peroni_icon");
       case "stop":
-        return AssetLoader.getImage("micheal");
+        return AssetLoader.getImage("micheal_icon");
       default:
-        return AssetLoader.getImage("goodkyle");
+        return AssetLoader.getImage("goodkyle_icon");
     }
   },
 
@@ -125,6 +154,24 @@ var UI_Miniicons = Entity.extend({
     return {
       x: kicker.x - Game.world.x,
       y: kicker.y - Game.world.y
+    }
+  },
+
+  getIconPosition: function () {
+    switch (this.currentIcon) {
+      case 1:
+        return {
+          x: 607, y: 155
+        };
+      case 2:
+        return {
+          x: 646, y: 155
+        };
+      case 3:
+        return {
+          x: 684, y: 155
+        };
+
     }
   },
 
