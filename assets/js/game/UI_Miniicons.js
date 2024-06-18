@@ -58,11 +58,39 @@ var UI_Miniicons = Entity.extend({
   },
 
   animateTriangle: function (ctx, kicker, id, hex) {
-    document.getElementById("triangle-" + this.currentIcon).style.borderTopColor = this.getColor(kicker);
-    var icon = document.getElementById("miniicon-" + this.currentIcon);
-    var iconX = this.getIconX();
-    var baseWidth = 50;
+    const icon = document.getElementById(id);
+    const iconRect = icon.getBoundingClientRect();
+    const canvasRect = ctx.canvas.getBoundingClientRect();
 
+    const iconCenterX = iconRect.left + iconRect.width / 2 - canvasRect.left;
+    const iconBottomY = iconRect.bottom - canvasRect.top;
+
+    const triangleBase = iconRect.width;
+    const triangleHeight = -iconRect.height;
+    const kickerPos = this.getKickerPosition(kicker);
+
+    // Calculate the angle of the line pointing from the center of the base to the tip of the triangle
+    const angle = Math.atan2(kickerPos.y - triangleHeight, kickerPos.x - (triangleBase / 2));
+
+    this.drawTriangle(ctx, iconCenterX, iconBottomY, triangleBase, triangleHeight, angle, hex);
+  },
+
+  drawTriangle: function (ctx, x, y, base, height, angle, color) {
+    // Calculate the position of the tip of the triangle
+    const tipX = height * Math.sin(angle);
+    const tipY = y - height;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x - base / 2, y); // Left point of the base
+    ctx.lineTo(x + base / 2, y);  // Right point of the base
+    ctx.lineTo(x + tipX, tipY); // Tip of the triangle
+    ctx.closePath();
+
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    ctx.restore();
   },
 
   getColor: function (kicker) {
@@ -95,20 +123,16 @@ var UI_Miniicons = Entity.extend({
     }
   },
 
+  getKickerPosition: function (kicker) {
+    return {
+      x: kicker.x - Game.world.x,
+      y: kicker.y - Game.world.y
+    }
+  },
+
   isOnScreen: function (entity) {
     const x = entity.x - Game.world.x;
     const y = entity.y - Game.world.y;
     return x >= -10 && x <= GFX.width + 10 && y >= -10 && y <= GFX.height + 10;
-  },
-
-  getIconX: function () {
-    switch (this.currentIcon) {
-      case 1:
-        return 600;
-      case 2:
-        return 650;
-      case 3:
-        return 700;
-    }
   }
 })

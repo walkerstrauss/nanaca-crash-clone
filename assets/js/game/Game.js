@@ -1,4 +1,3 @@
-AssetLoader.queueImage("../assets/img/sprites/miniicon/baseball_miniicon.png", "block");
 AssetLoader.queueImage("../assets/img/sprites/bg/logo.png", "logo");
 
 var Game = {
@@ -104,9 +103,6 @@ var Game = {
         this.aerialCrash = Aerial_Crash.create(this.player);
         this.aerialCrash.showCrashUI();
         document.getElementById("aerial-btn").addEventListener("click", this.handleAerialClick.bind(this));
-
-        var src = AssetLoader.getImage("block").src;
-        document.getElementById("block").style.backgroundImage = 'url(' + src + ')';
 
         // User input
         Event.observe(document, "click", Game.click);
@@ -251,13 +247,11 @@ var Game = {
 
         var specialBtn = document.getElementById("special-text-btn");
         if (Game.player.blocked) {
-            specialBtn.innerHTML = "&nbsp BLOCK";
+            specialBtn.innerHTML = "BLOCK";
             specialBtn.style.color = "purple";
-            document.getElementById("block").style.display = "block";
         } else {
             specialBtn.innerHTML = "SPECIAL";
             specialBtn.style.color = "red";
-            document.getElementById("block").style.display = "none";
         }
 
     },
