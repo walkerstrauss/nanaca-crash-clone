@@ -64,7 +64,7 @@ var Game_Manager = {
         document.getElementById("stage").style.display = "block";
         document.getElementById("launch-ui").style.display = "none";
         document.getElementById("game-over-menu").style.display = "none";
-        // document.getElementById("miniicons").style.display = "flex";
+        document.getElementById("specials").style.display = "flex";
         break;
       case this.gameStates.OVER:
         document.getElementById("main-menu").style.display = "none";
