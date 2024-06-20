@@ -23,11 +23,14 @@ var Meter = Img.extend({
   meterImg: 1,
   lineImg: null,
   player: null,
+  ctx: null,
 
   constructor: function (player) {
     this.base("meter_1", 20, 20);
     this.player = player;
     this.launched = false;
+    this.lineImg = AssetLoader.getImage("line");
+    this.ctx = GFX.ctx;
   },
 
   showMeter: function () {
@@ -43,6 +46,7 @@ var Meter = Img.extend({
     if (this.launchPhase === "angle") {
       var changeAng = 0.025 * this.angleMeterDirection;
       this.angleMeterValue += changeAng;
+      // Remove line below
       document.getElementById("line").style.transform = 'rotate(' + (18 + (this.angleMeterValue * -90)) + 'deg)';
       if (this.angleMeterValue >= 1 || this.angleMeterValue <= 0) {
         this.angleMeterDirection *= -1;
@@ -63,7 +67,20 @@ var Meter = Img.extend({
   changeMeterImg: function () {
     var meterImgIndex = Math.min(Math.floor(this.powerMeterValue * 11), 10) + 1;
     this.image = AssetLoader.getImage("meter_" + meterImgIndex);
+    // Remove line below
     document.getElementById("meter").style.backgroundImage = 'url(' + this.image.src + ')';
+  },
+
+  drawMeter: function () {
+    this.ctx.drawImage(this.image, this.x, this.y);
+
+    const angle = this.launchPhase === "angle" ? 18 + (this.angleMeterValue * -90) : 0;
+    this.drawLine(angle);
+  },
+
+  drawLine: function (angle) {
+    const centerX = this.x + this.image.width / 2;
+    const centerY = this.y + this.image.width / 2;
   },
 
   handleMeterClick: function (e) {

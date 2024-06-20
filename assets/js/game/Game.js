@@ -97,7 +97,7 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
-        this.meter = Meter.create(this.player);
+        this.meter = new Meter(this.player);
         this.meter.showMeter();
 
         this.aerialCrash = Aerial_Crash.create(this.player);
