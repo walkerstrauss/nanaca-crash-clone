@@ -248,14 +248,16 @@ class Game {
         }
         speed.innerHTML = speedMsg;
 
-        var specialBtn = document.getElementById("special-text-btn");
-        if (this.player.blocked) {
-            specialBtn.innerHTML = "BLOCK";
-            specialBtn.style.color = "purple";
-        } else {
-            specialBtn.innerHTML = "SPECIAL";
-            specialBtn.style.color = "red";
-        }
+        // Need to un-comment for HTML special icon
+
+        // var specialBtn = document.getElementById("special-text-btn");
+        // if (this.player.blocked) {
+        //     specialBtn.innerHTML = "BLOCK";
+        //     specialBtn.style.color = "purple";
+        // } else {
+        //     specialBtn.innerHTML = "SPECIAL";
+        //     specialBtn.style.color = "red";
+        // }
 
     }
 
