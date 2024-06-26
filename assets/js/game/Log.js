@@ -24,31 +24,20 @@ var Log = Entity.extend({
   },
 
   draw: function (ctx, x, y) {
-    const textPos = this.getPosition(this.type);
     ctx = ctx || GFX.ctx;
-    x = x || textPos.x;
-    y = y || textPos.y;
 
     // Draw text onto screen
-    for (var i = 1; i < 4; i++) {
-      this.type = this.setType(i);
-      drawText(ctx, x, y);
-    }
+    this.drawMessage(ctx, this.bestRecordMsg, this.getPosition("best"));
+    this.drawMessage(ctx, this.recordMsg, this.getPosition("record"));
+    this.drawMessage(ctx, this.speedMsg, this.getPosition("speed"));
   },
 
-  drawText: function (ctx, x, y) {
-
-  },
-
-  setType: function (i) {
-    switch (i) {
-      case 1:
-        return "best";
-      case 2:
-        return "record";
-      case 3:
-        return "speed";
-    }
+  drawMessage: function (ctx, message, position) {
+    ctx.fillStyle = "#ffff00"; // yellow
+    ctx.font = "14px Arial";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText(message, position.x, position.y);
   },
 
   getPosition: function () {
