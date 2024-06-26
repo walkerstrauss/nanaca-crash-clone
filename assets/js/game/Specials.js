@@ -21,10 +21,14 @@ var Specials = Entity.extend({
   },
 
   update: function () {
-    this.drawIcon(this.width, this.height);
+    this.drawIcon();
+    this.drawText();
   },
 
-  drawIcon: function (width, height, ctx) {
+  drawIcon: function (ctx) {
+    const width = this.width;
+    const height = this.height;
+
     ctx = ctx || GFX.ctx;
     ctx.save();
     ctx.beginPath();
@@ -41,5 +45,17 @@ var Specials = Entity.extend({
 
   drawText: function (ctx) {
     ctx = ctx || GFX.ctx;
-  },
+    const msg = Game_Manager.game.player.blocked ? this.blockMsg : this.specialMsg;
+    const msgColor = Game_Manager.game.player.blocked ? this.purple : this.red;
+
+    ctx.fillStyle = msgColor
+    ctx.font = "14px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Draw text to screen
+    ctx.fillText(msg, this.x + this.width / 2, this.y + this.height / 2);
+    ctx.restore();
+  }
+
 });

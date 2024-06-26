@@ -54,17 +54,11 @@ var Log = Entity.extend({
   getPosition: function () {
     switch (this.type) {
       case "best":
-        return {
-
-        };
+        return { x: 650, y: 10 };
       case "record":
-        return {
-
-        };
+        return { x: 650, y: 50 };
       case "speed":
-        return {
-
-        };
+        return { x: 680, y: 100 };
     }
   }
 })

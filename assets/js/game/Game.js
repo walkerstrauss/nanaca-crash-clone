@@ -85,7 +85,8 @@ class Game {
         this.contactListener.EndContact = function (contact) {
             var userData = contact.GetFixtureA().GetBody().GetUserData();
             if (userData && userData.floor) {
-                Game_Manager.game.player.physics.SetLinearDamping(0.1);
+                // How to edit floor and player collisions
+                Game_Manager.game.player.physics.SetLinearDamping(0.15);
             }
         };
 

@@ -98,7 +98,8 @@ var Meter = Img.extend({
       this.launchPhase = "power";
     } else if (this.launchPhase === "power") {
       this.player.angle = 20 + (this.angleMeterValue * -90);
-      this.player.power = this.powerMeterValue * 50;
+      // power now x 20 instead of x 50 (toji said should be less)
+      this.player.power = this.powerMeterValue * 20;
       this.player.launch();
       this.launched = true;
       document.getElementById("launch-ui").style.display = "none";

@@ -59,7 +59,8 @@ var Aerial_Crash = Img.extend({
       this.image = AssetLoader.getImage("up" + this.upwardCrashesAvailable);
       document.getElementById("upward-crash-ui").style.backgroundImage = 'url(' + this.image.src + ')'
       bike.active = false;
-    } else if (this.available === "downward") {
+      this.available = "none";
+    } else if (this.available === "downward" && this.percentCharged >= 100) {
 
       // Downward crash
       var forceToApply = new Box2D.Common.Math.b2Vec2(5.5, 4);
@@ -69,6 +70,7 @@ var Aerial_Crash = Img.extend({
 
       // Reset charge
       this.percentCharged = 0;
+      this.available = "none";
       this.animateDownwardCharge();
     }
   },
