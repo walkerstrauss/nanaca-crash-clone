@@ -15,7 +15,7 @@ var Move = Entity.extend({
 
             if (newTime - this.start > this.duration) {
                 this.active = false;
-                Game.world.speedUp();
+                Game_Manager.game.world.speedUp();
             }
         }
     },
@@ -23,7 +23,7 @@ var Move = Entity.extend({
     activate: function () {
         this.start = Date.now();
         this.active = true;
-        Game.world.slowDown();
+        Game_Manager.game.world.slowDown();
     },
 
     draw: function (ctx, x, y) {
@@ -35,7 +35,7 @@ var Move = Entity.extend({
         x = x || this.x;
         y = y || this.y;
 
-        // x = x - Game.world.x;
+        // x = x - Game_Manager.game.world.x;
 
         // ctx.fillStyle = "#f00";
 

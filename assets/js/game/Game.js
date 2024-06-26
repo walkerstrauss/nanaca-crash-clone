@@ -1,24 +1,26 @@
 AssetLoader.queueImage("../assets/img/sprites/bg/logo.png", "logo");
 
-var Game = {
-    running: true,
-    oldTime: Date.now(),
-    entities: [],
-    player: null,
-    world: null,
-    background: null,
-    floor: null,
-    contactListener: null,
-    kickers: [],
-    meter: null,
-    miniIcons: null,
-    gameOver: false,
-    aerialCrash: null,
-    gameOverTimer: null,
-    gameOverDelay: 1000,
-    playerStopped: false,
+class Game {
+    constructor() {
+        this.running = true;
+        this.oldTime = Date.now();
+        this.entities = [];
+        this.player = null;
+        this.world = null;
+        this.background = null;
+        this.floor = null;
+        this.contactListener = null;
+        this.kickers = [];
+        this.meter = null;
+        this.miniIcons = null;
+        this.gameOver = false;
+        this.aerialCrash = null;
+        this.gameOverTimer = null;
+        this.gameOverDelay = 1000;
+        this.playerStopped = false;
+    }
 
-    _init: function () {
+    _init() {
         this.miniIcons = UI_Miniicons.create();
         this.camera = new Camera();
         this.world = World.create();
@@ -36,25 +38,25 @@ var Game = {
         this.kickers.spacing = GFX.width * 1.5;
         this.kickers.lastPosition = 0;
         this.entities.push(this.kickers);
-        this.kickers.newKicker = function () {
-            Game.kickers.lastPosition += Game.kickers.spacing;
+        this.kickers.newKicker = function (game) {
+            game.kickers.lastPosition += game.kickers.spacing;
 
             var rnd = Math.random();
             if (rnd > 0.92) {
-                var kicker = Game.kickers.createItem(Kicker_Stop, 70, 120);
+                var kicker = game.kickers.createItem(Kicker_Stop, 70, 120);
             } else if (rnd > 0.8) {
-                var kicker = Game.kickers.createItem(Kicker_Angle_Up, 90, 120);
+                var kicker = game.kickers.createItem(Kicker_Angle_Up, 90, 120);
             } else if (rnd > 0.68) {
-                var kicker = Game.kickers.createItem(Kicker_Angle_Down, 90, 120);
+                var kicker = game.kickers.createItem(Kicker_Angle_Down, 90, 120);
             } else if (rnd > 0.5) {
-                var kicker = Game.kickers.createItem(Kicker_Kick, 110, 100);
+                var kicker = game.kickers.createItem(Kicker_Kick, 110, 100);
             } else if (rnd > 0.3) {
-                var kicker = Game.kickers.createItem(Kicker_Punch, 110, 100);
+                var kicker = game.kickers.createItem(Kicker_Punch, 110, 100);
             } else if (rnd >= 0) {
-                var kicker = Game.kickers.createItem(Kicker_Block, 110, 100);
+                var kicker = game.kickers.createItem(Kicker_Block, 110, 100);
             }
 
-            kicker.setPosition(Game.kickers.lastPosition, kicker.y);
+            kicker.setPosition(game.kickers.lastPosition, kicker.y);
         };
 
         this.player = Player.create(82, 73);
@@ -62,7 +64,7 @@ var Game = {
 
         // Create the kickers
         for (var i = 0; i < 10; i++) {
-            this.kickers.newKicker();
+            this.kickers.newKicker(this);
         }
 
         // Collisions
@@ -71,7 +73,7 @@ var Game = {
             var userDataA = contact.GetFixtureA().GetBody().GetUserData();
 
             if (userDataA && userDataA.floor) {
-                Game.player.physics.SetLinearDamping(2);
+                Game_Manager.game.player.physics.SetLinearDamping(2);
             } else if (userDataA && userDataA.kicker) {
                 userDataA.entity.move.activate();
 
@@ -83,7 +85,7 @@ var Game = {
         this.contactListener.EndContact = function (contact) {
             var userData = contact.GetFixtureA().GetBody().GetUserData();
             if (userData && userData.floor) {
-                Game.player.physics.SetLinearDamping(0.1);
+                Game_Manager.game.player.physics.SetLinearDamping(0.1);
             }
         };
 
@@ -97,7 +99,7 @@ var Game = {
 
         this.world.physics.SetContactListener(this.contactListener);
 
-        this.meter = new Meter(this.player);
+        this.meter = new Meter(this.player); // Changed from create to meter
         this.meter.showMeter();
 
         this.aerialCrash = Aerial_Crash.create(this.player);
@@ -105,27 +107,27 @@ var Game = {
         document.getElementById("aerial-btn").addEventListener("click", this.handleAerialClick.bind(this));
 
         // User input
-        Event.observe(document, "click", Game.click);
-    },
+        Event.observe(document, "click", this.click.bind(this));
+    }
 
-    click: function (e) {
+    click(e) {
         e.preventDefault();
 
         // Old code below
         // Game.player.bike.move.activate();
 
-        if (Game.meter.launched) {
+        if (this.meter.launched) {
             return false;
         }
-        if (!Game.gameOver && Game.running) {
-            Game.meter.handleMeterClick(e);
+        if (!this.gameOver && this.running) {
+            this.meter.handleMeterClick(e);
         }
         //Handle launch UI click event
 
         return false;
-    },
+    }
 
-    initForeground: function () {
+    initForeground() {
         this.clouds = new Foreground_Collection("cloud", 10, 200, 80, 0.25, 0, 20, 1);
         this.entities.push(this.clouds);
 
@@ -140,72 +142,73 @@ var Game = {
 
         this.roads = new Foreground_Collection("road", 420, 868, 40, 1, 0, 15, 1);
         this.entities.push(this.roads);
-    },
+    }
 
-    handleAerialClick: function () {
+    handleAerialClick() {
         if (this.running && this.meter.launched) {
             this.aerialCrash.crash();
         }
-    },
+    }
 
-    checkGameOver: function () {
-        var playerSpeed = Math.round(Game.player.speed.Length() * 100) / 100;
-        if (playerSpeed < 0.0001 && Game.meter.launched) {
-            if (!Game.playerStopped) {
-                Game.playerStopped = true;
-                Game.gameOverTimer = setTimeout(function () {
-                    Game.gameOver = true;
+    checkGameOver() {
+        var playerSpeed = Math.round(this.player.speed.Length() * 100) / 100;
+        if (playerSpeed < 0.0001 && this.meter.launched) {
+            if (!this.playerStopped) {
+                this.playerStopped = true;
+                this.gameOverTimer = setTimeout(function () {
+                    this.gameOver = true;
                     Game_Manager.gameOver();
-                }, Game.gameOverDelay)
+                }, this.gameOverDelay)
             }
         } else {
-            if (Game.playerStopped) {
-                Game.playerStopped = false;
-                clearTimeout(Game.gameOverTimer);
+            if (this.playerStopped) {
+                this.playerStopped = false;
+                clearTimeout(this.gameOverTimer);
             }
 
         }
 
-    },
+    }
 
-    run: function () {
+    run() {
         if (!GFX.canvas) {
             GFX.initialise(document.getElementById("stage"), 768, 435);
         }
         AssetLoader.load(function () {
-            Game._init();
-            Game.loop();
+            Game_Manager.game._init();
+            Game_Manager.game.loop();
         });
-    },
 
-    loop: function () {
+    }
+
+    loop() {
         var newTime = Date.now();
-        var delta = ((newTime - Game.oldTime) / 1000);
+        var delta = ((newTime - Game_Manager.game.oldTime) / 1000);
 
-        Game._physics(delta);
+        Game_Manager.game._physics(delta);
 
-        if (Game.meter.launched) {
-            Game.aerialCrash.checkAvailable(Game.world);
+        if (Game_Manager.game.meter.launched) {
+            Game_Manager.game.aerialCrash.checkAvailable(Game_Manager.game.world);
         }
-        Game.checkGameOver();
+        Game_Manager.game.checkGameOver();
 
         // Code for scaling
-        Game.camera.update(Game.player)
-        Game._graphics();
-        Game.miniIcons.update(Game.kickers);
+        Game_Manager.game.camera.update(Game_Manager.game.player)
+        Game_Manager.game._graphics();
+        Game_Manager.game.miniIcons.update(Game_Manager.game.kickers);
 
         // Clean up any entities marked for being destroyed
-        for (var i = 0, j = Game.entities.length; i < j; i++) {
-            if (Game.entities[i].destroy) {
-                var entity = Game.entities.splice(i, 1);
+        for (var i = 0, j = Game_Manager.game.entities.length; i < j; i++) {
+            if (Game_Manager.game.entities[i].destroy) {
+                var entity = Game_Manager.game.entities.splice(i, 1);
 
                 if (entity.physics) {
-                    this.world.DestroyBody(entity.physics);
+                    Game_Manager.game.world.DestroyBody(entity.physics);
                 }
             }
         }
 
-        Game.updateLog();
+        Game_Manager.game.updateLog();
 
         // var log = document.getElementById("log");
         // var logMsg = "";
@@ -215,38 +218,38 @@ var Game = {
         // logMsg += "<p>Blocked: " + Game.player.blocked + "</p>";
         // log.innerHTML = logMsg;
 
-        Game.oldTime = newTime;
-        if (Game.running) {
-            if (!Game.meter.launched) {
-                Game.meter.animateMeter();
+        Game_Manager.game.oldTime = newTime;
+        if (Game_Manager.game.running) {
+            if (!Game_Manager.game.meter.launched) {
+                Game_Manager.game.meter.animateMeter();
             }
-            requestAnimFrame(Game.loop);
+            requestAnimFrame(Game_Manager.game.loop);
         }
 
-    },
+    }
 
-    updateLog: function () {
+    updateLog() {
         var record = document.getElementById("record");
         var recordMsg = "";
-        recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(this.world.toWorld(this.player.x) * 100) / 100 + "m";
         record.innerHTML = recordMsg;
 
         var best_record = document.getElementById("best-record");
         var bestRecordMsg = "";
-        bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+        bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(this.world.toWorld(this.player.x) * 100) / 100 + "m";
         best_record.innerHTML = bestRecordMsg;
 
         var speed = document.getElementById("speed");
         var speedMsg = "";
-        if (Game.playerStopped || Game.player.stopped) {
+        if (this.playerStopped || this.player.stopped) {
             speedMsg += "SPEED: 0.0m/s";
         } else {
-            speedMsg += "SPEED: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s";
+            speedMsg += "SPEED: " + Math.round(this.player.speed.Length() * 100) / 100 + "m/s";
         }
         speed.innerHTML = speedMsg;
 
         var specialBtn = document.getElementById("special-text-btn");
-        if (Game.player.blocked) {
+        if (this.player.blocked) {
             specialBtn.innerHTML = "BLOCK";
             specialBtn.style.color = "purple";
         } else {
@@ -254,18 +257,18 @@ var Game = {
             specialBtn.style.color = "red";
         }
 
-    },
+    }
 
-    _physics: function (delta) {
-        for (var i = 0, j = Game.entities.length; i < j; i++) {
-            Game.entities[i].update(delta);
+    _physics(delta) {
+        for (var i = 0, j = Game_Manager.game.entities.length; i < j; i++) {
+            Game_Manager.game.entities[i].update(delta);
         }
 
         // Update kicker physics
-        var v = this.player.x;
+        var v = Game_Manager.game.player.x;
         var removeCount = 0;
-        for (var n = 0, m = this.kickers.getLength(); n < m; n++) {
-            var kicker = this.kickers.get(n);
+        for (var n = 0, m = Game_Manager.game.kickers.getLength(); n < m; n++) {
+            var kicker = Game_Manager.game.kickers.get(n);
 
             // Check if a kicker goes off screen
             if (kicker.x - v < -300) {
@@ -275,22 +278,22 @@ var Game = {
 
         while (removeCount) {
             removeCount--;
-            this.world.physics.DestroyBody(this.kickers.get(removeCount).physics);
-            this.kickers.shift();
+            Game_Manager.game.world.physics.DestroyBody(Game_Manager.game.kickers.get(removeCount).physics);
+            Game_Manager.game.kickers.shift();
 
-            this.kickers.newKicker();
+            Game_Manager.game.kickers.newKicker(Game_Manager.game);
         }
-    },
+    }
 
-    _graphics: function () {
+    _graphics() {
         GFX.ctx.clearRect(0, 0, GFX.width, GFX.height);
 
-        for (var i = 0, j = Game.entities.length; i < j; i++) {
-            Game.entities[i].draw();
+        for (var i = 0, j = Game_Manager.game.entities.length; i < j; i++) {
+            Game_Manager.game.entities[i].draw();
         }
-    },
+    }
 
-    resetGame: function () {
+    resetGame() {
         this.running = true;
         this.oldTime = Date.now();
         this.entities = [];
@@ -309,17 +312,18 @@ var Game = {
         this.playerStopped = false;
         this.camera = null;
 
-        this.initialiseCanvas();
-    },
+        this.removeCanvas();
+        this.run();
+    }
 
-    removeCanvas: function () {
+    removeCanvas() {
         const canvas = document.getElementById("canvas");
         if (canvas) {
             canvas.parentElement.removeChild(canvas);
         }
-    },
+    }
 
-    initialiseCanvas: function () {
+    initialiseCanvas() {
         this.removeCanvas();
         const canvas = document.createElement("canvas");
         canvas.id = "canvas";

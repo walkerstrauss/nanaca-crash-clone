@@ -58,40 +58,30 @@ var UI_Miniicons = Entity.extend({
   },
 
   animateTriangle: function (ctx, kicker, id, hex) {
-    // const icon = document.getElementById(id);
-    // const iconRect = icon.getBoundingClientRect();
-    // const canvasRect = ctx.canvas.getBoundingClientRect();
-
-    // const iconCenterX = iconRect.left + iconRect.width / 2 - canvasRect.left;
-    // const iconBottomY = iconRect.bottom - canvasRect.top;
-
-    // const triangleBase = iconRect.width;
-    // const triangleHeight = -iconRect.height;
     const kickerPos = this.getKickerPosition(kicker);
-
-    const img = this.getKickerImg(kicker)
+    const img = this.getKickerImg(kicker);
     const iconPos = this.getIconPosition();
     const iconCenterX = iconPos.x + img.width / 2;
     const iconBottomY = iconPos.y + img.height;
 
-    const triangleBase = img.width + 3;
-    const triangleHeight = -img.height - 3
+    const base = 20; // Adjusted base size
+    const height = 50;
 
-    // Calculate the angle of the line pointing from the center of the base to the tip of the triangle
-    const angle = Math.atan2(kickerPos.y - triangleHeight, kickerPos.x - (triangleBase / 2));
+    // Calculate the angle between the icon and the kicker
+    const angle = Math.atan2(kickerPos.y - iconBottomY, kickerPos.x - iconCenterX);
 
-    this.drawTriangle(ctx, iconCenterX, iconBottomY, triangleBase, triangleHeight, angle, hex);
+    this.drawTriangle(ctx, iconCenterX, iconBottomY, base, height, angle, hex);
   },
 
   drawTriangle: function (ctx, x, y, base, height, angle, color) {
     // Calculate the position of the tip of the triangle
-    const tipX = x + height * Math.sin(angle);
-    const tipY = y - height;
+    const tipX = x + height * Math.cos(angle);
+    const tipY = y + height * Math.sin(angle);
 
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(x - base / 2, y); // Left point of the base
-    ctx.lineTo(x + base / 2, y);  // Right point of the base
+    ctx.lineTo(x + base / 2, y); // Right point of the base
     ctx.lineTo(tipX, tipY); // Tip of the triangle
     ctx.closePath();
 
@@ -152,32 +142,26 @@ var UI_Miniicons = Entity.extend({
 
   getKickerPosition: function (kicker) {
     return {
-      x: kicker.x - Game.world.x,
-      y: kicker.y - Game.world.y
+      x: kicker.x - Game_Manager.game.world.x,
+      y: kicker.y - Game_Manager.game.world.y
     }
   },
 
   getIconPosition: function () {
     switch (this.currentIcon) {
       case 1:
-        return {
-          x: 607, y: 155
-        };
+        return { x: 607, y: 155 };
       case 2:
-        return {
-          x: 646, y: 155
-        };
+        return { x: 646, y: 155 };
       case 3:
-        return {
-          x: 684, y: 155
-        };
+        return { x: 684, y: 155 };
 
     }
   },
 
   isOnScreen: function (entity) {
-    const x = entity.x - Game.world.x;
-    const y = entity.y - Game.world.y;
+    const x = entity.x - Game_Manager.game.world.x;
+    const y = entity.y - Game_Manager.game.world.y;
     return x >= -10 && x <= GFX.width + 10 && y >= -10 && y <= GFX.height + 10;
   }
 })

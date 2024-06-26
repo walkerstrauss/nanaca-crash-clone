@@ -14,7 +14,7 @@ var Camera = Base.extend({
 
   applyTransform: function (ctx) {
     ctx.save();
-    ctx.translate(this.x - Game.world.x, -this.y);
+    ctx.translate(this.x - Game_Manager.game.world.x, -this.y);
     ctx.scale(this.scale, this.scale);
   },
 

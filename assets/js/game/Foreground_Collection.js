@@ -43,7 +43,7 @@ var Foreground_Collection = Collection.extend({
 
   // Updates collection based on world's position and parallax speed 
   update: function (delta) {
-    this.parralaxWorldX = Game.world.x * this.parallaxSpeedScale;
+    this.parralaxWorldX = Game_Manager.game.world.x * this.parallaxSpeedScale;
     this.scale = this.getScale(this.type);
 
     for (var i = 0, j = this.items.length; i < j; i++) {
@@ -110,7 +110,7 @@ var Foreground_Collection = Collection.extend({
       case "tree":
         return 0.3;
       default:
-        return Game.camera.scale * this.elemScale;
+        return Game_Manager.game.camera.scale * this.elemScale;
     }
   }
 })

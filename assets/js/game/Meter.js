@@ -39,6 +39,7 @@ var Meter = Img.extend({
       this.image = AssetLoader.getImage("meter_1");
       document.getElementById("launch-ui").style.display = "flex";
       document.getElementById("meter").style.backgroundImage = 'url(' + this.image.src + ')';
+      // this.drawMeter();
     }
   },
 
@@ -61,6 +62,7 @@ var Meter = Img.extend({
       }
       this.changeMeterImg();
     }
+    // this.drawMeter();
 
   },
 
@@ -72,15 +74,22 @@ var Meter = Img.extend({
   },
 
   drawMeter: function () {
-    this.ctx.drawImage(this.image, this.x, this.y);
+    this.ctx.drawImage(this.image, this.x, this.y, this.image.width, this.image.height);
 
     const angle = this.launchPhase === "angle" ? 18 + (this.angleMeterValue * -90) : 0;
     this.drawLine(angle);
   },
 
   drawLine: function (angle) {
-    const centerX = this.x + this.image.width / 2;
-    const centerY = this.y + this.image.width / 2;
+    const lineImg = AssetLoader.getImage("line");
+    const centerX = this.x;
+    const centerY = this.y;
+
+    this.ctx.save();
+    this.ctx.translate(centerX - this.lineImg.width / 2, centerY + this.lineImg.height / 2);
+    this.ctx.rotate(angle * Math.PI / 180);
+    this.ctx.drawImage(lineImg, 0, -lineImg.height / 2, lineImg.width, lineImg.height);
+    this.ctx.restore();
   },
 
   handleMeterClick: function (e) {
@@ -89,7 +98,7 @@ var Meter = Img.extend({
       this.launchPhase = "power";
     } else if (this.launchPhase === "power") {
       this.player.angle = 20 + (this.angleMeterValue * -90);
-      this.player.power = this.powerMeterValue * 100;
+      this.player.power = this.powerMeterValue * 50;
       this.player.launch();
       this.launched = true;
       document.getElementById("launch-ui").style.display = "none";

@@ -15,7 +15,7 @@ var PhysicsEntity = Entity.extend({
         this.base(x, y);
 
         if (this.physics) {
-            this.physics.SetPosition(new Box2D.Common.Math.b2Vec2(Game.world.toWorld(x + (this.width * 0.5)), Game.world.toWorld(y + (this.height * 0.5))));
+            this.physics.SetPosition(new Box2D.Common.Math.b2Vec2(Game_Manager.game.world.toWorld(x + (this.width * 0.5)), Game_Manager.game.world.toWorld(y + (this.height * 0.5))));
         }
     },
 
@@ -23,8 +23,8 @@ var PhysicsEntity = Entity.extend({
         if (this.physics) {
             var physicsPos = this.physics.GetWorldPoint(new Box2D.Common.Math.b2Vec2(0, 0));
 
-            this.x = Game.world.toPixel(physicsPos.x) - (this.width * 0.5);
-            this.y = Game.world.toPixel(physicsPos.y) - (this.height * 0.5);
+            this.x = Game_Manager.game.world.toPixel(physicsPos.x) - (this.width * 0.5);
+            this.y = Game_Manager.game.world.toPixel(physicsPos.y) - (this.height * 0.5);
         }
     }
 }, {

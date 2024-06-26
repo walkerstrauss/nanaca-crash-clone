@@ -15,7 +15,7 @@ var Kicker_Angle_Down = Kicker.extend({
     x = x || this.x;
     y = y || this.y;
 
-    x = x - Game.world.x;
+    x = x - Game_Manager.game.world.x;
 
     // ctx.fillStyle = "#0000A0";
 

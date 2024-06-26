@@ -17,11 +17,11 @@ var Kicker_Stop = Kicker.extend({
         x = x || this.x;
         y = y || this.y;
 
-        x = x - Game.world.x;
+        x = x - Game_Manager.game.world.x;
 
         // ctx.fillStyle = "#00A000";
 
-        if (Game.player.stopped) {
+        if (Game_Manager.game.player.stopped) {
             this.img.image = AssetLoader.getImage("micheal2");
         }
         // this.base(ctx, x, y);

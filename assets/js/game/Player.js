@@ -31,7 +31,8 @@ var Player = PhysicsEntity.extend({
         def.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
         def.fixedRotation = true;
 
-        this.physics = Game.world.physics.CreateBody(def);
+        console.log(Game_Manager.game);
+        this.physics = Game_Manager.game.world.physics.CreateBody(def);
         this.physics.SetLinearDamping(0.1);
 
         this.physics.SetUserData({
@@ -40,7 +41,7 @@ var Player = PhysicsEntity.extend({
         });
 
         var poly = new Box2D.Collision.Shapes.b2CircleShape();
-        poly.SetRadius(Game.world.toWorld(this.height * 0.5));
+        poly.SetRadius(Game_Manager.game.world.toWorld(this.height * 0.5));
 
         var fixDef = new Box2D.Dynamics.b2FixtureDef();
         fixDef.shape = poly;
@@ -61,9 +62,9 @@ var Player = PhysicsEntity.extend({
         this.bike.update(delta);
 
         this.speed = this.physics.GetLinearVelocity();
-        if (Game.meter.launched && !Game.gameOver &&
-            (Math.round(Game.world.toWorld(this.y) * 100) / 100) <= 16 &&
-            Game.world.speed > 0.05) {
+        if (Game_Manager.game.meter.launched && !Game_Manager.game.gameOver &&
+            (Math.round(Game_Manager.game.world.toWorld(this.y) * 100) / 100) <= 16 &&
+            Game_Manager.game.world.speed > 0.05) {
             this.angle = this.angle + 10;
         }
 
@@ -79,8 +80,8 @@ var Player = PhysicsEntity.extend({
         if (!this.stopped) {
             var drawAngle = (this.angle * Math.PI) / 180;
             ctx.save();
-            ctx.translate(this.x - Game.world.x, this.y);
-            ctx.scale(Game.camera.scale, Game.camera.scale);
+            ctx.translate(this.x - Game_Manager.game.world.x, this.y);
+            ctx.scale(Game_Manager.game.camera.scale, Game_Manager.game.camera.scale);
             ctx.rotate(drawAngle);
             ctx.drawImage(this.img.image, -this.width / 2, -this.height / 2, this.width, this.height)
             ctx.restore();

@@ -5,9 +5,9 @@ var Move_Bike = Move.extend({
         this.base();
 
         var forceToApply = new Box2D.Common.Math.b2Vec2(4, -5.5);
-        forceToApply.Multiply(Game.player.physics.GetMass());
-        Game.player.physics.SetAwake(true);
-        Game.player.physics.SetLinearVelocity(forceToApply);
+        forceToApply.Multiply(Game_Manager.game.player.physics.GetMass());
+        Game_Manager.game.player.physics.SetAwake(true);
+        Game_Manager.game.player.physics.SetLinearVelocity(forceToApply);
     }
 }, {
     // Static functions

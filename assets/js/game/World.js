@@ -17,7 +17,7 @@ var World = PhysicsEntity.extend({
         this.physics.ClearForces();
 
         // Position the viewport where the player is
-        this.x = Game.player.x - 200;
+        this.x = Game_Manager.game.player.x - 200;
     },
 
     draw: function () {

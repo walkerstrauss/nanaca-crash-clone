@@ -2,8 +2,8 @@ var Move_Kick = Move.extend({
     duration: 1000,
 
     activate: function () {
-        if (Game.player.blocked) {
-            Game.player.blocked = false;
+        if (Game_Manager.game.player.blocked) {
+            Game_Manager.game.player.blocked = false;
             return;
         }
 
@@ -11,8 +11,8 @@ var Move_Kick = Move.extend({
 
         // Doubled force on 6/3
         var forceToApply = new Box2D.Common.Math.b2Vec2(10, -9);
-        forceToApply.Multiply(Game.player.physics.GetMass());
-        Game.player.physics.SetLinearVelocity(forceToApply);
+        forceToApply.Multiply(Game_Manager.game.player.physics.GetMass());
+        Game_Manager.game.player.physics.SetLinearVelocity(forceToApply);
     }
 }, {
     // Static functions

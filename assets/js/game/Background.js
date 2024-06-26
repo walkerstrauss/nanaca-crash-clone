@@ -21,7 +21,7 @@ var Background = Entity.extend({
 
     draw: function (ctx, x, y) {
         ctx = ctx || GFX.ctx;
-        x = x || Game.world.x;
+        x = x || Game_Manager.game.world.x;
         y = y || this.y;
 
         // var bgX = x / this.width;
@@ -32,8 +32,8 @@ var Background = Entity.extend({
         // this.img.draw(ctx, bgX, 0);
 
         // ctx.save();
-        // ctx.scale(Game.camera.scale, Game.camera.scale);
-        // ctx.translate(x / Game.camera.scale, y / Game.camera.scale);
+        // ctx.scale(Game_Manager.game.camera.scale, Game_Manager.game.camera.scale);
+        // ctx.translate(x / Game_Manager.game.camera.scale, y / Game_Manager.game.camera.scale);
         // ctx.drawImage(this.img.image, 0, 0, this.width, this.height);
         // ctx.restore();
 

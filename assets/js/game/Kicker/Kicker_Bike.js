@@ -17,24 +17,12 @@ var Kicker_Bike = Kicker.extend({
         this.img = Img.create("forklift", width, height);
     },
 
-    // crash: function () {
-    //     this.active = true;
-    //     this.x = Game.player.x - 50;
-    //     this.y = Game.player.y + 50;
-    //     this.initialX = this.x;
-    //     this.initialY = this.y;
-    //     this.targetX = Game.player.x;
-    //     this.targetY = Game.player.y;
-    //     this.speedX = 5;
-    //     this.speedY = -5;
-    // },
-
     draw: function (ctx, x, y) {
         ctx = ctx || GFX.ctx;
         x = x || this.x - 20;
         y = y || this.y;
 
-        x = x - Game.world.x;
+        x = x - Game_Manager.game.world.x;
 
         ctx.fillStyle = "#fff";
 

@@ -8,18 +8,18 @@ var Log = Entity.extend({
   update: function () {
     // Update best
     this.bestRecordMsg = "";
-    this.bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+    this.bestRecordMsg += "BEST RECORD:   &nbsp &nbsp" + Math.round(Game_Manager.game.world.toWorld(Game_Manager.game.player.x) * 100) / 100 + "m";
 
     // Update record
     this.recordMsg = "";
-    this.recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game.world.toWorld(Game.player.x) * 100) / 100 + "m";
+    this.recordMsg += "RECORD:   &nbsp &nbsp" + Math.round(Game_Manager.game.world.toWorld(Game_Manager.game.player.x) * 100) / 100 + "m";
 
     // Update speed
     this.speedMsg = "";
-    if (Game.playerStopped || Game.player.stopped) {
+    if (Game_Manager.game.playerStopped || Game_Manager.game.player.stopped) {
       this.speedMsg += "SPEED: 0.0m/s";
     } else {
-      this.speedMsg += "SPEED: " + Math.round(Game.player.speed.Length() * 100) / 100 + "m/s";
+      this.speedMsg += "SPEED: " + Math.round(Game_Manager.game.player.speed.Length() * 100) / 100 + "m/s";
     }
   },
 

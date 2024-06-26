@@ -1,6 +1,8 @@
 var Game_Manager = {
   bestRecord: 0,
   currentState: 'MAIN_MENU',
+  game: null,
+  games: [],
 
   gameStates: {
     MAIN_MENU: 'MAIN_MENU',
@@ -22,8 +24,10 @@ var Game_Manager = {
   },
 
   startGame: function () {
-    this.game = Object.create(Game);
+    this.game = new Game();
+    this.game.resetGame();
     this.game.run();
+
     this.currentState = this.gameStates.METER;
     this.updateDisplay();
   },
@@ -64,7 +68,7 @@ var Game_Manager = {
         document.getElementById("stage").style.display = "block";
         document.getElementById("launch-ui").style.display = "none";
         document.getElementById("game-over-menu").style.display = "none";
-        document.getElementById("specials").style.display = "flex";
+        // document.getElementById("specials").style.display = "flex";
         break;
       case this.gameStates.OVER:
         document.getElementById("main-menu").style.display = "none";
